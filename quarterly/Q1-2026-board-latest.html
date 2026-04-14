@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mixmax Board Snapshot — Q1 2026</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f5f5f5; color: #222; line-height: 1.55; }
+.page { max-width: 1100px; margin: 30px auto; background: white; border-radius: 8px; box-shadow: 0 2px 20px rgba(0,0,0,0.08); overflow: hidden; }
+.header { background: linear-gradient(135deg, #4a154b 0%, #6a1b69 100%); color: white; padding: 35px 40px; }
+.header h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+.header-sub { font-size: 14px; opacity: 0.9; }
+.header-meta { display: flex; gap: 24px; margin-top: 14px; font-size: 13px; opacity: 0.9; flex-wrap: wrap; }
+.header-meta strong { opacity: 1; font-weight: 600; }
+.board-note { background: #fff8e6; border-left: 4px solid #ffcc00; padding: 14px 20px; margin: 0; font-size: 13px; color: #5e4800; }
+.board-note strong { color: #4a3400; }
+.content { padding: 30px 40px; }
+.section-head { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #4a154b; font-weight: 700; margin-top: 30px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0; }
+.section-head:first-child { margin-top: 0; }
+.metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+.metric { background: #fafafa; border: 1px solid #e8e8e8; border-radius: 6px; padding: 14px; text-align: center; }
+.metric .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 6px; font-weight: 600; }
+.metric .value { font-size: 22px; font-weight: 700; color: #222; margin-bottom: 4px; }
+.metric .vs-target { font-size: 11px; color: #666; }
+.metric.good .value { color: #1e7e34; }
+.metric.bad .value { color: #b02a37; }
+.metric.flat .value { color: #4a154b; }
+.headline { background: #f0e6f5; border-left: 4px solid #4a154b; padding: 16px 20px; margin: 10px 0 20px; border-radius: 4px; font-size: 14px; }
+.headline strong { color: #4a154b; }
+.risk-list { list-style: none; padding: 0; margin: 0; }
+.risk-list li { padding: 14px 16px; background: #fafafa; border: 1px solid #e8e8e8; border-left: 4px solid #cc0000; border-radius: 4px; margin-bottom: 10px; font-size: 13px; }
+.risk-list li strong { color: #4a154b; display: block; font-size: 14px; margin-bottom: 4px; }
+.risk-list li .risk-meta { color: #666; font-size: 12px; margin-top: 6px; }
+.risk-list li .risk-action { margin-top: 6px; font-style: italic; color: #444; }
+.opp-list { list-style: none; padding: 0; margin: 0; }
+.opp-list li { padding: 14px 16px; background: #f0faf0; border: 1px solid #c8e6c9; border-left: 4px solid #28a745; border-radius: 4px; margin-bottom: 10px; font-size: 13px; }
+.opp-list li strong { color: #1e7e34; display: block; font-size: 14px; margin-bottom: 4px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+table th { background: #f5f5f5; padding: 10px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #666; border-bottom: 2px solid #e0e0e0; }
+table td { padding: 10px; border-bottom: 1px solid #f0f0f0; }
+.text-right { text-align: right; font-family: 'Courier New', monospace; }
+.red { color: #cc0000; font-weight: 600; }
+.green { color: #1e7e34; font-weight: 600; }
+.footer-link { padding: 18px 20px; background: #f5f5f5; font-size: 12px; color: #666; text-align: center; border-top: 1px solid #e0e0e0; }
+.footer-link a { color: #4a154b; font-weight: 600; text-decoration: none; }
+@media (max-width: 700px) {
+  .header, .content { padding: 24px 20px; }
+  .metric-grid { grid-template-columns: repeat(2, 1fr); }
+  .header h1 { font-size: 22px; }
+  .metric .value { font-size: 18px; }
+}
+@media print {
+  body { background: white; }
+  .page { box-shadow: none; margin: 0; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="header">
+<h1>Mixmax Board Snapshot — Q1 2026</h1>
+<div class="header-sub">Board Meeting: April 15, 2026 · One-page executive summary</div>
+<div class="header-meta">
+<span><strong>As of:</strong> April 13, 2026</span>
+<span><strong>Period:</strong> Q1 2026 (Jan 1 – Mar 31)</span>
+<span><strong>Audience:</strong> Mixmax Board</span>
+<span><strong>Version:</strong> V1</span>
+</div>
+</div>
+
+<div class="board-note">
+<strong>Reconciliation posture:</strong> Bootstrap mode — first quarterly report under new workflow. Only March Monthly available for cross-reference; Jan + Feb monthlies not produced. Intra-snapshot integrity passed (no #DIV/0!, #REF!, or #N/A). Q2 will reconcile against all three monthly reports.
+</div>
+
+<div class="content">
+
+<div class="section-head">Q1 2026 Results</div>
+
+<div class="metric-grid">
+<div class="metric bad"><div class="label">Total ARR</div><div class="value">$8.68M</div><div class="vs-target">vs $8.94M tgt · −3%</div></div>
+<div class="metric bad"><div class="label">Direct Sales ARR</div><div class="value">$4.72M</div><div class="vs-target">vs $5.00M tgt · −6%</div></div>
+<div class="metric good"><div class="label">Self-Serve ARR</div><div class="value">$3.96M</div><div class="vs-target">vs $3.93M tgt · +1%</div></div>
+<div class="metric bad"><div class="label">Net New ARR</div><div class="value">−$373K</div><div class="vs-target">vs −$112K tgt · −132%</div></div>
+<div class="metric bad"><div class="label">Bookings</div><div class="value">$87K</div><div class="vs-target">vs $236K tgt · 37%</div></div>
+<div class="metric bad"><div class="label">Pipeline Created</div><div class="value">$238K</div><div class="vs-target">vs $579K tgt · 41%</div></div>
+<div class="metric bad"><div class="label">NRR (EOQ)</div><div class="value">56%</div><div class="vs-target">well below plan</div></div>
+<div class="metric bad"><div class="label">GRR (EOQ)</div><div class="value">53%</div><div class="vs-target">well below plan</div></div>
+</div>
+
+<div class="headline">
+<strong>Q1 in one sentence:</strong> Direct Sales missed by $282K driven by a combined Churn + Downgrade overrun of $390K against budget, compounded by Outbound pipeline creation at 8% of target. Self-Serve and Product channels over-delivered and partially offset the damage.
+</div>
+
+<div class="section-head">Top 3 Risks</div>
+<ul class="risk-list">
+<li>
+<strong>1. Retention Collapse — DS Churn + Downgrade 78% over budget</strong>
+−$889K combined Q1 impact vs −$499K budget. Churn: $386K (50% over). Downgrade: $503K (108% over).
+<div class="risk-meta">Category: Churn + Downgrade · Owning Team: CS · Confidence: High</div>
+<div class="risk-action">Action: Q2 save playbook + reason-code segmentation by April 30. CSM book rebalance decision (Heather Mae's book at 20% NRR) by April 18.</div>
+</li>
+<li>
+<strong>2. Outbound Pipeline Collapse — $20K created vs $252K target</strong>
+8% of pipeline target. 17% of accounts-engaged target. 5% Accounts-to-Meetings conversion. Drives $1.64M Q2 coverage gap.
+<div class="risk-meta">Category: Pipeline Gap + Activity Shortfall · Owning Team: SDR · Confidence: High</div>
+<div class="risk-action">Action: Outbound root-cause memo April 20. +600 account engagement push April–May. Weekly top-of-funnel scorecard starts Week 3 of April.</div>
+</li>
+<li>
+<strong>3. Inbound MQL Deficit — 56% of target</strong>
+70 MQLs vs 124 target. Explains Inbound pipeline at 44% of target ($126K vs $287K).
+<div class="risk-meta">Category: Activity Shortfall · Owning Team: SDR + Marketing · Confidence: High</div>
+<div class="risk-action">Action: Joint MQL-source review by April 20. Weekly MQL cadence with 90-day moving average begins in Q2 so improvement is visible.</div>
+</li>
+</ul>
+
+<div class="section-head">Top 3 Opportunities</div>
+<ul class="opp-list">
+<li>
+<strong>1. Product Channel Over-Delivery</strong>
+PQLs at 832% of target (183 vs 22). Product SQOs at 450%. SQL→SQO conversion 100%. Pipeline created 414% of target. This is the strongest single investment signal we have heading into Q2.
+</li>
+<li>
+<strong>2. Expansion Delivered 180% of Target</strong>
+$429K DS Expansion contribution vs $238K target. Proof that the existing-customer motion works when execution is tight — the playbook for this is the closest thing to a live retention save-play we have.
+</li>
+<li>
+<strong>3. Self-Serve Stability</strong>
+SS ARR closed 1% above target. SS Reactivation 142% of target. SS Churn came in <em>better</em> than plan (85% of budget). The SS motion is intact; the work is in Direct Sales.
+</li>
+</ul>
+
+<div class="section-head">Q2 2026 Plan</div>
+
+<table>
+<thead><tr><th>Metric</th><th class="text-right">Q2 Target</th><th class="text-right">Q1 Actual</th><th class="text-right">Required Swing</th></tr></thead>
+<tbody>
+<tr><td>Net New ARR</td><td class="text-right">+$535K</td><td class="text-right red">−$373K</td><td class="text-right">+$908K</td></tr>
+<tr><td>Total Bookings</td><td class="text-right">$698K</td><td class="text-right">$87K</td><td class="text-right">8x</td></tr>
+<tr><td>Pipeline Creation</td><td class="text-right">$2.05M</td><td class="text-right">$238K</td><td class="text-right">8.6x</td></tr>
+<tr><td>Outbound Pipeline</td><td class="text-right">$1.14M</td><td class="text-right red">$20K</td><td class="text-right">Full rebuild</td></tr>
+<tr><td>NRR (EOQ)</td><td class="text-right">85%</td><td class="text-right red">56%</td><td class="text-right">Save playbook</td></tr>
+</tbody>
+</table>
+
+<p style="font-size: 13px; color: #444; margin-top: 12px;">
+<strong>Three gates for Q2 success:</strong> (1) CS save playbook + Heather Mae book rebalance by end of April, (2) Outbound pipeline coverage rebuilt to 3x Q2 bookings target by end of May, (3) mid-May Q2 review confirms whether Product over-performance is sustained and warrants reallocation of investment in H2.
+</p>
+
+<div class="section-head">CRO Ask of the Board</div>
+<p style="font-size: 13px; color: #333; margin-top: 6px;">
+Guidance on H2 investment posture: if Product channel continues to over-deliver in April + May (PQL volume ≥75% of Q1 rate, SQL→SQO conversion ≥85%), we will recommend shifting incremental GTM spend toward Product expansion (enablement, PLG instrumentation, Product-sourced SDR capacity). The Q2 mid-point review will put data in front of the Board on whether this is a sustained channel shift or a Q1 aberration.
+</p>
+</div>
+
+<div class="footer-link">
+Full quarterly risk register and supporting detail: <a href="./CRO_Quarterly_Report_Q1-2026.html">CRO Quarterly Report</a> · <a href="./Mixmax_Quarterly_Wrapup_Q1-2026.html">Quarterly Wrap-Up</a>
+</div>
+</div>
+</body>
+</html>

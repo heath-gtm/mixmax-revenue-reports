@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mixmax Q2 2026 Quarter-Ahead</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+.header { background: linear-gradient(135deg, #4a154b, #6a1b69); color: white; padding: 40px 50px; }
+.header-content { max-width: 1200px; margin: 0 auto; }
+.header h1 { font-size: 2.1em; font-weight: 700; margin-bottom: 12px; }
+.header-meta { display: flex; flex-wrap: wrap; gap: 20px; font-size: 0.9em; opacity: 0.92; margin-top: 6px; }
+.meta-label { opacity: 0.7; }
+.announcement-banner { background: rgba(255,255,255,0.12); border-left: 4px solid #ffd700; padding: 12px 16px; border-radius: 4px; margin-top: 18px; font-size: 0.92em; }
+.container { max-width: 1200px; margin: 0 auto; background: white; }
+.tabs { display: flex; background: #f9f9f9; border-bottom: 1px solid #e0e0e0; overflow-x: auto; }
+.tab-button { flex: 1; min-width: 140px; padding: 16px 20px; border: none; background: none; cursor: pointer; font-size: 0.95em; font-weight: 500; color: #666; border-bottom: 3px solid transparent; transition: all 0.3s ease; white-space: nowrap; }
+.tab-button:hover { background: #f0f0f0; color: #4a154b; }
+.tab-button.active { color: #4a154b; border-bottom-color: #4a154b; background: white; }
+.tab-content { display: none; padding: 40px; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px; }
+.metric-card { border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; background: #fafafa; }
+.metric-card h3 { font-size: 0.85em; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; font-weight: 600; }
+.metric-value { font-size: 1.8em; font-weight: 700; color: #222; margin-bottom: 8px; }
+.metric-detail { font-size: 0.85em; color: #888; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 600; margin-left: auto; }
+.badge-green { background: #d4edda; color: #155724; }
+.badge-yellow { background: #fff3cd; color: #856404; }
+.badge-red { background: #f8d7da; color: #721c24; }
+table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 0.95em; }
+table thead { background: #f0f0f0; border-bottom: 2px solid #e0e0e0; }
+table th { padding: 12px 15px; text-align: left; font-weight: 600; color: #333; text-transform: uppercase; font-size: 0.8em; letter-spacing: 0.5px; }
+table td { padding: 12px 15px; border-bottom: 1px solid #f0f0f0; }
+table tbody tr:hover { background: #fafafa; }
+table tbody tr:nth-child(even) { background: #fafafa; }
+.text-right { text-align: right; }
+.text-muted { color: #888; font-size: 0.9em; }
+.warning-box { background: #fff3cd; border-left: 4px solid #ffcc00; padding: 15px 20px; border-radius: 4px; margin: 20px 0; font-size: 0.95em; color: #856404; }
+.info-box { background: #e8f4f8; border-left: 4px solid #0066cc; padding: 15px 20px; border-radius: 4px; margin: 20px 0; font-size: 0.95em; color: #084c6e; }
+.success-box { background: #d4edda; border-left: 4px solid #28a745; padding: 15px 20px; border-radius: 4px; margin: 20px 0; font-size: 0.95em; color: #155724; }
+.section-title { font-size: 1.3em; font-weight: 700; color: #222; margin-top: 30px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #e0e0e0; }
+.section-title:first-child { margin-top: 0; }
+.subsection-title { font-size: 1.05em; font-weight: 600; color: #333; margin-top: 25px; margin-bottom: 15px; }
+.action-list { list-style: none; padding: 0; }
+.action-list li { padding: 12px 0; padding-left: 30px; position: relative; color: #555; line-height: 1.6; }
+.action-list li:before { content: "›"; position: absolute; left: 8px; font-size: 1.5em; color: #4a154b; font-weight: bold; }
+.variance-positive { color: #00aa00; font-weight: 600; }
+.variance-negative { color: #cc0000; font-weight: 600; }
+.risk-indicator { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.risk-indicator.high { background-color: #cc0000; }
+.risk-indicator.medium { background-color: #ff9900; }
+.risk-indicator.low { background-color: #00aa00; }
+@media (max-width: 768px) {
+  .header { padding: 25px 20px; }
+  .header h1 { font-size: 1.8em; }
+  .header-meta { flex-direction: column; gap: 15px; font-size: 0.85em; }
+  .tab-button { min-width: 100px; font-size: 0.85em; padding: 12px 12px; }
+  .tab-content { padding: 20px; }
+  .metric-grid { grid-template-columns: 1fr; }
+  table { font-size: 0.85em; }
+  table th, table td { padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="header-content">
+<h1>Mixmax Q2 2026 Quarter-Ahead</h1>
+<div class="header-meta">
+<span><span class="meta-label">As of:</span> April 13, 2026</span>
+<span><span class="meta-label">Period:</span> Q2 2026 (Apr 1 – Jun 30)</span>
+<span><span class="meta-label">Cadence:</span> Quarterly</span>
+<span><span class="meta-label">Audience:</span> All Mixmax</span>
+<span><span class="meta-label">Version:</span> V1</span>
+</div>
+<div class="announcement-banner">
+<strong>Q2 Thesis:</strong> Q1 gave us a diagnosis — Outbound pipeline collapse and DS churn are the two fixable problems. Q2 targets $534K Net New ARR (vs −$373K in Q1) and $2.05M in new pipeline. This is a measurement-and-fix quarter: stabilize churn, rebuild outbound, decide whether Product earns bigger investment in H2.
+</div>
+</div>
+</div>
+
+<div class="container">
+<div class="tabs">
+<button class="tab-button active" onclick="switchTab(event, 'opening')">Opening Position</button>
+<button class="tab-button" onclick="switchTab(event, 'targets')">Q2 Targets</button>
+<button class="tab-button" onclick="switchTab(event, 'channels')">Channel Strategy</button>
+<button class="tab-button" onclick="switchTab(event, 'risks')">Risk Carryover</button>
+<button class="tab-button" onclick="switchTab(event, 'plan')">Q2 Attack Plan</button>
+</div>
+
+<!-- OPENING POSITION -->
+<div id="opening" class="tab-content active">
+<div class="section-title">Where Q2 Starts</div>
+<p>13 days into Q2 (as of April 13). Opening balance reflects closed-Q1 actuals and what's already on the board in April.</p>
+
+<div class="metric-grid">
+<div class="metric-card"><h3>Starting Total ARR</h3><div class="metric-value">$8,676,483</div><div class="metric-detail">EOQ Q1 2026 — baseline for the Q2 climb</div></div>
+<div class="metric-card"><h3>Q2 ARR Target (EOQ)</h3><div class="metric-value">$9,471,798</div><div class="metric-detail">Implies +$795K of Net ARR + gross in Q2</div></div>
+<div class="metric-card"><h3>Net New ARR Target</h3><div class="metric-value variance-positive">+$534,967</div><div class="metric-detail">vs Q1 actual of −$372,656</div></div>
+<div class="metric-card"><h3>Bookings MTD (April)</h3><div class="metric-value">$23,388</div><div class="metric-detail">3% of $698K Q2 target — early-quarter pace</div></div>
+<div class="metric-card"><h3>Open Pipeline (to close Q2)</h3><div class="metric-value">$409,606</div><div class="metric-detail">Need $1.64M more created in April–May</div></div>
+<div class="metric-card"><h3>Activity (first 13 days)</h3><div class="metric-value">202</div><div class="metric-detail">Accounts engaged · 17 Leads, 10 Inbound MQLs, 2 Product PQLs</div></div>
+</div>
+
+<div class="info-box">
+<strong>Read:</strong> Bookings pace (3% MTD) is tracking broadly on plan for early-April. The concerning number is the pipeline-creation gap — we need to generate $1.64M of new pipeline over the next 8 weeks just to cover Q2's $2.05M target, and the Outbound engine (carrying $1.14M of that) is still in diagnostic mode from Q1.
+</div>
+</div>
+
+<!-- Q2 TARGETS -->
+<div id="targets" class="tab-content">
+<div class="section-title">Q2 Targets at a Glance</div>
+
+<table>
+<thead><tr><th>Metric</th><th class="text-right">Q2 Target</th><th class="text-right">Q1 Actual (baseline)</th><th class="text-right">Implied QoQ Change</th></tr></thead>
+<tbody>
+<tr><td><strong>Total ARR (EOQ)</strong></td><td class="text-right">$9,471,798</td><td class="text-right">$8,676,483</td><td class="text-right variance-positive">+9%</td></tr>
+<tr><td>Net New ARR</td><td class="text-right variance-positive">+$534,967</td><td class="text-right variance-negative">−$372,656</td><td class="text-right variance-positive">+$907K swing</td></tr>
+<tr><td>Total Bookings</td><td class="text-right">$698,160</td><td class="text-right">$86,517</td><td class="text-right variance-positive">+8.1x</td></tr>
+<tr><td>New Business Bookings</td><td class="text-right">$647,522</td><td class="text-right">$85,734</td><td class="text-right variance-positive">+7.6x</td></tr>
+<tr><td>Pipeline Created</td><td class="text-right">$2,047,762</td><td class="text-right">$237,655</td><td class="text-right variance-positive">+8.6x</td></tr>
+<tr><td>&nbsp;&nbsp;↳ Outbound</td><td class="text-right">$1,141,181</td><td class="text-right">$20,136</td><td class="text-right variance-positive">+56.7x</td></tr>
+<tr><td>&nbsp;&nbsp;↳ Inbound</td><td class="text-right">$746,042</td><td class="text-right">$126,052</td><td class="text-right variance-positive">+5.9x</td></tr>
+<tr><td>&nbsp;&nbsp;↳ Product</td><td class="text-right">$73,938</td><td class="text-right">$78,684</td><td class="text-right">flat</td></tr>
+<tr><td>Renewals NRR Target</td><td class="text-right">85%</td><td class="text-right">56%</td><td class="text-right variance-positive">+29 pts</td></tr>
+<tr><td>Renewals GRR Target</td><td class="text-right">80%</td><td class="text-right">53%</td><td class="text-right variance-positive">+27 pts</td></tr>
+</tbody>
+</table>
+
+<div class="warning-box">
+<strong>Reality check on the pipeline target.</strong> The $2.05M pipeline number implies an 8.6x jump over Q1 creation rate, with Outbound alone carrying $1.14M (56x Q1's $20K). The target will either be hit by a fundamental rebuild of the Outbound motion or it will miss and force a Q2 mid-point re-baseline. The April 20 Outbound diagnostic memo is the gating action.
+</div>
+</div>
+
+<!-- CHANNELS -->
+<div id="channels" class="tab-content">
+<div class="section-title">Channel-by-Channel Strategy</div>
+
+<div class="subsection-title">Inbound — Rebuild MQL Volume</div>
+<p>Q1 Inbound MQLs landed at 56% of target. Heath's stated Q2 focus is measuring whether this recovers. Target for Q2: return Inbound MQL run-rate to ≥90% of monthly target by end of April.</p>
+<ul class="action-list">
+<li>Joint SDR + Marketing review of MQL sources (April 20). Identify top 2 MQL source degradations.</li>
+<li>Weekly Inbound MQL scorecard in the GTM Weekly starting Week 3 of April.</li>
+<li>Inbound Pipeline Q2 target: $746K (vs $126K Q1 actual).</li>
+</ul>
+
+<div class="subsection-title">Outbound — Root-Cause Fix</div>
+<p>Q1 Outbound ran 5% Accounts-to-Meetings conversion vs ~18% historical — the "collapse" that drove the pipeline gap. Q2 target demands 56x the Q1 output; this won't come from incremental effort, it requires a rebuild.</p>
+<ul class="action-list">
+<li>April 20: Outbound root-cause diagnostic memo (targeting, sequencing, messaging, rep concentration).</li>
+<li>April 25: Account-by-account review of the 315 Q1 Outbound accounts engaged. What % were multi-threaded?</li>
+<li>April–May: +600 account engagement push to close Q2 coverage gap.</li>
+<li>Weekly Outbound scorecard in GTM Weekly. If diagnostic doesn't produce a credible plan by April 25, re-baseline Outbound target with CRO.</li>
+</ul>
+
+<div class="subsection-title">Product — Hold the Line, Measure Continuity</div>
+<p>Q1 Product over-performed (832% PQLs, 450% SQOs, 100% SQL→SQO). Q2 target is flat-to-Q1 on pipeline ($74K), which is the right call — we don't yet know if Q1 was a one-quarter aberration or a sustainable signal. Q2 is the measurement quarter.</p>
+<ul class="action-list">
+<li>Track weekly: PQL volume, PQL→SQO conversion, PQL-originated ARR.</li>
+<li>Q2 mid-point review (~May 15): if Product volume holds above 75% of Q1 rate, recommend Product investment shift in H2.</li>
+</ul>
+
+<div class="subsection-title">Expansion — Replicate the Tegus Playbook</div>
+<p>DS Expansion Contribution delivered 180% of plan in Q1 ($428K vs $238K target) on the strength of Tegus (+$49,800 / +71% at renewal under Edwin Chun). Q2 strategy is to codify and replicate.</p>
+<ul class="action-list">
+<li>April 30: Tegus playbook documented as the template for retention-to-expansion.</li>
+<li>Every CSM identifies 2 accounts in their Q2 book with Tegus-like patterns (expanding usage, multi-team adoption, upcoming renewal).</li>
+</ul>
+
+<div class="subsection-title">CS / Renewals — Stop the Bleeding</div>
+<p>Q1 NRR landed at 56%; GRR at 53%. Q2 targets are 85% and 80% — a 27–29 pt jump. The lift comes from (1) book rebalance on Heather Mae's portfolio, (2) codified save plays for preventable downgrades, (3) ICP-fit win-back on Q1 churn.</p>
+<ul class="action-list">
+<li>April 18: CRO + Head of CS 1:1 with Heather Mae on book rebalance.</li>
+<li>April 20: Q1 downgrade segmentation by reason code. Top 5 drivers.</li>
+<li>April 24: Q1 churn segmentation. ICP-fit preventable churn gets win-back outreach.</li>
+<li>April 30: Q2 save-play playbook documented.</li>
+</ul>
+</div>
+
+<!-- RISKS -->
+<div id="risks" class="tab-content">
+<div class="section-title">Risk Carryover from Q1</div>
+<p>Full Q1 risk register lives in the Quarterly Wrap-Up and CRO Quarterly. The three below are active going into Q2 with ongoing mitigation.</p>
+
+<table>
+<thead><tr><th>Risk</th><th>Category</th><th class="text-right">Q2 $ Exposure</th><th>Owning Team</th><th>Q2 Mitigation</th></tr></thead>
+<tbody>
+<tr><td><span class="risk-indicator high"></span>DS Churn + Downgrade overrun</td><td>Retention</td><td class="text-right variance-negative">−$889K</td><td>CS</td><td>Book rebalance on Heather Mae + save-play playbook by April 30</td></tr>
+<tr><td><span class="risk-indicator high"></span>Outbound Pipeline Collapse</td><td>Pipeline</td><td class="text-right variance-negative">−$342K</td><td>SDR + RevOps</td><td>Diagnostic memo April 20 + account-level review April 25 + +600 engagement push April–May</td></tr>
+<tr><td><span class="risk-indicator high"></span>Heather Mae CSM book concentration</td><td>Retention</td><td class="text-right variance-negative">−$391K</td><td>CS + CRO</td><td>CRO 1:1 April 18; book rebalance or exec-sponsor decision by April 30</td></tr>
+<tr><td><span class="risk-indicator medium"></span>Inbound MQL run-rate</td><td>Top-of-funnel</td><td class="text-right variance-negative">−$620K (pipeline)</td><td>SDR + Marketing</td><td>MQL source review April 20; target return to 90%+ of run-rate by EOM April</td></tr>
+<tr><td><span class="risk-indicator medium"></span>AE closed-lost concentration</td><td>Execution</td><td class="text-right variance-negative">−$155K</td><td>AE Team</td><td>Closed-lost post-mortem April 22; corrective playbook</td></tr>
+<tr><td><span class="risk-indicator low"></span>Product sustainability</td><td>Forecast</td><td class="text-right">TBD</td><td>Product + Growth</td><td>Q2 mid-point diagnostic ~May 15; H2 investment decision</td></tr>
+</tbody>
+</table>
+
+<div class="info-box">
+<strong>Risk resolution gate:</strong> The three high-confidence risks above are the ones the Q2 Monthly reports will cross-check. April's monthly should show measurable movement on Outbound diagnostic + CSM book decision; if it doesn't, escalate at the Q2 mid-point review.
+</div>
+</div>
+
+<!-- PLAN -->
+<div id="plan" class="tab-content">
+<div class="section-title">The Q2 Attack Plan (by team)</div>
+
+<div class="subsection-title">SDR Team — Rebuild the Top of Funnel</div>
+<ul class="action-list">
+<li><strong>April 20:</strong> Outbound root-cause diagnostic memo. What's driving 5% Accounts-to-Meetings conversion — targeting, sequencing, messaging, rep concentration?</li>
+<li><strong>April 25:</strong> Account-by-account review of the 315 Outbound accounts engaged in Q1. Multi-threading rate + benchmark Outbound play structure.</li>
+<li><strong>April 20:</strong> Joint SDR + Marketing review of Inbound MQL sources. Return Inbound MQL run-rate to ≥90% of monthly target by end of April.</li>
+<li><strong>April–May:</strong> +600 account engagement push to close Q2 pipeline coverage gap. Weekly SDR scorecard starts Week 3 of April.</li>
+</ul>
+
+<div class="subsection-title">CS Team — Stabilize Retention</div>
+<ul class="action-list">
+<li><strong>April 18:</strong> CRO + Head of CS 1:1 with Heather Mae to walk her full book and decide on book rebalance or exec-sponsor pairing.</li>
+<li><strong>April 20:</strong> Segment Q1 downgrades by reason code. Identify top 5 downgrade drivers.</li>
+<li><strong>April 24:</strong> Segment Q1 churn by ICP fit + reason code. For preventable churn with relationship intact, launch win-back outreach.</li>
+<li><strong>April 30:</strong> Q2 save-play playbook documented. Tegus expansion playbook codified.</li>
+</ul>
+
+<div class="subsection-title">AE Team — Fix New Business Execution</div>
+<ul class="action-list">
+<li><strong>April 22:</strong> Closed-lost post-mortem on Q1 cohort (top reps had 4–5 closed-lost each in March alone). Top 2 stage-loss patterns + corrective playbook.</li>
+<li><strong>April 30:</strong> If Q2 pipeline can't backfill the deficit, re-baseline Q2 NB bookings target with CRO.</li>
+</ul>
+
+<div class="subsection-title">Product + Growth — Answer the Investment Question</div>
+<ul class="action-list">
+<li><strong>Quarter-long:</strong> Track whether Product over-performance (832% PQLs, 450% SQOs in Q1) persists or was a one-off. If sustained, Q2 mid-point review recommends H2 Product investment.</li>
+<li><strong>Measure weekly:</strong> PQL volume, PQL→SQO conversion, PQL-originated ARR. Report in the weekly GTM rollup.</li>
+</ul>
+
+<div class="subsection-title">RevOps — Instrument What Matters</div>
+<ul class="action-list">
+<li><strong>Through April:</strong> Produce April + May + June monthly reports so Q2 reconciliation is clean (not bootstrap).</li>
+<li><strong>April 15:</strong> Board Snapshot finalized + distributed ahead of board meeting.</li>
+<li><strong>Weekly:</strong> Top-of-funnel scorecard by channel surfaced in the GTM Weekly — answer Heath's focus question with data, not narrative.</li>
+<li><strong>May 15 (Q2 mid-point):</strong> Diagnostic checkpoint. Are Outbound and Inbound recovering? Is Product sustaining? Produce a one-page mid-point memo to CRO.</li>
+</ul>
+</div>
+
+</div>
+
+<script>
+function switchTab(evt, tabName) {
+  var i, tabcontent, tabbuttons;
+  tabcontent = document.getElementsByClassName("tab-content");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].classList.remove("active");
+  }
+  tabbuttons = document.getElementsByClassName("tab-button");
+  for (i = 0; i < tabbuttons.length; i++) {
+    tabbuttons[i].classList.remove("active");
+  }
+  document.getElementById(tabName).classList.add("active");
+  evt.currentTarget.classList.add("active");
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mixmax Revenue Reports</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="brand">
+    <div class="brand-mark">MX</div>
+    <h1>Mixmax Revenue Reports</h1>
+  </div>
+  <nav>
+    <a href="./" class="active">Home</a>
+    <a href="weekly/">Weekly</a>
+    <a href="monthly/">Monthly</a>
+    <a href="quarterly/">Quarterly</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <h2>GTM Revenue Archive</h2>
+    <p>Automated weekly, monthly, and quarterly revenue reports for Mixmax GTM leadership. Every report is versioned — <code>-latest.html</code> always points at the current version, <code>-v{N}.html</code> preserves the exact version for audit.</p>
+  </div>
+
+  <section class="block">
+    <h3>Browse by Frequency</h3>
+    <div class="report-grid">
+      <div class="report-card">
+        <div class="tag-row"><span class="tag tag-weekly">Weekly</span></div>
+        <h4><a href="weekly/">Weekly Reports</a></h4>
+        <p class="period">GTM Leadership Weekly · CRO Weekly · Weekly TL;DR</p>
+        <div class="meta"><span>Published Fridays</span><span>→ Archive</span></div>
+      </div>
+      <div class="report-card">
+        <div class="tag-row"><span class="tag tag-monthly">Monthly</span></div>
+        <h4><a href="monthly/">Monthly Reports</a></h4>
+        <p class="period">Monthly Wrap-Up · CRO Monthly · Month-Ahead</p>
+        <div class="meta"><span>Published 1st of month</span><span>→ Archive</span></div>
+      </div>
+      <div class="report-card">
+        <div class="tag-row"><span class="tag tag-quarterly">Quarterly</span></div>
+        <h4><a href="quarterly/">Quarterly Reports</a></h4>
+        <p class="period">Quarterly Wrap-Up · CRO Quarterly · Quarter-Ahead · Board Snapshot</p>
+        <div class="meta"><span>Published post-quarter-close</span><span>→ Archive</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3>About This Archive</h3>
+    <p style="font-size:0.9rem; color:var(--text-muted); max-width:720px;">Reports are generated from the Gen 1 Weekly RevOps Report Google Sheet and published to GitHub Pages (primary) with full content mirrored to a Notion <a href="https://www.notion.so/mixmax/HTML-Report-Archive-89fc45e4dc1443aab88d19bc5481b308">HTML Report Archive</a> database (backup). An index bullet is appended to the relevant parent page in the Mixmax GTM workspace for each publish.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  Mixmax GTM RevOps · Automated via <a href="https://github.com/heath-gtm/mixmax-revenue-reports">mixmax-revenue-reports</a>
+</footer>
+</body>
+</html>

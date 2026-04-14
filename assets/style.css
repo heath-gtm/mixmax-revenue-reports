@@ -1,0 +1,202 @@
+/* Mixmax Revenue Reports — shared index stylesheet */
+:root {
+  --navy: #1a1a2e;
+  --navy-deep: #16213e;
+  --navy-accent: #0f3460;
+  --lavender: #f2e9f7;
+  --purple: #c933dd;
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --blue: #2563eb;
+  --green: #16a34a;
+  --red: #dc2626;
+  --yellow: #d97706;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  min-height: 100vh;
+}
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Header */
+.site-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid var(--purple);
+}
+.site-header h1 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.site-header .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.site-header .brand-mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+.site-header nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.9rem;
+}
+.site-header nav a {
+  color: rgba(255,255,255,0.85);
+  padding: 0.25rem 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+}
+.site-header nav a:hover,
+.site-header nav a.active {
+  color: #fff;
+  border-bottom-color: var(--purple);
+  text-decoration: none;
+}
+
+/* Layout */
+.wrap { max-width: 1080px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.hero {
+  padding: 1.5rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+.hero h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+.hero p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  max-width: 640px;
+}
+
+/* Section blocks */
+section.block { margin-bottom: 2.5rem; }
+section.block > h3 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+/* Report cards */
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.9rem;
+}
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.report-card:hover {
+  border-color: var(--purple);
+  box-shadow: 0 4px 14px rgba(201, 51, 221, 0.08);
+}
+.report-card .tag-row {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.1rem;
+}
+.tag {
+  display: inline-block;
+  padding: 0.12rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.tag-weekly   { background: #dbeafe; color: #1e3a8a; }
+.tag-monthly  { background: #ede9fe; color: #5b21b6; }
+.tag-quarterly{ background: #fce7f3; color: #9d174d; }
+.tag-gtm      { background: #dbeafe; color: #1e3a8a; }
+.tag-cro      { background: #fee2e2; color: #991b1b; }
+.tag-ahead    { background: #dcfce7; color: #14532d; }
+.tag-wrapup   { background: #ede9fe; color: #5b21b6; }
+.tag-board    { background: #fef3c7; color: #713f12; }
+.tag-tldr     { background: #e5e7eb; color: #374151; }
+.tag-version  { background: #f1f5f9; color: #0f3460; border: 1px solid var(--border); }
+.tag-latest   { background: var(--green); color: #fff; }
+.tag-superseded { background: #e5e7eb; color: #6b7280; }
+.report-card .period {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.report-card h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-bottom: 0.3rem;
+}
+.report-card h4 a { color: var(--text); }
+.report-card .meta {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+}
+
+/* Empty state */
+.empty {
+  padding: 2rem;
+  text-align: center;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  color: var(--text-muted);
+}
+
+/* Footer */
+.site-footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+
+@media (max-width: 640px) {
+  .site-header { flex-direction: column; gap: 0.75rem; padding: 1rem; }
+  .site-header nav { font-size: 0.85rem; }
+  .hero h2 { font-size: 1.35rem; }
+}
