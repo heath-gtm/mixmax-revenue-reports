@@ -89,6 +89,68 @@
   </div>
 </header>
 
+<section style="background:linear-gradient(135deg,#0f172a,#1e293b);color:#e2e8f0;border:1px solid #334155;">
+  <h2 style="color:white;">🔌 How This Report Was Built — MCP Stack</h2>
+  <p style="color:#cbd5e1;font-size:14px;margin-bottom:18px;">This single report pulls context from <strong style="color:white;">five independent systems</strong> through Model Context Protocol (MCP) servers. No manual copy-paste. No exports. Every section is grounded in a live source.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
+
+    <div style="background:#1e293b;border:1px solid #475569;border-radius:8px;padding:14px 16px;">
+      <div style="font-size:12px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">📁 Google Drive MCP</div>
+      <div style="font-weight:600;margin-bottom:6px;color:white;">The source of truth</div>
+      <ul style="padding-left:18px;font-size:13px;color:#cbd5e1;line-height:1.6;">
+        <li>Pulled the latest <strong>Gen1 Weekly Snapshot</strong> from the RevOps folder</li>
+        <li>Extracted 9 tabs via gviz CSV — Rep Summary, AE Forecast, Renewals, Prospect Accounts</li>
+        <li>Every number on this page traces back to a source cell</li>
+      </ul>
+    </div>
+
+    <div style="background:#1e293b;border:1px solid #475569;border-radius:8px;padding:14px 16px;">
+      <div style="font-size:12px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">🎙️ Mixmax MCP</div>
+      <div style="font-weight:600;margin-bottom:6px;color:white;">Historical meeting context</div>
+      <ul style="padding-left:18px;font-size:13px;color:#cbd5e1;line-height:1.6;">
+        <li>Pulled <strong>every call transcript + note</strong> from the past 30 days for the AE who owns each deal</li>
+        <li>Surfaced pain points, objections, sponsor changes, competitive mentions</li>
+        <li>Every "Context" line quotes a real dated meeting moment</li>
+      </ul>
+    </div>
+
+    <div style="background:#1e293b;border:1px solid #475569;border-radius:8px;padding:14px 16px;">
+      <div style="font-size:12px;font-weight:700;color:#34d399;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">📊 Amplitude MCP</div>
+      <div style="font-weight:600;margin-bottom:6px;color:white;">Product usage cross-reference</div>
+      <ul style="padding-left:18px;font-size:13px;color:#cbd5e1;line-height:1.6;">
+        <li>Took each account's <strong>email domain</strong> and matched all active users in Amplitude</li>
+        <li>Identified heavy-use surfaces, unused surfaces, admin-dark warnings</li>
+        <li>Turned raw events into <strong>risk signals</strong> (dark admin) and <strong>expansion signals</strong> (Copilot adoption spike)</li>
+      </ul>
+    </div>
+
+    <div style="background:#1e293b;border:1px solid #475569;border-radius:8px;padding:14px 16px;">
+      <div style="font-size:12px;font-weight:700;color:#c084fc;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">✉️ Octave MCP</div>
+      <div style="font-weight:600;margin-bottom:6px;color:white;">Persona-matched outreach drafts</div>
+      <ul style="padding-left:18px;font-size:13px;color:#cbd5e1;line-height:1.6;">
+        <li><strong>Enriched each champion</strong> — title, seniority, firmographics, ICP fit score</li>
+        <li>Generated subject lines + rep-ready email drafts matched to play type</li>
+        <li>Drafts <strong>reconcile meeting context with usage data</strong> — no generic "just checking in"</li>
+      </ul>
+    </div>
+
+    <div style="background:#1e293b;border:1px solid #475569;border-radius:8px;padding:14px 16px;grid-column:span 2;">
+      <div style="font-size:12px;font-weight:700;color:#93c5fd;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">🔗 Salesforce (via deep-links)</div>
+      <div style="font-weight:600;margin-bottom:6px;color:white;">Every named entity is one click away from the CRM record</div>
+      <ul style="padding-left:18px;font-size:13px;color:#cbd5e1;line-height:1.6;">
+        <li>Account, Opportunity, and Contract links built from Salesforce IDs in the snapshot</li>
+        <li>Sales leader clicks an account name → lands in Salesforce Lightning, fully authenticated</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div style="margin-top:18px;padding-top:14px;border-top:1px solid #334155;font-size:13px;color:#94a3b8;">
+    <strong style="color:white;">The compounding effect:</strong> any one of these MCPs gives you a slice. <em>Cross-referencing all four</em> is what turns a snapshot into a named next step. A champion saying "we love it" + their admin account going dark in Amplitude = a coaching moment the rep would have missed. That's the whole pitch.
+  </div>
+</section>
+
 <div class="headline">
   <h2>Monday Morning Headline</h2>
   <p>Q2 pacing at <strong>87%</strong> of plan with 11 selling days left. Must-win is <strong>Northwind Analytics</strong> ($92K, decision by Friday — Amplitude shows Copilot adoption up 41% WoW, champion asked for pricing on Thursday). Biggest Q-ahead flag: <strong>Mid-Market pipeline coverage at 0.9x for May</strong> — needs 6 new SQOs this week to get to 2.5x.</p>
