@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sales Leader Weekly — Demo</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1a1a1a; background: #f7f8fb; line-height: 1.5; }
+  nav { background: #eff4ff; border-bottom: 1px solid #d1dcf0; padding: 10px 24px; font-size: 13px; }
+  nav a { color: #2563eb; text-decoration: none; margin-right: 20px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  header.page-header { margin-bottom: 28px; padding-bottom: 20px; border-bottom: 2px solid #e5e7eb; }
+  header.page-header h1 { font-size: 30px; font-weight: 700; margin-bottom: 8px; }
+  header.page-header .meta { color: #6b7280; font-size: 14px; }
+  .demo-banner { background: linear-gradient(90deg, #fef3c7, #fde68a); border: 1px solid #f59e0b; border-radius: 8px; padding: 12px 18px; margin-bottom: 24px; font-size: 13px; color: #78350f; }
+  .demo-banner strong { font-weight: 700; }
+  section { background: white; border-radius: 10px; padding: 24px 28px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); border: 1px solid #eef0f4; }
+  section h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #111827; display: flex; align-items: center; gap: 8px; }
+  section h3 { font-size: 15px; font-weight: 600; margin-bottom: 10px; color: #374151; }
+  .headline { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; padding: 24px 28px; border-radius: 10px; margin-bottom: 20px; }
+  .headline h2 { color: white; margin-bottom: 10px; }
+  .headline p { font-size: 15px; opacity: 0.95; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  .kpi { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 16px; }
+  .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; font-weight: 600; margin-bottom: 6px; }
+  .kpi .value { font-size: 22px; font-weight: 700; color: #111827; }
+  .kpi .delta { font-size: 12px; margin-top: 4px; }
+  .delta.pos { color: #059669; }
+  .delta.neg { color: #dc2626; }
+  .delta.neutral { color: #6b7280; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-left: 6px; }
+  .badge.green { background: #d1fae5; color: #065f46; }
+  .badge.yellow { background: #fef3c7; color: #92400e; }
+  .badge.red { background: #fee2e2; color: #991b1b; }
+  .badge.blue { background: #dbeafe; color: #1e40af; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #e5e7eb; }
+  th { background: #f9fafb; font-weight: 600; color: #374151; font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; }
+  .dd-block { border-left: 4px solid #2563eb; background: #fafbff; padding: 18px 22px; margin: 16px 0; border-radius: 0 8px 8px 0; }
+  .dd-block.risk { border-left-color: #dc2626; background: #fff8f8; }
+  .dd-block.expansion { border-left-color: #059669; background: #f3fdf8; }
+  .dd-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+  .dd-title a { color: #1e40af; text-decoration: none; border-bottom: 1px dotted #1e40af; }
+  .dd-onesheet { font-size: 13px; color: #4b5563; margin-bottom: 14px; }
+  .dd-row { font-size: 14px; margin-bottom: 6px; }
+  .dd-row strong { color: #111827; }
+  .dd-source { font-size: 12px; color: #6b7280; margin: 10px 0 14px; }
+  .dd-source a { color: #2563eb; text-decoration: none; }
+  .usage-box { background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px 14px; margin: 10px 0; font-size: 13px; }
+  .usage-box .header { font-weight: 600; margin-bottom: 6px; color: #374151; font-size: 12px; }
+  .usage-box ul { list-style: none; padding-left: 0; }
+  .usage-box li { padding: 2px 0; color: #4b5563; }
+  .play-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 12px 14px; margin: 10px 0; font-size: 14px; }
+  .play-box strong { color: #1e40af; }
+  .outreach-box { background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 13px; }
+  .outreach-box .header { font-weight: 600; margin-bottom: 8px; color: #6b21a8; font-size: 12px; }
+  .outreach-box .draft { background: white; border: 1px solid #e9d5ff; border-radius: 4px; padding: 10px 12px; margin-top: 8px; font-style: italic; color: #374151; font-size: 13px; line-height: 1.55; }
+  .outreach-box .field { margin-bottom: 4px; }
+  .outreach-box .field strong { color: #6b21a8; }
+  .source-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .pill { font-size: 11px; padding: 3px 8px; background: white; border: 1px solid #d1d5db; border-radius: 10px; color: #4b5563; }
+  .pill.sf { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
+  .pill.mixmax { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
+  .pill.amp { background: #ecfdf5; border-color: #86efac; color: #065f46; }
+  .pill.octave { background: #faf5ff; border-color: #e9d5ff; color: #6b21a8; }
+  .footer { text-align: center; color: #9ca3af; font-size: 12px; padding: 20px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#">🏠 Home</a>
+  <a href="#">← Back to Sales Leader Archive</a>
+</nav>
+
+<div class="container">
+
+<div class="demo-banner">
+  <strong>DEMO REPORT</strong> — All company names, rep names, ARR figures, and usage data in this report are fictional. Used for webinar demonstration of MCP cross-referencing only. No real customer or financial data.
+</div>
+
+<header class="page-header">
+  <h1>Sales Leader Weekly — Monday Brief</h1>
+  <div class="meta">
+    <strong>As of:</strong> 2026-04-13 &nbsp;·&nbsp;
+    <strong>Period:</strong> Week of Apr 7–13, 2026 &nbsp;·&nbsp;
+    <strong>Audience:</strong> Head of Sales &nbsp;·&nbsp;
+    <strong>Base report:</strong> <a href="#">Weekly CRO 2026-04-13</a>
+  </div>
+</header>
+
+<div class="headline">
+  <h2>Monday Morning Headline</h2>
+  <p>Q2 pacing at <strong>87%</strong> of plan with 11 selling days left. Must-win is <strong>Northwind Analytics</strong> ($92K, decision by Friday — Amplitude shows Copilot adoption up 41% WoW, champion asked for pricing on Thursday). Biggest Q-ahead flag: <strong>Mid-Market pipeline coverage at 0.9x for May</strong> — needs 6 new SQOs this week to get to 2.5x.</p>
+</div>
+
+<section>
+  <h2>📊 Revenue Snapshot <span class="badge yellow">Watch</span></h2>
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="label">QTD Bookings</div>
+      <div class="value">$1.42M</div>
+      <div class="delta pos">↑ 8% vs plan</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Q2 Forecast</div>
+      <div class="value">$2.85M</div>
+      <div class="delta neg">↓ 13% to plan</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Pipeline Coverage</div>
+      <div class="value">2.8x</div>
+      <div class="delta neutral">Target: 3.0x</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Win Rate</div>
+      <div class="value">24%</div>
+      <div class="delta pos">↑ 3pts QoQ</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>🎯 Top 3 Must-Win Deals — With Full Context Stack</h2>
+  <p style="font-size: 13px; color: #6b7280; margin-bottom: 8px;">Each deal below pulls Salesforce + Mixmax meeting history + Amplitude product usage + Octave outreach messaging into a single action block.</p>
+
+  <!-- Must-win #1 -->
+  <div class="dd-block">
+    <div class="dd-title"><a href="#">Northwind Analytics</a> <span class="badge green">Hot</span></div>
+    <div class="dd-onesheet">$92K ARR · Stage: Negotiation · AE: Jordan Rivera · Close: Apr 17</div>
+
+    <div class="dd-row"><strong>Context —</strong> On 4/9 call, VP Revenue (Maya Chen, champion) asked for legal redlines and requested a final pricing proposal. On 4/2, she flagged concern about implementation timeline — our CS team committed to a 2-week onboarding.</div>
+    <div class="dd-row"><strong>Risk —</strong> Procurement cycle could slip into May ($92K ARR at risk of Q2 miss). Legal still holding security addendum.</div>
+    <div class="dd-row"><strong>Next step —</strong> Jordan to send final MSA redlines and kick off security review by EOD Tuesday.</div>
+
+    <div class="source-pills">
+      <span class="pill sf">🔗 Salesforce Opportunity</span>
+      <span class="pill mixmax">🎙️ 6 Mixmax meetings (30d)</span>
+      <span class="pill amp">📊 Amplitude: 47 active users</span>
+      <span class="pill octave">✉️ Octave persona matched</span>
+    </div>
+
+    <div class="usage-box">
+      <div class="header">📊 Amplitude Usage Read — via account-amplitude-crossref</div>
+      <ul>
+        <li>• <strong>Users:</strong> 47 active / 58 total &nbsp;|&nbsp; Δ +12% vs 30d prior</li>
+        <li>• <strong>Heavy use:</strong> Sequences (842 events, +28%), Copilot (312 events, <strong>+41%</strong>)</li>
+        <li>• <strong>Light/unused:</strong> Rules engine (4 events) — expansion opportunity</li>
+        <li>• <strong>Risk signal:</strong> none</li>
+        <li>• <strong>Expansion signal:</strong> <strong>Copilot adoption spiking</strong> — ideal moment to lock in 2-year commit</li>
+      </ul>
+    </div>
+
+    <div class="play-box">
+      🎯 <strong>Recommended play —</strong> Lead close with Copilot-usage data point. "Your team is already 41% over baseline on Copilot — let's lock the rate before renewal." Jordan + Sales Eng call Thursday 2pm.
+    </div>
+
+    <div class="outreach-box">
+      <div class="header">✉️ Suggested Outreach — via octave-messaging-suggestions</div>
+      <div class="field"><strong>Persona —</strong> VP Revenue, Series C SaaS, data-driven buyer</div>
+      <div class="field"><strong>ICP fit —</strong> Octave score 94 · Segment: Mid-Market</div>
+      <div class="field"><strong>Angle —</strong> Usage-led close: Copilot already delivering, lock the rate now</div>
+      <div class="field"><strong>Subject —</strong> Copilot usage is up 41% — locking your rate</div>
+      <div class="draft">
+        Maya — quick note before our Thursday call. Pulled the numbers and your team's Copilot usage is up 41% since kickoff, tracking well ahead of the avg Mid-Market customer. Given that trajectory, it makes sense to lock the current rate on a 2-year commit before renewal conversation moves to list. I'll bring a side-by-side to Thursday. Want me to loop in your CSM to walk through the implementation timeline on the same call?
+      </div>
+      <div class="field" style="margin-top: 8px;"><strong>Follow-up —</strong> Day 3: forward security addendum · Day 7: exec sponsor intro · Day 14: references</div>
+    </div>
+  </div>
+
+  <!-- Must-win #2 -->
+  <div class="dd-block risk">
+    <div class="dd-title"><a href="#">Acme Logistics</a> <span class="badge red">At-Risk</span></div>
+    <div class="dd-onesheet">$148K ARR · Stage: Contracting · AE: Alex Chen · Close: Apr 24</div>
+
+    <div class="dd-row"><strong>Context —</strong> On 4/8 call, our champion (Director of Ops, Devon Park) mentioned the CFO was "re-evaluating all discretionary software spend." On 3/28 call, Devon was still bullish — something shifted in the last 10 days.</div>
+    <div class="dd-row"><strong>Risk —</strong> $148K deal slip into Q3 or outright loss. Sponsor shift risk — CFO not yet engaged. Amplitude shows admin account has been dark since 4/2 (compound risk).</div>
+    <div class="dd-row"><strong>Next step —</strong> Alex + Heath to request CFO intro call this week; prepare ROI business case grounded in current usage baseline.</div>
+
+    <div class="source-pills">
+      <span class="pill sf">🔗 Salesforce Opportunity</span>
+      <span class="pill mixmax">🎙️ 9 Mixmax meetings (30d)</span>
+      <span class="pill amp">📊 Amplitude: admin dark since 4/2 ⚠️</span>
+      <span class="pill octave">✉️ Octave persona matched</span>
+    </div>
+
+    <div class="usage-box">
+      <div class="header">📊 Amplitude Usage Read — via account-amplitude-crossref</div>
+      <ul>
+        <li>• <strong>Users:</strong> 22 active / 34 total &nbsp;|&nbsp; Δ <strong>−18%</strong> vs 30d prior</li>
+        <li>• <strong>Heavy use:</strong> Sequences (210 events, −8%)</li>
+        <li>• <strong>Light/unused:</strong> Copilot (0 events in 14d), Rules (0 events)</li>
+        <li>• <strong>Risk signal:</strong> <strong>Admin user (Devon Park) has not logged in since 4/2</strong> — compounds sponsor-shift signal from 4/8 meeting</li>
+        <li>• <strong>Expansion signal:</strong> none</li>
+      </ul>
+    </div>
+
+    <div class="play-box">
+      🎯 <strong>Recommended play —</strong> Escalate to CFO level. Meeting + usage reconciliation: champion going dark AND budget scrutiny = compound risk. Lead with ROI case (hours saved × active users), not features. Alex + Heath, request CFO intro by Wednesday.
+    </div>
+
+    <div class="outreach-box">
+      <div class="header">✉️ Suggested Outreach — via octave-messaging-suggestions</div>
+      <div class="field"><strong>Persona —</strong> CFO, logistics/supply chain, budget-discipline mode</div>
+      <div class="field"><strong>ICP fit —</strong> Octave score 88 · Segment: Mid-Market</div>
+      <div class="field"><strong>Angle —</strong> ROI-first, executive sponsor reset</div>
+      <div class="field"><strong>Subject —</strong> 15 min — ROI on Acme's current usage</div>
+      <div class="draft">
+        Hi — Devon has been a great partner evaluating our platform. Given the team's recent spend review, I'd like 15 minutes to walk you through what your 22 active users have actually pulled from the platform in the last 30 days, translated into hours and pipeline dollars. If the number doesn't justify the spend, I'd rather you know now than after signature. Does Thursday or Friday work?
+      </div>
+      <div class="field" style="margin-top: 8px;"><strong>Follow-up —</strong> Day 3: send ROI one-pager · Day 7: customer reference from same segment · Day 14: scale-down option if budget is final</div>
+    </div>
+  </div>
+
+  <!-- Must-win #3 -->
+  <div class="dd-block expansion">
+    <div class="dd-title"><a href="#">Helix Biosciences</a> <span class="badge blue">Expansion</span></div>
+    <div class="dd-onesheet">$64K expansion · Stage: Discovery · AE: Priya Patel · Close: Apr 30</div>
+
+    <div class="dd-row"><strong>Context —</strong> Existing customer since 2024. On 4/11 call, Head of Sales Ops (Riley Tan) asked if we could support their new BDR team launching in May (+8 seats). Already referenced our platform as "critical" in their board deck.</div>
+    <div class="dd-row"><strong>Risk —</strong> Low. Core product love is strong; procurement is routine add-on.</div>
+    <div class="dd-row"><strong>Next step —</strong> Priya to send seat-expansion proposal Monday with BDR-specific onboarding plan.</div>
+
+    <div class="source-pills">
+      <span class="pill sf">🔗 Salesforce Opportunity</span>
+      <span class="pill mixmax">🎙️ 4 Mixmax meetings (30d)</span>
+      <span class="pill amp">📊 Amplitude: 31 active users</span>
+      <span class="pill octave">✉️ Octave persona matched</span>
+    </div>
+
+    <div class="usage-box">
+      <div class="header">📊 Amplitude Usage Read — via account-amplitude-crossref</div>
+      <ul>
+        <li>• <strong>Users:</strong> 31 active / 33 total &nbsp;|&nbsp; Δ +4% vs 30d prior (near-saturation)</li>
+        <li>• <strong>Heavy use:</strong> Sequences (1,240 events), Templates (890 events), Analytics (560 events)</li>
+        <li>• <strong>Light/unused:</strong> Copilot (22 events — <strong>expansion wedge for BDR team</strong>)</li>
+        <li>• <strong>Risk signal:</strong> none</li>
+        <li>• <strong>Expansion signal:</strong> <strong>Seat saturation</strong> + Copilot is untapped upsell for new BDR motion</li>
+      </ul>
+    </div>
+
+    <div class="play-box">
+      🎯 <strong>Recommended play —</strong> Don't just sell +8 seats — sell +8 seats WITH Copilot add-on. Anchor on BDR productivity case; their AE team isn't using Copilot yet, so BDR launch is the wedge. Priya to propose bundle by EOD Monday.
+    </div>
+
+    <div class="outreach-box">
+      <div class="header">✉️ Suggested Outreach — via octave-messaging-suggestions</div>
+      <div class="field"><strong>Persona —</strong> Head of Sales Ops, biotech/life sciences, expansion-minded</div>
+      <div class="field"><strong>ICP fit —</strong> Octave score 96 · Segment: Mid-Market (existing)</div>
+      <div class="field"><strong>Angle —</strong> BDR launch as Copilot wedge</div>
+      <div class="field"><strong>Subject —</strong> BDR ramp plan — Copilot built in</div>
+      <div class="draft">
+        Riley — thinking about Thursday's call. Your AE team is already at seat saturation on core sequences (31 of 33 active). For the BDR launch I'd recommend we bundle Copilot from day one — greenfield team means zero retraining friction, and BDRs show the fastest adoption lift in our Mid-Market cohort. Proposal coming Monday with 8 seats + Copilot priced as a single line item. Ok if I also share the BDR-specific onboarding track?
+      </div>
+      <div class="field" style="margin-top: 8px;"><strong>Follow-up —</strong> Day 3: BDR onboarding plan · Day 7: peer reference call · Day 14: multi-year pricing if approved</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>📋 Rep Health Dashboard</h2>
+  <table>
+    <thead>
+      <tr><th>AE</th><th>MTD Attainment</th><th>QTD Attainment</th><th>Pipeline</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Jordan Rivera</td><td>112%</td><td>98%</td><td>$410K</td><td><span class="badge green">Crushing</span></td></tr>
+      <tr><td>Priya Patel</td><td>94%</td><td>89%</td><td>$295K</td><td><span class="badge green">On Pace</span></td></tr>
+      <tr><td>Alex Chen</td><td>67%</td><td>71%</td><td>$340K</td><td><span class="badge yellow">Watch</span></td></tr>
+      <tr><td>Morgan Lee</td><td>42%</td><td>58%</td><td>$180K</td><td><span class="badge red">Behind</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>🗣️ Coaching Notes <span class="badge blue">Private</span></h2>
+  <div style="margin-bottom: 14px;">
+    <h3>Alex Chen (Watch)</h3>
+    <p style="font-size: 14px; color: #4b5563;"><strong>Pattern:</strong> Deals stalling at Contracting. 2 of last 3 slipped from procurement. <strong>1:1 point:</strong> Push for multi-thread earlier — CFO access by Discovery, not Contracting. <strong>Account to review together:</strong> Acme Logistics (above).</p>
+  </div>
+  <div>
+    <h3>Morgan Lee (Behind)</h3>
+    <p style="font-size: 14px; color: #4b5563;"><strong>Pattern:</strong> Pipeline coverage at 1.4x — thin. Top-of-funnel activity down 30% since March. <strong>1:1 point:</strong> Activity audit; pair with SDR for 2 weeks to rebuild pipeline. <strong>Account to review together:</strong> Summit Financial (re-engage — 45d silent).</p>
+  </div>
+</section>
+
+<section>
+  <h2>🚩 Quarter-Ahead Red Flags (Top 3)</h2>
+  <ol style="padding-left: 22px; font-size: 14px; line-height: 1.8; color: #374151;">
+    <li><strong>Mid-Market May coverage at 0.9x</strong> — need 6 new SQOs this week. SDR team leader to run account attack list Monday.</li>
+    <li><strong>Enterprise deal concentration</strong> — top 3 deals = 58% of Q2 forecast. Any slip = miss. Force multi-threading on all 3.</li>
+    <li><strong>Copilot attach rate on new deals: 22%</strong> — below 40% target. Productize the usage-based pitch seen on Northwind above.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>☕ Monday Team Meeting Talking Points</h2>
+  <ul style="padding-left: 22px; font-size: 14px; line-height: 1.8; color: #374151;">
+    <li>Celebrate: Jordan's Copilot-led close motion on Northwind — want to see this replicated.</li>
+    <li>Attack: Acme Logistics — all hands on CFO intro this week.</li>
+    <li>Pipeline: 6 MM SQOs needed by Friday. Name names.</li>
+    <li>Coaching: multi-threading before Contracting — Alex's deals are the teaching case.</li>
+  </ul>
+</section>
+
+<div class="footer">
+  <p><strong>Context assembled from:</strong> Salesforce (via API) · Mixmax MCP (meeting transcripts + notes) · Amplitude MCP (product usage across account domains) · Octave MCP (ICP-matched outreach drafts) · Google Drive (Gen1 Weekly Snapshot 2026-04-13)</p>
+  <p style="margin-top: 8px;">Built by Claude with the Mixmax Revenue Reporting skill suite · Demo — fictional data</p>
+</div>
+
+</div>
+</body>
+</html>
