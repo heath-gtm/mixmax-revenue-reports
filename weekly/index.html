@@ -23,21 +23,30 @@
 <main class="wrap">
   <div class="hero">
     <h2>Weekly Reports</h2>
-    <p>GTM Leadership Weekly, CRO Weekly, and Weekly TL;DR published every Friday from the Gen 1 Weekly RevOps Report Google Sheet.</p>
+    <p>GTM Leadership Weekly and CRO Weekly published from the Gen 1 Weekly RevOps Report Google Sheet.</p>
   </div>
 
   <section class="block">
-    <h3>Latest</h3>
-    <div class="empty">
-      No weekly reports published yet. The next weekly run will land here as <code>weekly/YYYY-MM-DD-{gtm|cro|tldr}-latest.html</code>.
-    </div>
+    <h3>Latest — Week of April 14, 2026</h3>
+    <ul class="report-list">
+      <li><a href="2026-04-14-gtm.html">📊 GTM Leadership Weekly Report</a> — org-wide, 6-section sidebar nav</li>
+      <li><a href="2026-04-14-cro.html">🎯 CRO Weekly Report</a> — rep-level detail, 9-section sidebar nav</li>
+    </ul>
   </section>
 
   <section class="block">
     <h3>All Reports</h3>
-    <div class="empty">
-      Archive populates on first publish. Each report includes a versioned <code>-v{N}.html</code> and a <code>-latest.html</code> mirror.
-    </div>
+    <table class="report-table">
+      <thead><tr><th>Week of</th><th>Org-wide</th><th>CRO</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>April 14, 2026</td>
+          <td><a href="2026-04-14-gtm.html">GTM</a></td>
+          <td><a href="2026-04-14-cro.html">CRO</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note">Also mirrored at <code>/reports/weekly/{YYYY-MM-DD}/{gtm,cro}-report.html</code> for backward compatibility.</p>
   </section>
 </main>
 
