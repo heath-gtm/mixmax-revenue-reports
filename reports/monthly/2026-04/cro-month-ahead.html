@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CRO Month-Ahead — April 2026</title>
+<style>
+:root { --ink:#111; --muted:#666; --line:#e5e5e5; --accent:#1f4fd9; --good:#0a7d34; --bad:#b5281a; --warn:#a86900; }
+* { box-sizing: border-box; }
+body { font-family: -apple-system, system-ui, "Segoe UI", sans-serif; margin: 0; color: var(--ink); line-height: 1.55; background: #fff; }
+.layout { display: grid; grid-template-columns: 240px minmax(0,1fr); max-width: 1260px; margin: 0 auto; gap: 2rem; padding: 2rem 1.25rem; }
+aside.toc { position: sticky; top: 1rem; align-self: start; max-height: calc(100vh - 2rem); overflow-y: auto; border-right: 1px solid var(--line); padding-right: 1rem; font-size: .9rem; }
+aside.toc h4 { text-transform: uppercase; font-size: .75rem; letter-spacing: .08em; color: var(--muted); margin: 0 0 .6rem; }
+aside.toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc; }
+aside.toc li { counter-increment: toc; margin: .15rem 0; }
+aside.toc a { display: block; text-decoration: none; color: #333; padding: .3rem .4rem; border-radius: 4px; border-left: 3px solid transparent; }
+aside.toc a::before { content: counter(toc) ". "; color: var(--muted); font-variant-numeric: tabular-nums; }
+aside.toc a:hover { background: #f3f5fc; color: var(--accent); border-left-color: var(--accent); }
+main { min-width: 0; }
+h1 { font-size: 1.85rem; margin: 0 0 .25rem; }
+h2 { font-size: 1.3rem; margin-top: 2.25rem; border-bottom: 2px solid var(--line); padding-bottom: .35rem; scroll-margin-top: 1rem; }
+h3 { font-size: 1.05rem; margin-top: 1.4rem; color: #222; }
+.meta { color: var(--muted); font-size: .92rem; margin-bottom: 1rem; }
+.lead { font-size: 1.05rem; background:#f6f8ff; border-left:4px solid var(--accent); padding:.9rem 1rem; border-radius:4px; }
+.confidential { background:#fff2ef; border-left:4px solid var(--bad); padding:.65rem .9rem; border-radius:4px; font-size:.9rem; margin: .75rem 0 1.5rem; }
+.note { background:#f0f6ff; border-left:4px solid var(--accent); padding:.6rem .85rem; border-radius:4px; font-size:.9rem; margin:.75rem 0; }
+.alert { background:#fff2ef; border-left:4px solid var(--bad); padding:.7rem .9rem; border-radius:4px; font-size:.92rem; margin:.75rem 0; }
+table { width: 100%; border-collapse: collapse; margin: .75rem 0; font-size: .94rem; }
+th, td { border-bottom: 1px solid var(--line); padding: .45rem .55rem; text-align: left; }
+th { background: #fafafa; font-weight: 600; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.good { color: var(--good); font-weight: 600; }
+.bad { color: var(--bad); font-weight: 600; }
+.warn { color: var(--warn); font-weight: 600; }
+.small { font-size: .88rem; color: var(--muted); }
+ul { padding-left: 1.2rem; }
+li { margin: .3rem 0; }
+.risk-table th { font-size: .85rem; }
+.risk-table td { font-size: .9rem; }
+footer { margin-top: 3rem; font-size: .85rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 1rem; }
+@media (max-width: 880px) {
+  .layout { grid-template-columns: 1fr; }
+  aside.toc { position: static; max-height: none; border-right: 0; border-bottom: 1px solid var(--line); padding: 0 0 1rem; margin-bottom: 1rem; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="toc">
+<h4>On this page</h4>
+<ol>
+<li><a href="#opening">Opening Position</a></li>
+<li><a href="#qtd">QTD Trajectory (Q2)</a></li>
+<li><a href="#reps">Rep-Level Opening</a></li>
+<li><a href="#cs">CS Detail — April Book</a></li>
+<li><a href="#carryover">Risk Carryover — March</a></li>
+<li><a href="#newrisks">New April Risks</a></li>
+<li><a href="#attack">Attack Plan w/ Rep Assignments</a></li>
+<li><a href="#top10">Top 10 Accounts (SF links)</a></li>
+<li><a href="#watching">What We're Watching</a></li>
+<li><a href="#backlinks">Backlinks</a></li>
+</ol>
+</aside>
+<main>
+
+<h1>CRO Month-Ahead — April 2026</h1>
+<div class="meta">
+<strong>As of:</strong> April 14, 2026 &middot; <strong>Period covered:</strong> April 1–30, 2026 &middot; <strong>Cadence:</strong> Monthly (forward-looking) &middot; <strong>Audience:</strong> CRO (Heath)<br>
+<strong>Source:</strong> Gen 1 Monthly Lookahead Snapshot — April 2026 (<code>14h3DUpmFmM0XBXHPVjXQ2poACSlMkMUvN0UJGn6R-6w</code>, taken 2026-04-14 8:55 PM PDT). All 6 dropdowns verified at 2026-04-01.
+</div>
+<div class="confidential"><strong>Confidential — CRO eyes.</strong> Additive to the Mixmax Month-Ahead Report. Everything in the org edition is here, plus rep-level attainment, rep-specific attack assignments, CSM book detail with $ exposure, and Salesforce-linked Top 10.</div>
+
+<div class="note"><strong>Timing note — Bookings vs. ARR:</strong> April bookings hit May/June ARR, not April. The Opening Position ARR is March-and-prior's result. April's bookings target is the Q2 leading indicator.</div>
+
+<h2 id="opening">Opening Position — Where April Starts</h2>
+<p class="lead">April opens <strong>$376K under Total ARR target</strong> ($8.65M vs $9.02M EOM), <strong>$0 pipeline created MTD</strong> at day 14, and bookings at <strong>14% of plan</strong> ($23K of $165K). The diagnosis is unchanged from March: top-of-funnel is the binding constraint. CS posture improved (VSB NRR 52% → 76%, CSM book NRR 83% → 94%), which partially offsets the DS pipeline problem but doesn't solve it. The rep-level question coming out of March — can Karan and Isabelle rebuild pipeline? — is now the April thesis.</p>
+
+<h3>Revenue, Bookings, Pipeline — Opening</h3>
+<table>
+<thead><tr><th>Metric</th><th class="num">Current (MTD)</th><th class="num">April Target</th><th class="num">Gap</th></tr></thead>
+<tbody>
+<tr><td>Total ARR</td><td class="num">$8,646,071</td><td class="num">$9,022,440</td><td class="num bad">−$376,369</td></tr>
+<tr><td>Direct Sales ARR</td><td class="num">$4,688,359</td><td class="num">$5,041,578</td><td class="num bad">−$353,219</td></tr>
+<tr><td>Self-Serve ARR</td><td class="num">$3,957,712</td><td class="num">$3,980,862</td><td class="num warn">−$23,150</td></tr>
+<tr><td>Total Bookings</td><td class="num">$23,388</td><td class="num">$165,433</td><td class="num bad">−$142,045</td></tr>
+<tr><td>New Business Bookings</td><td class="num">$5,448</td><td class="num">$156,427</td><td class="num bad">−$150,979</td></tr>
+<tr><td>Expansion Bookings</td><td class="num good">$17,940</td><td class="num">$9,006</td><td class="num good">+$8,934</td></tr>
+<tr><td>Pipeline-to-Close (ex CW/CL)</td><td class="num">$240,737 (1.6×)</td><td class="num">—</td><td class="num warn">59% Stage 0–1</td></tr>
+<tr><td>Pipeline Created MTD</td><td class="num bad">$0</td><td class="num">$474,557</td><td class="num bad">−$474,557</td></tr>
+</tbody>
+</table>
+<div class="alert"><strong>Single biggest April risk:</strong> Pipeline Created MTD = $0 across Inbound ($0/$164K), Outbound ($0/$276K), Product ($0/$21K), Expansion ($0/$13K). The creation engine has not run in the first half of the month. If this is still $0 on Apr 21 (W1 weekly), treat as an operational emergency, not a pipeline issue.</div>
+
+<h3>Bookings by Channel — Opening</h3>
+<table>
+<thead><tr><th>Channel</th><th class="num">MTD</th><th class="num">April Target</th><th class="num">% Pace</th></tr></thead>
+<tbody>
+<tr><td>Inbound</td><td class="num">$5,448</td><td class="num">$69,756</td><td class="num warn">8%</td></tr>
+<tr><td>Outbound</td><td class="num bad">$0</td><td class="num">$77,165</td><td class="num bad">0%</td></tr>
+<tr><td>Product</td><td class="num bad">$0</td><td class="num">$9,506</td><td class="num bad">0%</td></tr>
+<tr><td>Expansion</td><td class="num good">$17,940</td><td class="num">$9,006</td><td class="num good">199%</td></tr>
+</tbody>
+</table>
+
+<h3>Pipeline by Stage — Entering April's Back Half</h3>
+<table>
+<thead><tr><th>Stage</th><th class="num">$ Pipeline</th><th class="num">% of P2C</th></tr></thead>
+<tbody>
+<tr><td>0 — Qualification</td><td class="num warn">$120,000</td><td class="num warn">50%</td></tr>
+<tr><td>1 — Discovery</td><td class="num">$21,000</td><td class="num">9%</td></tr>
+<tr><td>2 — Scoping/Demo</td><td class="num">$57,272</td><td class="num">24%</td></tr>
+<tr><td>3 — Validation/Biz Case</td><td class="num">$11,566</td><td class="num">5%</td></tr>
+<tr><td>3 — Trial</td><td class="num">$4,560</td><td class="num">2%</td></tr>
+<tr><td>4 — Negotiation</td><td class="num bad">$0</td><td class="num bad">0%</td></tr>
+<tr><td>5 — Legal/Contract</td><td class="num bad">$0</td><td class="num bad">0%</td></tr>
+</tbody>
+</table>
+<p class="small">Nothing in Negotiation or Legal means no deal is within 2 weeks of close. The $120K Stage 0 anchor is the forecast-quality watch — push it forward or drop it.</p>
+
+<h2 id="qtd">QTD Trajectory — Q2</h2>
+<table>
+<thead><tr><th>Scenario</th><th class="num">April Bookings</th><th class="num">May</th><th class="num">June</th><th>Pre-condition</th></tr></thead>
+<tbody>
+<tr><td>Hit Q2 plan</td><td class="num">$165K</td><td class="num">$180K+</td><td class="num">$200K+</td><td>Creation engine restarts by Apr 21; 3 Best Case pulls; Stage 2+ inventory doubles.</td></tr>
+<tr><td>Base case</td><td class="num warn">$70–90K</td><td class="num warn">$150K</td><td class="num warn">$170K</td><td>Existing $241K pipe closes ~30%; creation slowly restarts.</td></tr>
+<tr><td>Downside</td><td class="num bad">$25–40K</td><td class="num bad">$80–100K</td><td class="num bad">$110K</td><td>Creation stays at $0 through W2; Stage 0–1 inventory ages out.</td></tr>
+</tbody>
+</table>
+
+<h2 id="reps">Rep-Level Opening — April</h2>
+<p class="small">Full rep splits land with the first April weekly. Opening posture (snapshot-level, MTD):</p>
+<table>
+<thead><tr><th>Rep</th><th class="num">Bookings MTD</th><th class="num">March Attain</th><th>April Posture</th></tr></thead>
+<tbody>
+<tr><td>Karan Jiandani</td><td class="num warn">TBD (~$5K inbound attributable)</td><td class="num bad">0%</td><td>Owns 7 of Top-10 watchlist accounts. Highest-leverage rep for April Top-of-Funnel repair. Ramp status review requested.</td></tr>
+<tr><td>Isabelle Tuomi</td><td class="num">TBD</td><td class="num warn">23%</td><td>Owns Mentimeter (Qualified) — primary pull-forward candidate. Owns rho (Inbound, perfect fit, fresh) — second pull-forward candidate.</td></tr>
+<tr><td>Lana Ma</td><td class="num">TBD</td><td class="num">—</td><td>Owns wpromote.com (Outbound top score) — anchor the Outbound reset here.</td></tr>
+<tr><td>Morgan Wible (SDR)</td><td class="num">—</td><td class="num">—</td><td>Entered April with $0 rep-attached Pipeline-to-Close. Reset the top-50 Cold ICP list (Aero ≥ 80) this week.</td></tr>
+</tbody>
+</table>
+<p class="small">Rep attribution delta from March ($14K between rep-attributed and DS Total) still needs a RevOps reconciliation before April close. Flag remains open.</p>
+
+<h2 id="cs">CS Detail — April Book</h2>
+<h3>Renewals Overview</h3>
+<table>
+<thead><tr><th>Segment</th><th class="num"># Accts</th><th class="num">At Risk</th><th class="num">Forecasted ARR</th><th class="num">Prev Contract</th><th class="num">NRR %</th><th class="num">GRR %</th><th class="num">ARR Impact</th></tr></thead>
+<tbody>
+<tr><td>All Renewals</td><td class="num">23</td><td class="num warn">4</td><td class="num">$413,277</td><td class="num">—</td><td class="num warn">91%</td><td class="num warn">78%</td><td class="num bad">−$119,535</td></tr>
+<tr><td>CSM Owned</td><td class="num">10</td><td class="num">1</td><td class="num">$359,061</td><td class="num">—</td><td class="num good">94%</td><td class="num good">81%</td><td class="num warn">−$82,419</td></tr>
+<tr><td>VSB Owned</td><td class="num">13</td><td class="num warn">3</td><td class="num">$54,216</td><td class="num">—</td><td class="num bad">76%</td><td class="num bad">59%</td><td class="num bad">−$37,116</td></tr>
+</tbody>
+</table>
+
+<h3>CSM Book — April</h3>
+<table>
+<thead><tr><th>CSM</th><th class="num"># Accts</th><th class="num">At Risk</th><th class="num">Forecasted ARR</th><th class="num">Prev Contract</th><th class="num">NRR %</th><th>Read</th></tr></thead>
+<tbody>
+<tr><td>Heather Mae Pusztai</td><td class="num">3</td><td class="num good">0</td><td class="num">$213,769</td><td class="num">$209,494</td><td class="num good">102%</td><td>Strongest book — model the playbook.</td></tr>
+<tr><td>Edwin Chun</td><td class="num">5</td><td class="num warn">1</td><td class="num">$117,452</td><td class="num">$148,892</td><td class="num bad">79%</td><td>Softest NRR this month. $31K forecast decline. Save plan on the at-risk account needed by Apr 21.</td></tr>
+<tr><td>Diana Calucer</td><td class="num">2</td><td class="num good">0</td><td class="num">$27,840</td><td class="num">$24,108</td><td class="num good">115%</td><td>Recovered from March's zero-forecast posture. Watch carefully.</td></tr>
+</tbody>
+</table>
+
+<h3>CSM Renewals by Status</h3>
+<table>
+<thead><tr><th>Status</th><th class="num"># Accts</th><th class="num">At Risk</th><th class="num">Forecasted ARR</th><th class="num">Previous</th></tr></thead>
+<tbody>
+<tr><td>2 — Not Likely</td><td class="num warn">1</td><td class="num warn">1</td><td class="num bad">$0</td><td class="num">$17,900</td></tr>
+<tr><td>4 — Known Issues</td><td class="num">1</td><td class="num">0</td><td class="num">$26,000</td><td class="num">$26,316</td></tr>
+<tr><td>5 — No Known Issues</td><td class="num good">6</td><td class="num">0</td><td class="num good">$246,409</td><td class="num">$254,770</td></tr>
+<tr><td>7 — Almost Certainly Will</td><td class="num good">2</td><td class="num">0</td><td class="num good">$86,652</td><td class="num">$83,508</td></tr>
+</tbody>
+</table>
+<p class="small">Net at-risk exposure in the CSM book: 1 "Not Likely" account forecast at $0 vs $17,900 previous (in Edwin's book per the book table). Everything else sits at Status 4+ with positive NRR trajectory.</p>
+
+<h2 id="carryover">Risk Carryover — March Register, April Status</h2>
+<table class="risk-table">
+<thead><tr><th>March Risk</th><th>April Status</th><th class="num">April Exposure</th><th>Owner</th><th>Read</th></tr></thead>
+<tbody>
+<tr><td>Outbound pipeline collapse (5% of target in March)</td><td class="bad">Escalated</td><td class="num bad">$0 of $276K created</td><td>SDR Team</td><td>Worse than March. #1 risk.</td></tr>
+<tr><td>New Biz bookings shortfall</td><td class="bad">Still Live</td><td class="num bad">−$151K gap</td><td>Karan / Isabelle / SDR</td><td>Target grew 52% vs March; MTD is $5K.</td></tr>
+<tr><td>Empty Pipeline-to-Close</td><td class="warn">Partially Resolved</td><td class="num warn">$241K (1.6×), 59% Stage 0–1</td><td>AE + RevOps</td><td>Coverage exists but stage-quality is weak.</td></tr>
+<tr><td>Accounts Engaged at 11%</td><td class="bad">Still Live</td><td class="num bad">14% pace (211/1,491)</td><td>SDR Team</td><td>Capacity realism check still open.</td></tr>
+<tr><td>Product channel $0 bookings</td><td class="bad">Still Live</td><td class="num bad">$0 (69 PQLs, 3 meetings)</td><td>Product + AE</td><td>Second consecutive month of the same leak. Diagnostic by Apr 21.</td></tr>
+<tr><td>Q1 DS Churn 50% hot</td><td class="warn">Monitoring</td><td class="num warn">−$85K April budget</td><td>CS Team</td><td>Save-plan reviews on 4 at-risk by Apr 21.</td></tr>
+<tr><td>Q1 Downgrade 31% hot</td><td class="warn">Monitoring</td><td class="num warn">−$80K budget</td><td>CS Team</td><td>March came in under — watch for trend vs. bounce.</td></tr>
+<tr><td>VSB NRR 52%</td><td class="good">Improved</td><td class="num warn">76% NRR</td><td>CS Team</td><td>3 of 13 at risk (vs 7 of 13 in March). Trajectory right; still below target.</td></tr>
+<tr><td>Single Commit deal entering month-end</td><td class="warn">Still Live</td><td class="num warn">TBD</td><td>AE Team</td><td>Forecast category split comes with W1 weekly.</td></tr>
+<tr><td>SS Net New at 63%</td><td class="warn">Still Live</td><td class="num warn">22% MTD of target</td><td>Product + Growth</td><td>Same pacing problem.</td></tr>
+<tr><td>Rep attribution delta ($14K)</td><td class="warn">Still Live</td><td class="num warn">Reporting Integrity</td><td>RevOps</td><td>Reconcile before April close.</td></tr>
+</tbody>
+</table>
+
+<h2 id="newrisks">New April Risks (Net-New vs March Register)</h2>
+<table class="risk-table">
+<thead><tr><th>Risk</th><th>Category</th><th class="num">April $ Exposure</th><th>Owner</th><th>Confidence</th><th>Action w/ Deadline</th></tr></thead>
+<tbody>
+<tr><td><strong>Pipeline Creation Engine at $0 all channels</strong></td><td>Pipeline Gap</td><td class="num bad">−$475K target</td><td>SDR + Marketing + Product</td><td>High</td><td>Apr 21: Outbound list reset (Aero≥80 Cold ICP, 141 eligible); Inbound MQL routing audit; PQL→SQL SLA = 48h.</td></tr>
+<tr><td>Stage-0/1 concentration ($141K = 59% of P2C)</td><td>Pipeline Gap</td><td class="num warn">−$141K at-risk inventory</td><td>AE Team</td><td>High</td><td>Apr 18: Every Stage 0–1 deal has a committed next step or moves to Omitted.</td></tr>
+<tr><td>Edwin Chun CSM book at 79% NRR</td><td>CS At-Risk</td><td class="num warn">−$31,440</td><td>CS (Edwin + mgmt)</td><td>Medium</td><td>Apr 21: Save plan + co-review. Use HM's 102% NRR book as the playbook reference.</td></tr>
+<tr><td>Total ARR −$376K vs target on day 14</td><td>Forecast Miss</td><td class="num bad">−$376K (DS carries $353K)</td><td>AE + CS</td><td>High</td><td>Pull-forward list + expansion plays reviewed Apr 18.</td></tr>
+<tr><td>SS Seat Contraction outpacing Expansion</td><td>Churn</td><td class="num warn">−$45K MTD vs $49K expansion MTD</td><td>Product + Growth</td><td>Medium</td><td>Contraction-by-account report by Apr 21.</td></tr>
+<tr><td>Karan Jiandani concentration (8 of 10 Top-10 accts)</td><td>Rep Performance</td><td class="num warn">—</td><td>AE Mgmt</td><td>Medium</td><td>Apr 18: Redistribute Top-10 across Isabelle and Lana; no single rep &gt; 4 of the 10.</td></tr>
+</tbody>
+</table>
+
+<h2 id="attack">Attack Plan — April (with Rep Assignments)</h2>
+
+<h3>AE Team — Karan, Isabelle, Lana</h3>
+<ul>
+<li><strong>Karan:</strong> Lead the Product handoff diagnosis — 7 of 10 Top-10 accounts in his book, 3 of them Product-sourced. Deliverable: a named root cause + fix by Apr 21. Ramp + pipeline review with CRO by Apr 18.</li>
+<li><strong>Isabelle:</strong> Mentimeter (Qualified) is the biggest pull-forward candidate in the book — push to Scoping this week, Negotiation before Apr 28. Audit remaining Best Case for a second pull-forward.</li>
+<li><strong>Lana:</strong> Own the Outbound reset for wpromote.com and partner with SDRs on the rebuilt 141-account Aero≥80 list.</li>
+<li><strong>All AEs:</strong> Stage 0–1 cleanup ($141K) — next-step committed by Apr 18 or move to Omitted.</li>
+</ul>
+
+<h3>SDR Team — Morgan + SDR mgmt</h3>
+<ul>
+<li>Aero-scored Cold ICP reset list (141 accounts at Blended ≥ 80) by Apr 18. First 75 engaged W1, remaining 66 W2.</li>
+<li>Accounts Engaged target (1,418 Outbound + 51 Inbound) — capacity-reality check with CRO this week. Publish interim commit if stretch.</li>
+<li>Inbound MQL routing audit — 20% pace on 59-MQL target. Volume vs routing diagnosis by Apr 21.</li>
+</ul>
+
+<h3>CS Team — Heather Mae, Edwin, Diana + VSB pod</h3>
+<ul>
+<li><strong>Edwin:</strong> Save plan on the "Not Likely" renewal (current forecast $0 vs $17,900 previous) — escalate to HM/mgmt if needed by Apr 21.</li>
+<li><strong>Heather Mae:</strong> Document the playbook behind the 102% NRR book; shared with Edwin + Diana this month.</li>
+<li><strong>Diana:</strong> Protect the rebound (115% NRR) — lock in both accounts' renewals before month-end.</li>
+<li><strong>VSB pod:</strong> Portfolio review — 3 of 13 at risk, $37K exposure. Candidates for CSM upgrade vs. save plays identified by Apr 18.</li>
+<li>CSM-level save rates published weekly starting Apr 21.</li>
+</ul>
+
+<h3>Product + Growth</h3>
+<ul>
+<li>Signup→activation funnel review in Amplitude by Apr 18. SS Net New at 22% of target MTD; is it volume or activation?</li>
+<li>Seat-Contraction-by-account report by Apr 21.</li>
+</ul>
+
+<h2 id="top10">Top 10 Accounts — April (with Salesforce links)</h2>
+<p class="small">Carried from March retrospective with April status. Fresh Aero re-rank with distribution constraint runs on W1 weekly.</p>
+<table>
+<thead><tr><th>#</th><th>Account</th><th>Channel</th><th>Owner</th><th class="num">Aero</th><th>April Status</th><th>Ask</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><a href="https://mixmax.lightning.force.com/lightning/r/Account/0011R000020gyNL/view">ab180.co</a></td><td>Product</td><td>Karan Jiandani</td><td class="num good">100</td><td>Attempting Contact</td><td>SQO by Apr 21.</td></tr>
+<tr><td>2</td><td><a href="https://mixmax.lightning.force.com/lightning/r/Account/0011R00002hr32i/view">pearpop.com</a></td><td>Product</td><td>Karan Jiandani</td><td class="num good">100</td><td>Attempting Contact</td><td>Discovery this week.</td></tr>
+<tr><td>3</td><td><a href="https://mixmax.lightning.force.com/lightning/r/Account/001VS00000BxyGL/view">Sharebird</a></td><td>Product</td><td>Karan Jiandani</td><td class="num good">100</td><td>Attempting Contact</td><td>Demo this week.</td></tr>
+<tr><td>4</td><td><a href="https://mixmax.lightning.force.com/lightning/r/Account/0013600001rc4LM/view">wpromote.com</a></td><td>Outbound</td><td>Lana Ma</td><td class="num good">100</td><td>Attempting Contact</td><td>Anchor the Outbound reset.</td></tr>
+<tr><td>5</td><td><a href="https://mixmax.lightning.force.com/lightning/r/Account/0013600001Hk2cJ/view">Sleeping Giant</a></td><td>Outbound</td><td>Karan Jiandani</td><td class="num good">100</td><td>Attempting Contact</td><td>Move to Scoping.</td></tr>
+<tr><td>6</td><td><a href="https://mixmax.lightning.force.com/lightning/r/Account/0011R00002tHqDz/view">faddom.com</a></td><td>Inbound</td><td>Karan Jiandani</td><td class="num good">100</td><td>Attempting Contact</td><td>SQO candidate.</td></tr>
+<tr><td>7</td><td><a href="https://mixmax.lightning.force.com/lightning/r/Account/0013600001kB0pN/view">Mentimeter</a></td><td>Outbound</td><td>Isabelle Tuomi</td><td class="num good">100</td><td>Qualified</td><td>Pull-forward #1 — Scoping this week, Neg by Apr 28.</td></tr>
+<tr><td>8</td><td><a href="https://mixmax.lightning.force.com/lightning/r/Account/0011R000024q9Oh/view">Voltus</a></td><td>Inbound</td><td>Karan Jiandani</td><td class="num">83</td><td>Active</td><td>Re-engage for demo.</td></tr>
+<tr><td>9</td><td><a href="https://mixmax.lightning.force.com/lightning/r/Account/0011R000033OJfr/view">rho</a></td><td>Inbound</td><td>Isabelle Tuomi</td><td class="num">82</td><td>Active</td><td>Pull-forward #2.</td></tr>
+<tr><td>10</td><td><a href="https://mixmax.lightning.force.com/lightning/r/Account/001VS00000BobuK/view">Entersekt</a></td><td>Inbound</td><td>Karan Jiandani</td><td class="num">82</td><td>Active</td><td>Qualify this week.</td></tr>
+</tbody>
+</table>
+<p class="small"><strong>Concentration flag:</strong> 8 of 10 owned by Karan. Redistribute to 4-max-per-rep on W1 re-rank.</p>
+
+<h2 id="watching">What We're Watching — 3 Metrics, Weekly</h2>
+<ol>
+<li><strong>Pipeline Created by channel ($).</strong> $475K target. W1 (Apr 21) pass grade: $150K+.</li>
+<li><strong>Stage 2+ Inventory ($).</strong> $73K today → $200K+ EOM goal.</li>
+<li><strong>At-Risk Resolution.</strong> 4 accounts, $119K. Save plan filed/saved/escalated weekly.</li>
+</ol>
+
+<h2 id="backlinks">Backlinks</h2>
+<ul>
+<li><a href="./CRO_Monthly_Report_2026-03.html">CRO Monthly Report — March 2026 (retrospective)</a></li>
+<li><a href="./Mixmax_Monthly_Report_2026-03.html">Mixmax Monthly Report — March 2026 (org)</a></li>
+<li><a href="./Mixmax_Month_Ahead_2026-04.html">Mixmax Month-Ahead — April 2026 (org)</a></li>
+<li><a href="https://heath-gtm.github.io/mixmax-revenue-reports/">GitHub Pages index</a></li>
+</ul>
+
+<footer>
+Generated from Gen 1 Monthly Lookahead Snapshot — April 2026 (<code>14h3DUpmFmM0XBXHPVjXQ2poACSlMkMUvN0UJGn6R-6w</code>), snapshot time 2026-04-14 8:55 PM PDT. Every number in this report traces to a source cell in the snapshot. Confidential — CRO eyes.
+</footer>
+
+</main>
+</div>
+</body>
+</html>
