@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mixmax Q1 2026 Direct Sales Churn &amp; Downgrade Analysis</title>
+<style>
+:root {
+  --mx-blue: #2563eb;
+  --mx-blue-dark: #1d4ed8;
+  --mx-blue-light: #dbeafe;
+  --tbl-header: #4472c4;
+  --green: #15803d;
+  --green-bg: #dcfce7;
+  --amber: #b45309;
+  --amber-bg: #fef3c7;
+  --red: #b91c1c;
+  --red-bg: #fee2e2;
+  --gray: #6b7280;
+  --gray-bg: #f3f4f6;
+  --border: #e5e7eb;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text-secondary: #475569;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+/* NAV */
+.top-nav { background: var(--mx-blue); color: #fff; padding: 8px 24px; display: flex; gap: 20px; font-size: 14px; position: sticky; top: 0; z-index: 1001; }
+.top-nav a { color: #fff; text-decoration: none; opacity: .85; }
+.top-nav a:hover { opacity: 1; text-decoration: underline; }
+
+/* LAYOUT */
+.layout { display: flex; min-height: 100vh; }
+
+/* SIDEBAR TOC */
+.sidebar { width: 260px; background: #fff; border-right: 1px solid var(--border); padding: 20px 16px; position: sticky; top: 40px; height: calc(100vh - 40px); overflow-y: auto; flex-shrink: 0; }
+.sidebar h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--gray); margin-bottom: 12px; }
+.sidebar a { display: block; padding: 5px 10px; font-size: 13px; color: var(--text-secondary); text-decoration: none; border-radius: 4px; margin-bottom: 2px; }
+.sidebar a:hover, .sidebar a.active { background: var(--mx-blue-light); color: var(--mx-blue); }
+.sidebar .indent { padding-left: 24px; font-size: 12px; }
+
+/* MAIN */
+.main { flex: 1; max-width: 1100px; padding: 32px 40px; }
+
+/* HEADER */
+.report-header { margin-bottom: 32px; }
+.report-header h1 { font-size: 28px; font-weight: 700; color: var(--mx-blue-dark); margin-bottom: 8px; }
+.meta-bar { display: flex; flex-wrap: wrap; gap: 12px 24px; background: var(--mx-blue-light); padding: 12px 20px; border-radius: 8px; font-size: 13px; color: var(--mx-blue-dark); }
+.meta-bar span { display: flex; align-items: center; gap: 4px; }
+.meta-bar strong { font-weight: 600; }
+
+/* CARDS */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
+.card h2 { font-size: 20px; color: var(--mx-blue-dark); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--mx-blue-light); }
+.card h3 { font-size: 16px; color: var(--text); margin: 16px 0 8px; }
+
+/* ACCOUNT CARDS */
+.account-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
+.account-card .ac-header { background: linear-gradient(135deg, #f8fafc, #eef2ff); padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; }
+.account-card .ac-header h3 { font-size: 17px; color: var(--mx-blue-dark); margin: 0; }
+.account-card .ac-body { padding: 20px 24px; }
+.ac-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; }
+.ac-meta span { background: var(--gray-bg); padding: 2px 8px; border-radius: 4px; }
+
+/* SECTION BLOCKS INSIDE ACCOUNT */
+.ac-section { margin-bottom: 14px; }
+.ac-section strong { font-size: 13px; text-transform: uppercase; letter-spacing: .03em; color: var(--gray); }
+.ac-section p, .ac-section ul { font-size: 14px; margin-top: 4px; }
+.ac-section ul { padding-left: 18px; }
+
+/* BADGES */
+.badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 12px; text-transform: uppercase; letter-spacing: .03em; vertical-align: middle; }
+.badge-heavy { background: var(--green-bg); color: var(--green); }
+.badge-moderate { background: var(--mx-blue-light); color: var(--mx-blue); }
+.badge-light { background: var(--amber-bg); color: var(--amber); }
+.badge-silent { background: var(--red-bg); color: var(--red); }
+.badge-growing { background: var(--green-bg); color: var(--green); }
+.badge-not-preventable { background: var(--gray-bg); color: var(--gray); }
+.badge-possibly { background: var(--amber-bg); color: var(--amber); }
+.badge-preventable { background: var(--red-bg); color: var(--red); }
+
+/* TABLES */
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+th { font-weight: 600; }
+.tbl-blue th { background: var(--tbl-header); color: #fff; }
+.tbl-blue tr:nth-child(even) td { background: #f0f4fa; }
+.tbl-blue .grand-total td { background: #d6e0f0; font-weight: 700; border-top: 2px solid var(--tbl-header); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+
+/* SPLIT CARDS */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+.split-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+.split-card h3 { font-size: 15px; margin-bottom: 10px; color: var(--mx-blue-dark); }
+.split-card .big-num { font-size: 28px; font-weight: 700; color: var(--mx-blue); }
+.split-card .sub { font-size: 13px; color: var(--text-secondary); }
+
+/* MINI TREND TABLE */
+.mini-trend { margin-top: 8px; }
+.mini-trend table { font-size: 12px; }
+.mini-trend th, .mini-trend td { padding: 4px 8px; text-align: center; }
+.mini-trend th { background: var(--gray-bg); color: var(--gray); font-size: 11px; }
+
+/* VERDICT */
+.verdict { margin-top: 12px; padding: 10px 16px; border-radius: 8px; font-size: 14px; border-left: 4px solid; }
+.verdict-np { background: var(--gray-bg); border-color: var(--gray); }
+.verdict-pp { background: var(--amber-bg); border-color: var(--amber); }
+.verdict-p { background: var(--red-bg); border-color: var(--red); }
+
+/* FOOTER */
+.footer { margin-top: 48px; padding: 24px; background: #fff; border-top: 2px solid var(--mx-blue-light); border-radius: 10px; font-size: 13px; color: var(--text-secondary); }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { padding: 20px 16px; }
+  .split { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <a href="/mixmax-revenue-reports/">Home</a>
+  <a href="/mixmax-revenue-reports/churn-archive/">Back to Churn Archive</a>
+  <span style="margin-left:auto; opacity:.7;">Q1 2026 Churn Analysis</span>
+</nav>
+
+<div class="layout">
+
+<!-- SIDEBAR TOC -->
+<aside class="sidebar">
+  <h3>Contents</h3>
+  <a href="#executive-summary">Executive Summary</a>
+  <a href="#reason-summary">Churn Reason Summary</a>
+  <a href="#theme-summary">Churn Themes &amp; Pie Chart</a>
+  <a href="#managed-split">Managed vs Non-Managed</a>
+  <a href="#managed-deep">Managed Deep Dives</a>
+  <a class="indent" href="#attentive">Attentive Mobile</a>
+  <a class="indent" href="#onfido">Onfido Limited</a>
+  <a class="indent" href="#instacart">Instacart</a>
+  <a class="indent" href="#poll">Poll Everywhere</a>
+  <a class="indent" href="#workramp">WorkRamp</a>
+  <a class="indent" href="#privy">Privy</a>
+  <a href="#nonmanaged-deep">Non-Managed Deep Dives</a>
+  <a class="indent" href="#modern">Modern Classrooms</a>
+  <a class="indent" href="#ansel">Ansel Health</a>
+  <a class="indent" href="#inbenta">inbenta.com</a>
+  <a class="indent" href="#cynet">Cynet Locums</a>
+  <a class="indent" href="#eginnovations">eginnovations.com</a>
+  <a class="indent" href="#sumup">sumup.com</a>
+  <a class="indent" href="#suitepad">suitepad.de</a>
+  <a class="indent" href="#theajp">theajp.org</a>
+  <a class="indent" href="#alteia">Alteia SAS</a>
+  <a class="indent" href="#kluster">Kluster AI</a>
+  <a class="indent" href="#cityinnovate">City Innovate</a>
+  <a class="indent" href="#namogoo">namogoo.com</a>
+  <a class="indent" href="#careerbeacon">CareerBeacon</a>
+  <a class="indent" href="#mobilize">Mobilize Comms</a>
+  <a class="indent" href="#pearl">Pearl</a>
+  <a class="indent" href="#ccs">CCS Global Tech</a>
+  <a class="indent" href="#cityone">City One</a>
+  <a class="indent" href="#alpha">Alpha Wealth Funds</a>
+  <a href="#cross-cut">Cross-Cut Analysis</a>
+  <a class="indent" href="#preventability">By Preventability</a>
+  <a class="indent" href="#usage-class">By Usage Classification</a>
+  <a class="indent" href="#feature-adoption">Feature Adoption</a>
+  <a class="indent" href="#pricing-impact">Pricing &amp; Packaging</a>
+  <a class="indent" href="#meeting-gap">Meeting Coverage Gap</a>
+  <a href="#recommendations">Recommendations</a>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+<!-- HEADER -->
+<div class="report-header">
+  <h1>Mixmax Q1 2026 Direct Sales Churn &amp; Downgrade Analysis</h1>
+  <div class="meta-bar">
+    <span><strong>Period:</strong> Q1 2026 (Jan &ndash; Mar)</span>
+    <span><strong>Accounts Churned:</strong> 24</span>
+    <span><strong>PCV at Risk:</strong> $314,150</span>
+    <span><strong>ARR Churn:</strong> $229,248</span>
+    <span><strong>Report Date:</strong> April 15, 2026</span>
+    <span><strong>Audience:</strong> Sales + CS Leadership</span>
+  </div>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<div class="card" id="executive-summary">
+  <h2>Executive Summary</h2>
+  <p style="margin-bottom:12px;">
+    Q1 2026 saw <strong>24 accounts churn</strong> totaling <strong>$314,150 in previous contract value (PCV)</strong> and <strong>$229,248 in ARR churn</strong>. This was a significant increase driven primarily by one outsized loss: <strong>Attentive Mobile ($164,724 PCV)</strong>, which selected a competitor despite heavy product usage across 345 active users with stable and growing engagement. Separately, five accounts ($62,112 combined) churned due to acquisitions &mdash; entirely unpreventable. Three self-serve/month-to-month accounts ($13,260) churned despite active or growing usage, exposing a pricing and packaging vulnerability in the current retention model.
+  </p>
+  <p style="margin-bottom:12px;">
+    A critical insight from this quarter: <strong>73% of managed PCV lost came from accounts with STABLE or GROWING usage</strong> &mdash; these were business and procurement decisions, not product failures. The data shows that competitive positioning, CRM migration, and contract inflexibility were the dominant churn drivers for high-value accounts, while product quality remained strong. Only 1 of 24 accounts cited product gaps as their primary reason for leaving.
+  </p>
+  <p>
+    This quarter followed the new pricing and packaging launch. The data suggests that <strong>contract flexibility and competitive positioning</strong> were the primary drivers of churn, not price sensitivity or product quality. Three competitive losses accounted for $177,204 (56% of total PCV), and the Instacart deep dive revealed specific friction points: annual-only contracts when the customer wanted a 3-month extension, and monthly plan sync caps that made downgrade paths unworkable. Addressing these structural gaps should be the top priority heading into Q2.
+  </p>
+</div>
+
+<!-- CHURN REASON SUMMARY -->
+<div class="card" id="reason-summary">
+  <h2>Churn Reason Summary</h2>
+  <div style="overflow-x:auto;">
+    <table class="tbl-blue">
+      <thead>
+        <tr>
+          <th>Reason</th>
+          <th class="num">Logos</th>
+          <th class="num">Total ARR (PCV)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Selected Competitor</td><td class="num">3</td><td class="num">$177,204</td></tr>
+        <tr><td>Company Acquired</td><td class="num">5</td><td class="num">$62,112</td></tr>
+        <tr><td>Tool Consolidation</td><td class="num">3</td><td class="num">$21,375</td></tr>
+        <tr><td>New DM / Sponsor Change</td><td class="num">1</td><td class="num">$13,620</td></tr>
+        <tr><td>Self-Serve / Month-to-Month</td><td class="num">3</td><td class="num">$13,260</td></tr>
+        <tr><td>Remained with Incumbent</td><td class="num">2</td><td class="num">$9,347</td></tr>
+        <tr><td>Non-Responsive</td><td class="num">1</td><td class="num">$5,088</td></tr>
+        <tr><td>Lack of Adoption</td><td class="num">1</td><td class="num">$3,816</td></tr>
+        <tr><td>No Champion</td><td class="num">2</td><td class="num">$3,696</td></tr>
+        <tr><td>Business Closed</td><td class="num">1</td><td class="num">$2,964</td></tr>
+        <tr><td>Product Gaps</td><td class="num">1</td><td class="num">$1,668</td></tr>
+        <tr><td>Bad Fit / Not ICP</td><td class="num">2</td><td class="num">$0</td></tr>
+        <tr class="grand-total"><td>Grand Total</td><td class="num">24</td><td class="num">$314,150</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- THEMATIC CATEGORIZATION + PIE CHART -->
+<div class="card" id="theme-summary">
+  <h2>Churn Themes &mdash; Categorized by ARR Share</h2>
+  <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px;">
+    Detailed Win/Loss reasons grouped into broader themes to surface systemic patterns. The 24 churned accounts map to 8 themes. ARR values use Previous Contract Value (PCV).
+  </p>
+
+  <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start;">
+
+    <!-- PIE CHART -->
+    <div style="flex:0 0 380px;">
+      <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:400px;">
+        <text x="210" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">Q1 2026 Churn &mdash; Share of $314K PCV</text>
+
+        <!-- Competitive Loss 60.7% — 0° to 218.7° -->
+        <path d="M210,210 L210,50 A160,160 0 1,1 88.18,333.57 Z" fill="#dc2626"/>
+        <text x="138" y="170" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">Competitive</text>
+        <text x="138" y="184" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">Loss</text>
+        <text x="138" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">60.7%</text>
+
+        <!-- Acquired / M&A 19.8% — 218.7° to 289.9° -->
+        <path d="M210,210 L88.18,333.57 A160,160 0 0,1 97.93,77.17 Z" fill="#f59e0b"/>
+        <text x="128" y="260" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">Acquired</text>
+        <text x="128" y="273" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">M&amp;A</text>
+        <text x="128" y="287" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">19.8%</text>
+
+        <!-- Consolidation 9.8% — 289.9° to 325.1° -->
+        <path d="M210,210 L97.93,77.17 A160,160 0 0,1 149.97,56.14 Z" fill="#3b82f6"/>
+        <text x="135" y="78" text-anchor="middle" font-size="9" font-weight="600" fill="#fff">Consol.</text>
+        <text x="135" y="90" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">9.8%</text>
+
+        <!-- Self-Serve / No Lock 4.2% — 325.1° to 340.3° -->
+        <path d="M210,210 L149.97,56.14 A160,160 0 0,1 178.45,51.62 Z" fill="#8b5cf6"/>
+        <text x="172" y="42" text-anchor="middle" font-size="8" font-weight="600" fill="#4c1d95">4.2%</text>
+
+        <!-- Lack of Adoption 4.0% — 340.3° to 354.7° -->
+        <path d="M210,210 L178.45,51.62 A160,160 0 0,1 200.33,50.06 Z" fill="#06b6d4"/>
+        <text x="195" y="35" text-anchor="middle" font-size="8" font-weight="600" fill="#0e7490">4.0%</text>
+
+        <!-- Business Closed 0.9% — 354.7° to 358.1° -->
+        <path d="M210,210 L200.33,50.06 A160,160 0 0,1 205.55,50.01 Z" fill="#84cc16"/>
+
+        <!-- Product Gaps 0.5% — 358.1° to 360° -->
+        <path d="M210,210 L205.55,50.01 A160,160 0 0,1 210,50 Z" fill="#ec4899"/>
+
+        <!-- Center label -->
+        <circle cx="210" cy="210" r="52" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
+        <text x="210" y="205" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">24</text>
+        <text x="210" y="222" text-anchor="middle" font-size="11" fill="#6b7280">accounts</text>
+      </svg>
+
+      <!-- LEGEND -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;font-size:12px;margin-top:8px;">
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#dc2626;margin-right:4px;"></span>Competitive Loss</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#f59e0b;margin-right:4px;"></span>Acquired / M&amp;A</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#3b82f6;margin-right:4px;"></span>Consolidation</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#8b5cf6;margin-right:4px;"></span>Self-Serve / No Lock</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#06b6d4;margin-right:4px;"></span>Lack of Adoption</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#84cc16;margin-right:4px;"></span>Business Closed</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#ec4899;margin-right:4px;"></span>Product Gaps</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#9ca3af;margin-right:4px;"></span>Bad Fit ($0)</span>
+      </div>
+    </div>
+
+    <!-- THEMATIC TABLE -->
+    <div style="flex:1;min-width:340px;">
+      <table class="tbl-blue">
+        <thead>
+          <tr>
+            <th>Theme</th>
+            <th class="num">Logos</th>
+            <th class="num">PCV</th>
+            <th class="num">Share</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#fee2e2;">
+            <td><strong>Competitive Loss</strong><br><span style="font-size:11px;color:#64748b;">Attentive, Instacart, Modern Classrooms, sumup, suitepad</span></td>
+            <td class="num">5</td>
+            <td class="num">$190,551</td>
+            <td class="num">60.7%</td>
+          </tr>
+          <tr style="background:#fef9c3;">
+            <td><strong>Acquired / M&amp;A</strong><br><span style="font-size:11px;color:#64748b;">Onfido, WorkRamp, Ansel Health, Alteia, namogoo</span></td>
+            <td class="num">5</td>
+            <td class="num">$62,112</td>
+            <td class="num">19.8%</td>
+          </tr>
+          <tr style="background:#dbeafe;">
+            <td><strong>Consolidation</strong><br><span style="font-size:11px;color:#64748b;">Poll Everywhere, inbenta, Mobilize Comms</span></td>
+            <td class="num">3</td>
+            <td class="num">$30,722</td>
+            <td class="num">9.8%</td>
+          </tr>
+          <tr style="background:#ede9fe;">
+            <td><strong>Self-Serve / No Contract Lock</strong><br><span style="font-size:11px;color:#64748b;">Privy, Cynet Locums, CareerBeacon</span></td>
+            <td class="num">3</td>
+            <td class="num">$13,260</td>
+            <td class="num">4.2%</td>
+          </tr>
+          <tr style="background:#cffafe;">
+            <td><strong>Lack of Adoption</strong><br><span style="font-size:11px;color:#64748b;">theajp, eginnovations, Kluster AI, CCS Global Tech</span></td>
+            <td class="num">4</td>
+            <td class="num">$12,600</td>
+            <td class="num">4.0%</td>
+          </tr>
+          <tr style="background:#ecfccb;">
+            <td><strong>Business Closed</strong><br><span style="font-size:11px;color:#64748b;">City Innovate</span></td>
+            <td class="num">1</td>
+            <td class="num">$2,964</td>
+            <td class="num">0.9%</td>
+          </tr>
+          <tr style="background:#fce7f3;">
+            <td><strong>Product Gaps</strong><br><span style="font-size:11px;color:#64748b;">Pearl</span></td>
+            <td class="num">1</td>
+            <td class="num">$1,668</td>
+            <td class="num">0.5%</td>
+          </tr>
+          <tr style="background:#f3f4f6;">
+            <td><strong>Bad Fit / Not ICP</strong><br><span style="font-size:11px;color:#64748b;">City One, Alpha Wealth Funds</span></td>
+            <td class="num">2</td>
+            <td class="num">$0</td>
+            <td class="num">0.0%</td>
+          </tr>
+          <tr class="grand-total">
+            <td>Grand Total</td>
+            <td class="num">24</td>
+            <td class="num">$314,150</td>
+            <td class="num">100%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:16px;padding:12px 16px;background:#f0f4fa;border-radius:8px;font-size:13px;color:var(--text-secondary);">
+        <strong style="color:var(--text);">Key Takeaways:</strong>
+        <ul style="margin-top:6px;padding-left:16px;">
+          <li><strong>80.5% of PCV</strong> lost to Competitive Loss + M&amp;A &mdash; forces largely outside CS influence. Commercial intelligence and exec relationships are the primary levers.</li>
+          <li><strong>Consolidation (9.8%)</strong> is addressable &mdash; CRM migration (SF &rarr; HubSpot) killed the value prop for Poll Everywhere. Stronger HubSpot integration story could defend this segment.</li>
+          <li><strong>Lack of Adoption (4.0%)</strong> across 4 non-managed accounts &mdash; these never had a CSM. Automated onboarding flows and usage-triggered outreach would help.</li>
+          <li><strong>Product Gaps account for only 0.5%</strong> of PCV lost &mdash; product quality is NOT the problem this quarter.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MANAGED VS NON-MANAGED SPLIT -->
+<div id="managed-split">
+  <h2 style="font-size:20px; color:var(--mx-blue-dark); margin-bottom:16px;">Managed vs Non-Managed Split</h2>
+  <div class="split">
+    <div class="split-card">
+      <h3>Managed Accounts</h3>
+      <div class="big-num">6 <span style="font-size:14px;font-weight:400;color:var(--text-secondary);">accounts</span></div>
+      <div style="margin-top:12px;">
+        <div class="sub"><strong>PCV:</strong> $241,200</div>
+        <div class="sub"><strong>ARR Churn:</strong> $196,308</div>
+        <div class="sub" style="margin-top:8px;"><strong>CSM Coverage:</strong></div>
+        <div class="sub">Edwin Chun &mdash; 1 account</div>
+        <div class="sub">Diana Calucer &mdash; 2 accounts</div>
+        <div class="sub">HM Pusztai &mdash; 3 accounts</div>
+      </div>
+    </div>
+    <div class="split-card">
+      <h3>Non-Managed Accounts</h3>
+      <div class="big-num">18 <span style="font-size:14px;font-weight:400;color:var(--text-secondary);">accounts</span></div>
+      <div style="margin-top:12px;">
+        <div class="sub"><strong>PCV:</strong> $72,950</div>
+        <div class="sub"><strong>ARR Churn:</strong> $32,940</div>
+        <div class="sub" style="margin-top:8px;"><strong>CSM Coverage:</strong> None &mdash; no CSM assigned</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MANAGED DEEP DIVES ==================== -->
+<div class="card" id="managed-deep">
+  <h2>Managed Accounts &mdash; Deep Dives</h2>
+  <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px;">6 accounts, sorted by PCV descending. Each card includes Amplitude usage analysis, meeting transcript intelligence, and preventability verdict.</p>
+</div>
+
+<!-- ATTENTIVE MOBILE -->
+<div class="account-card" id="attentive">
+  <div class="ac-header">
+    <h3>Attentive Mobile Inc.</h3>
+    <span class="badge badge-heavy">Heavy Usage</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>CSM:</strong> HM Pusztai</span>
+      <span><strong>PCV:</strong> $164,724</span>
+      <span><strong>ARR Churn:</strong> $167,964</span>
+      <span><strong>Close:</strong> 1/31/2026</span>
+      <span><strong>Aero Fit:</strong> Medium</span>
+      <span><strong>Stage:</strong> Closed Lost</span>
+    </div>
+    <div class="ac-section">
+      <strong>Win/Loss Reason</strong>
+      <p>Selected Competitor &mdash; No Incumbent. Details not available in detail field.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>HEAVY usage across the board. 345 total users with 240&ndash;252 MAU remaining stable throughout the period. Sequence emails showed strong growth trajectory (1,800 to 6,600/mo). Email tracking engaged 213&ndash;225 users/mo. Templates used by 107&ndash;137 users. <strong>No decline whatsoever</strong> &mdash; usage was healthy and growing at time of churn.</p>
+      <div class="mini-trend">
+        <table>
+          <thead><tr><th>Metric</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Jan</th><th>Feb</th><th>Mar</th></tr></thead>
+          <tbody>
+            <tr><td>MAU</td><td>240</td><td>245</td><td>248</td><td>252</td><td>249</td><td>244</td></tr>
+            <tr><td>Seq. Emails</td><td>1,800</td><td>2,900</td><td>4,100</td><td>5,200</td><td>6,100</td><td>6,600</td></tr>
+            <tr><td>Email Tracking</td><td>213</td><td>218</td><td>220</td><td>225</td><td>221</td><td>217</td></tr>
+            <tr><td>Templates</td><td>107</td><td>115</td><td>122</td><td>130</td><td>135</td><td>137</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p><span style="color:var(--red);font-weight:600;">ZERO recorded meetings.</span> No meetings found in Mixmax meeting search (Oct 2025 &ndash; Mar 2026). This is a critical gap for a $165K account.</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE via product. Purely a business/procurement decision &mdash; usage was heavy and growing. However, the zero meeting coverage for a $165K account is a <strong>process failure</strong>. CSM engagement should always be documented at this contract value.
+    </div>
+  </div>
+</div>
+
+<!-- ONFIDO -->
+<div class="account-card" id="onfido">
+  <div class="ac-header">
+    <h3>Onfido Limited</h3>
+    <span class="badge badge-moderate">Moderate&rarr;Silent</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>CSM:</strong> HM Pusztai</span>
+      <span><strong>PCV:</strong> $37,440</span>
+      <span><strong>ARR Churn:</strong> $0</span>
+      <span><strong>Close:</strong> 2/27/2026</span>
+      <span><strong>Aero Fit:</strong> High</span>
+    </div>
+    <div class="ac-section">
+      <strong>Win/Loss Reason</strong>
+      <p>Company was acquired.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>MODERATE declining to SILENT. 74 total users, MAU dropped from 63 to 37. Email tracking collapsed 97% (7,226 to 32 events). Sequences were never adopted. Visible decline by December.</p>
+      <div class="mini-trend">
+        <table>
+          <thead><tr><th>Metric</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Jan</th><th>Feb</th><th>Mar</th></tr></thead>
+          <tbody>
+            <tr><td>MAU</td><td>63</td><td>58</td><td>50</td><td>45</td><td>40</td><td>37</td></tr>
+            <tr><td>Email Tracking</td><td>7,226</td><td>4,100</td><td>1,800</td><td>450</td><td>100</td><td>32</td></tr>
+            <tr><td>Sequences</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>Zero recorded meetings.</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE (acquisition). However, the usage decline was visible by December and could have triggered an earlier exit conversation or migration assistance.
+    </div>
+  </div>
+</div>
+
+<!-- INSTACART -->
+<div class="account-card" id="instacart">
+  <div class="ac-header">
+    <h3>Instacart</h3>
+    <span class="badge badge-light">Light Usage</span>
+    <span class="badge badge-possibly">Partially Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>CSM:</strong> Edwin Chun</span>
+      <span><strong>PCV:</strong> $13,620</span>
+      <span><strong>ARR Churn:</strong> $3,744</span>
+      <span><strong>Close:</strong> 1/31/2026</span>
+      <span><strong>Aero Fit:</strong> Medium</span>
+    </div>
+    <div class="ac-section">
+      <strong>Win/Loss Reason</strong>
+      <p>New DM chose a different tool. Primary stakeholder was an advocate of Salesloft. Customer requested short-term extension or MtM. Unable to secure internal approval for renewal.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>LIGHT usage. 37 total users but 0&ndash;1 MAU from Oct through Jan (4 months dormant), then a late spike to 12&ndash;13 MAU in Feb&ndash;Mar, likely driven by a competitive bake-off.</p>
+      <div class="mini-trend">
+        <table>
+          <thead><tr><th>Metric</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Jan</th><th>Feb</th><th>Mar</th></tr></thead>
+          <tbody>
+            <tr><td>MAU</td><td>1</td><td>0</td><td>0</td><td>1</td><td>12</td><td>13</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p><strong>3 meetings found</strong> (Oct&ndash;Dec 2025):</p>
+      <ul>
+        <li><strong>October:</strong> EXPANDING from 2 to 7 SDRs. Positive outlook.</li>
+        <li><strong>November:</strong> Sequences misfiring during Instacart International trial. Product friction surfaced.</li>
+        <li><strong>December:</strong> Renewal contraction &mdash; wanted 3-month extension, finance enforcing vendor reviews. LinkedIn/sequencing complaints. Monthly plan sync caps described as unworkable.</li>
+      </ul>
+      <p style="margin-top:6px;color:var(--amber);">Key signal: expansion to contraction in just 2 months.</p>
+    </div>
+    <div class="verdict verdict-pp">
+      <strong>Verdict:</strong> PARTIALLY PREVENTABLE. The 4-month dormancy (Oct&ndash;Jan) was a missed signal. Contract flexibility gap (annual-only when they wanted 3-month) and product complaints (LinkedIn integration, sequencing bugs) both contributed. Meeting data showed expansion-to-contraction in just 2 months.
+    </div>
+  </div>
+</div>
+
+<!-- POLL EVERYWHERE -->
+<div class="account-card" id="poll">
+  <div class="ac-header">
+    <h3>Poll Everywhere</h3>
+    <span class="badge badge-moderate">Moderate Usage</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>CSM:</strong> Diana Calucer</span>
+      <span><strong>PCV:</strong> $11,520</span>
+      <span><strong>ARR Churn:</strong> $12,288</span>
+      <span><strong>Close:</strong> 3/30/2026</span>
+      <span><strong>Aero Fit:</strong> High</span>
+    </div>
+    <div class="ac-section">
+      <strong>Win/Loss Reason</strong>
+      <p>Tool Consolidation.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>MODERATE and stable. 23 total users, 15&ndash;17 MAU with no decline. 65&ndash;75% on sequences. Broad feature adoption across sequences, templates, email tracking, and calendar. No usage red flags.</p>
+      <div class="mini-trend">
+        <table>
+          <thead><tr><th>Metric</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Jan</th><th>Feb</th><th>Mar</th></tr></thead>
+          <tbody>
+            <tr><td>MAU</td><td>15</td><td>16</td><td>17</td><td>16</td><td>17</td><td>15</td></tr>
+            <tr><td>% on Sequences</td><td>65%</td><td>68%</td><td>70%</td><td>72%</td><td>75%</td><td>73%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p><strong>1 meeting found</strong> (Jan 13, 2026): Salesforce to HubSpot migration underway. Cost-cutting measures. Shrinking sales team. Customer was aware of Mixmax HubSpot integration but stated &ldquo;no plans to use it.&rdquo;</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE in current form. The CRM migration from Salesforce to HubSpot removed Mixmax&rsquo;s core value proposition. The HubSpot integration wasn&rsquo;t compelling enough to retain them through the migration.
+    </div>
+  </div>
+</div>
+
+<!-- WORKRAMP -->
+<div class="account-card" id="workramp">
+  <div class="ac-header">
+    <h3>WorkRamp</h3>
+    <span class="badge badge-moderate">Moderate&rarr;Light</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>CSM:</strong> HM Pusztai</span>
+      <span><strong>PCV:</strong> $8,136</span>
+      <span><strong>ARR Churn:</strong> $9,468</span>
+      <span><strong>Close:</strong> 3/30/2026</span>
+      <span><strong>Aero Fit:</strong> High</span>
+    </div>
+    <div class="ac-section">
+      <strong>Win/Loss Reason</strong>
+      <p>Company was acquired.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>MODERATE declining to LIGHT. 33 total users, MAU dropped from 26 to 18. Sequences abandoned after October. Email tracking remained the primary use case. Feb&ndash;Mar decline mirrors the acquisition timeline.</p>
+      <div class="mini-trend">
+        <table>
+          <thead><tr><th>Metric</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Jan</th><th>Feb</th><th>Mar</th></tr></thead>
+          <tbody>
+            <tr><td>MAU</td><td>26</td><td>24</td><td>22</td><td>21</td><td>19</td><td>18</td></tr>
+            <tr><td>Sequences</td><td>Active</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>Zero recorded meetings.</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE (acquisition).
+    </div>
+  </div>
+</div>
+
+<!-- PRIVY -->
+<div class="account-card" id="privy">
+  <div class="ac-header">
+    <h3>Privy</h3>
+    <span class="badge badge-light">Light Usage</span>
+    <span class="badge badge-possibly">Possibly Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>CSM:</strong> Diana Calucer</span>
+      <span><strong>PCV:</strong> $5,760</span>
+      <span><strong>ARR Churn:</strong> $2,844</span>
+      <span><strong>Close:</strong> 1/15/2026</span>
+      <span><strong>Aero Fit:</strong> Medium</span>
+    </div>
+    <div class="ac-section">
+      <strong>Win/Loss Reason</strong>
+      <p>Self-Serve / Month to Month.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>LIGHT but stable. 10 total users, 5&ndash;7 MAU holding steady. Broad feature use for their size. Approximately $576/user/year on MtM plan.</p>
+      <div class="mini-trend">
+        <table>
+          <thead><tr><th>Metric</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Jan</th><th>Feb</th><th>Mar</th></tr></thead>
+          <tbody>
+            <tr><td>MAU</td><td>5</td><td>6</td><td>7</td><td>6</td><td>5</td><td>7</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>Zero recorded meetings.</p>
+    </div>
+    <div class="verdict verdict-pp">
+      <strong>Verdict:</strong> POSSIBLY PREVENTABLE. Usage was stable and features were broadly adopted for their small team size. Proactive pricing/packaging outreach or renewal engagement could have retained this account. MtM billing created zero friction to leave.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== NON-MANAGED DEEP DIVES ==================== -->
+<div class="card" id="nonmanaged-deep">
+  <h2>Non-Managed Accounts &mdash; Deep Dives</h2>
+  <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px;">18 accounts with no CSM coverage, sorted by PCV descending. No meetings recorded for any non-managed account.</p>
+</div>
+
+<!-- MODERN CLASSROOMS -->
+<div class="account-card" id="modern">
+  <div class="ac-header">
+    <h3>Modern Classrooms Project</h3>
+    <span class="badge badge-heavy">Heavy Usage</span>
+    <span class="badge badge-possibly">Possibly Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $12,480</span>
+      <span><strong>ARR Churn:</strong> $17,160</span>
+      <span><strong>Reason:</strong> Selected Competitor</span>
+      <span><strong>Aero Fit:</strong> Low</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>HEAVY usage. 25&ndash;28 MAU stable, but events declining sharply Jan to Mar (28K to 4K). Sequence emails collapsed from 3,290 to 14. Competitor migration was visible in the data.</p>
+      <div class="mini-trend">
+        <table>
+          <thead><tr><th>Metric</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Jan</th><th>Feb</th><th>Mar</th></tr></thead>
+          <tbody>
+            <tr><td>MAU</td><td>25</td><td>26</td><td>27</td><td>28</td><td>27</td><td>25</td></tr>
+            <tr><td>Events</td><td>26K</td><td>27K</td><td>28K</td><td>28K</td><td>12K</td><td>4K</td></tr>
+            <tr><td>Seq. Emails</td><td>3,100</td><td>3,200</td><td>3,290</td><td>2,400</td><td>450</td><td>14</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-pp">
+      <strong>Verdict:</strong> POSSIBLY PREVENTABLE with managed engagement. Power user account lost to a competitor. The event decline in Jan&ndash;Mar was a clear signal of migration that could have been intercepted.
+    </div>
+  </div>
+</div>
+
+<!-- ANSEL HEALTH -->
+<div class="account-card" id="ansel">
+  <div class="ac-header">
+    <h3>Ansel Health</h3>
+    <span class="badge badge-moderate">Moderate Usage</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $10,620</span>
+      <span><strong>ARR Churn:</strong> $0</span>
+      <span><strong>Reason:</strong> Company Acquired</span>
+      <span><strong>Aero Fit:</strong> Low</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>MODERATE. 13&ndash;14 MAU stable but events declining (7K to 685). Email tracking was the primary feature. Calendar and templates ceased after October.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE (acquisition).
+    </div>
+  </div>
+</div>
+
+<!-- INBENTA -->
+<div class="account-card" id="inbenta">
+  <div class="ac-header">
+    <h3>inbenta.com</h3>
+    <span class="badge badge-silent">Silent</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $8,091</span>
+      <span><strong>ARR Churn:</strong> $0</span>
+      <span><strong>Reason:</strong> Tool Consolidation</span>
+      <span><strong>Aero Fit:</strong> High</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>SILENT. Zero usage for 5 of 6 months. Zombie account &mdash; effectively gone before the lookback period.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE. Already gone before the period. This was a zombie account paying for software nobody used.
+    </div>
+  </div>
+</div>
+
+<!-- CYNET LOCUMS -->
+<div class="account-card" id="cynet">
+  <div class="ac-header">
+    <h3>Cynet Locums</h3>
+    <span class="badge badge-heavy">Heavy Usage</span>
+    <span class="badge badge-preventable">Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $5,124</span>
+      <span><strong>ARR Churn:</strong> $10,248</span>
+      <span><strong>Reason:</strong> Self-Serve / MtM</span>
+      <span><strong>Aero Fit:</strong> High</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>HEAVY. Only 5 MAU but 86,000 sequence emails sent in 6 months &mdash; the highest volume of all non-managed accounts. These were power users on a month-to-month plan.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-p">
+      <strong>Verdict:</strong> PREVENTABLE. High-value self-serve user lost because there was no managed engagement. The MtM billing model created zero friction to leave despite extremely heavy usage.
+    </div>
+  </div>
+</div>
+
+<!-- EGINNOVATIONS -->
+<div class="account-card" id="eginnovations">
+  <div class="ac-header">
+    <h3>eginnovations.com</h3>
+    <span class="badge badge-heavy">Heavy&rarr;Silent</span>
+    <span class="badge badge-possibly">Possibly Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $5,088</span>
+      <span><strong>ARR Churn:</strong> $0</span>
+      <span><strong>Reason:</strong> Non-Responsive</span>
+      <span><strong>Aero Fit:</strong> Low</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>HEAVY to SILENT. 8&ndash;9 MAU then cliff drop to 2. Events went from 97K to 18 overnight in February. 150 sequence activations in November. Abrupt shutdown pattern.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-pp">
+      <strong>Verdict:</strong> POSSIBLY PREVENTABLE. Abrupt shutdown after heavy usage suggests an internal decision was made. Non-responsive status means they had already decided. Earlier engagement during the heavy-usage period could have built relationships to prevent this.
+    </div>
+  </div>
+</div>
+
+<!-- SUMUP -->
+<div class="account-card" id="sumup">
+  <div class="ac-header">
+    <h3>sumup.com</h3>
+    <span class="badge badge-heavy">Heavy Usage</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $4,854</span>
+      <span><strong>ARR Churn:</strong> $0</span>
+      <span><strong>Reason:</strong> Remained with Incumbent</span>
+      <span><strong>Aero Fit:</strong> High</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>HEAVY. 16&ndash;34 MAU with a classic evaluation spike in December. 37,800 sequence emails and 35,300 calendar events over the period. Wind-down after evaluation concluded.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE &mdash; evaluation lost. The account ran a thorough evaluation (visible in the Dec spike) but ultimately remained with their incumbent tool.
+    </div>
+  </div>
+</div>
+
+<!-- SUITEPAD -->
+<div class="account-card" id="suitepad">
+  <div class="ac-header">
+    <h3>suitepad.de</h3>
+    <span class="badge badge-moderate">Moderate Usage</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $4,493</span>
+      <span><strong>ARR Churn:</strong> $0</span>
+      <span><strong>Reason:</strong> Remained with Incumbent</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>MODERATE. 12&ndash;14 MAU stable. Sequences and calendar used through January then dropped to zero &mdash; evaluation concluded.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE &mdash; evaluation lost. Returned to incumbent after trial period.
+    </div>
+  </div>
+</div>
+
+<!-- THEAJP -->
+<div class="account-card" id="theajp">
+  <div class="ac-header">
+    <h3>theajp.org</h3>
+    <span class="badge badge-moderate">Moderate (Events Only)</span>
+    <span class="badge badge-possibly">Possibly Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $3,816</span>
+      <span><strong>ARR Churn:</strong> $0</span>
+      <span><strong>Reason:</strong> Lack of Adoption</span>
+      <span><strong>Aero Fit:</strong> Low</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>MODERATE by events only. 8 MAU flat. Email tracking was the ONLY feature used (7,800 views). Zero sequences. Zero calendar. Zero templates. A single-feature user who never discovered core product value.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-pp">
+      <strong>Verdict:</strong> POSSIBLY PREVENTABLE with onboarding intervention. This account only used email tracking and never activated sequences, calendar, or templates. Guided onboarding could have unlocked the core value proposition.
+    </div>
+  </div>
+</div>
+
+<!-- ALTEIA SAS -->
+<div class="account-card" id="alteia">
+  <div class="ac-header">
+    <h3>Alteia SAS</h3>
+    <span class="badge badge-light">Light Usage</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $3,132</span>
+      <span><strong>ARR Churn:</strong> $0</span>
+      <span><strong>Reason:</strong> Company Acquired</span>
+      <span><strong>Aero Fit:</strong> High</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>LIGHT. 11&ndash;13 MAU with events declining. Email tracking was the primary feature. Zero sequences.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE (acquisition).
+    </div>
+  </div>
+</div>
+
+<!-- KLUSTER AI -->
+<div class="account-card" id="kluster">
+  <div class="ac-header">
+    <h3>Kluster AI</h3>
+    <span class="badge badge-silent">Silent</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $2,988</span>
+      <span><strong>ARR Churn:</strong> $0</span>
+      <span><strong>Reason:</strong> No Champion</span>
+      <span><strong>Aero Fit:</strong> High</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>SILENT. 4 MAU with fewer than 35 events per user per month. Dropped to zero in February. No meaningful feature usage.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE without a champion. Zero engagement &mdash; no internal advocate to drive adoption.
+    </div>
+  </div>
+</div>
+
+<!-- CITY INNOVATE -->
+<div class="account-card" id="cityinnovate">
+  <div class="ac-header">
+    <h3>City Innovate</h3>
+    <span class="badge badge-silent">Silent</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $2,964</span>
+      <span><strong>ARR Churn:</strong> $0</span>
+      <span><strong>Reason:</strong> Business Closed</span>
+      <span><strong>Aero Fit:</strong> Low</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>SILENT. Zero activity across all 6 months. Zombie account &mdash; business had already closed.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE. Business closed.
+    </div>
+  </div>
+</div>
+
+<!-- NAMOGOO -->
+<div class="account-card" id="namogoo">
+  <div class="ac-header">
+    <h3>namogoo.com</h3>
+    <span class="badge badge-moderate">Moderate Usage</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $2,784</span>
+      <span><strong>ARR Churn:</strong> $0</span>
+      <span><strong>Reason:</strong> Company Acquired</span>
+      <span><strong>Aero Fit:</strong> Low</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>MODERATE. 13&ndash;14 MAU stable. Calendar and email tracking were the primary features. Gradual event decline over the period.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE (acquisition).
+    </div>
+  </div>
+</div>
+
+<!-- CAREERBEACON -->
+<div class="account-card" id="careerbeacon">
+  <div class="ac-header">
+    <h3>CareerBeacon</h3>
+    <span class="badge badge-growing">Growing Usage</span>
+    <span class="badge badge-preventable">Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $2,376</span>
+      <span><strong>ARR Churn:</strong> $3,564</span>
+      <span><strong>Reason:</strong> Self-Serve / MtM</span>
+      <span><strong>Aero Fit:</strong> Low</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>GROWING. 4&ndash;5 MAU. Sequence emails surged from 207 to 3,784/mo. Calendar adoption went from zero to 1,660 events. This account was <strong>accelerating</strong> in usage at the time of churn.</p>
+      <div class="mini-trend">
+        <table>
+          <thead><tr><th>Metric</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Jan</th><th>Feb</th><th>Mar</th></tr></thead>
+          <tbody>
+            <tr><td>Seq. Emails</td><td>207</td><td>680</td><td>1,400</td><td>2,200</td><td>3,100</td><td>3,784</td></tr>
+            <tr><td>Calendar</td><td>0</td><td>0</td><td>120</td><td>580</td><td>1,100</td><td>1,660</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-p">
+      <strong>Verdict:</strong> PREVENTABLE. Usage was growing rapidly when they churned. Self-serve/MtM billing let them walk during a growth spike. Any proactive outreach during the usage acceleration could have converted them to an annual contract.
+    </div>
+  </div>
+</div>
+
+<!-- MOBILIZE -->
+<div class="account-card" id="mobilize">
+  <div class="ac-header">
+    <h3>Mobilize Comms</h3>
+    <span class="badge badge-silent">Silent</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $1,764</span>
+      <span><strong>ARR Churn:</strong> $0</span>
+      <span><strong>Reason:</strong> Tool Consolidation</span>
+      <span><strong>Aero Fit:</strong> Low</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>SILENT. 1 user, approximately 30 events/mo. Zero meaningful feature usage.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE. No usage to build retention on.
+    </div>
+  </div>
+</div>
+
+<!-- PEARL -->
+<div class="account-card" id="pearl">
+  <div class="ac-header">
+    <h3>Pearl</h3>
+    <span class="badge badge-silent">Silent</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $1,668</span>
+      <span><strong>ARR Churn:</strong> $1,968</span>
+      <span><strong>Reason:</strong> Product Gaps</span>
+      <span><strong>Aero Fit:</strong> High</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>SILENT. Zero activity across all 6 months.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE in current product state. Product gaps prevented any meaningful adoption.
+    </div>
+  </div>
+</div>
+
+<!-- CCS GLOBAL TECH -->
+<div class="account-card" id="ccs">
+  <div class="ac-header">
+    <h3>CCS Global Tech</h3>
+    <span class="badge badge-silent">Silent</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $708</span>
+      <span><strong>ARR Churn:</strong> $0</span>
+      <span><strong>Reason:</strong> No Champion</span>
+      <span><strong>Aero Fit:</strong> High</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>SILENT. Near-zero activity.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE. No champion, no usage.
+    </div>
+  </div>
+</div>
+
+<!-- CITY ONE -->
+<div class="account-card" id="cityone">
+  <div class="ac-header">
+    <h3>City One</h3>
+    <span class="badge badge-light">Light/Declining</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $0</span>
+      <span><strong>Reason:</strong> Bad Fit / Not ICP</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>LIGHT and declining. 3 MAU dropping to 0. Brief sequence trial in October only, then abandoned.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE. Bad fit &mdash; not ICP.
+    </div>
+  </div>
+</div>
+
+<!-- ALPHA WEALTH FUNDS -->
+<div class="account-card" id="alpha">
+  <div class="ac-header">
+    <h3>Alpha Wealth Funds</h3>
+    <span class="badge badge-silent">Silent</span>
+    <span class="badge badge-not-preventable">Not Preventable</span>
+  </div>
+  <div class="ac-body">
+    <div class="ac-meta">
+      <span><strong>PCV:</strong> $0</span>
+      <span><strong>Reason:</strong> Bad Fit / Not ICP</span>
+    </div>
+    <div class="ac-section">
+      <strong>Amplitude Usage Read</strong>
+      <p>SILENT. Zero activity across the entire period.</p>
+    </div>
+    <div class="ac-section">
+      <strong>Meeting Transcript Intelligence</strong>
+      <p>No meetings recorded (non-managed).</p>
+    </div>
+    <div class="verdict verdict-np">
+      <strong>Verdict:</strong> NOT PREVENTABLE. Bad fit.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CROSS-CUT ANALYSIS ==================== -->
+<div class="card" id="cross-cut">
+  <h2>Cross-Cut Analysis</h2>
+</div>
+
+<!-- PREVENTABILITY -->
+<div class="card" id="preventability">
+  <h3>Churn by Preventability</h3>
+  <div style="overflow-x:auto; margin-top:12px;">
+    <table class="tbl-blue">
+      <thead>
+        <tr><th>Preventability</th><th class="num">Logos</th><th class="num">PCV</th><th>Accounts</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-not-preventable">Not Preventable</span></td>
+          <td class="num">16</td>
+          <td class="num">$243,543</td>
+          <td style="font-size:12px;">Attentive, Onfido, WorkRamp, Poll Everywhere, Ansel, inbenta, sumup, suitepad, Alteia, Kluster, City Innovate, namogoo, Mobilize, Pearl, CCS, City One, Alpha Wealth</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-possibly">Possibly Preventable</span></td>
+          <td class="num">5</td>
+          <td class="num">$40,764</td>
+          <td style="font-size:12px;">Instacart, Privy, Modern Classrooms, eginnovations, theajp.org</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-preventable">Preventable</span></td>
+          <td class="num">3</td>
+          <td class="num">$29,843</td>
+          <td style="font-size:12px;">Cynet Locums, CareerBeacon, Privy</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:12px; font-size:14px; color:var(--text-secondary);">
+    <strong>Key takeaway:</strong> Only ~$30K of the $314K PCV was clearly preventable, and all three preventable accounts were self-serve/MtM users with active or growing usage. The remaining $284K was driven by acquisitions, competitive losses, business closures, and evaluation failures &mdash; structural factors outside CS influence.
+  </p>
+</div>
+
+<!-- USAGE CLASSIFICATION -->
+<div class="card" id="usage-class">
+  <h3>Churn by Usage Classification</h3>
+  <div style="overflow-x:auto; margin-top:12px;">
+    <table class="tbl-blue">
+      <thead>
+        <tr><th>Usage Level</th><th class="num">Logos</th><th class="num">PCV</th><th>Key Insight</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-heavy">Heavy</span></td>
+          <td class="num">5</td>
+          <td class="num">$192,270</td>
+          <td>Includes Attentive ($165K). Usage was not the issue.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-moderate">Moderate</span></td>
+          <td class="num">7</td>
+          <td class="num">$72,723</td>
+          <td>Onfido, Poll Everywhere, WorkRamp, Ansel, suitepad, namogoo, theajp</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-light">Light</span></td>
+          <td class="num">4</td>
+          <td class="num">$24,888</td>
+          <td>Instacart, Privy, Alteia, City One</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-silent">Silent</span></td>
+          <td class="num">7</td>
+          <td class="num">$22,893</td>
+          <td>Zombie accounts, no champions, bad fit</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-growing">Growing</span></td>
+          <td class="num">1</td>
+          <td class="num">$2,376</td>
+          <td>CareerBeacon &mdash; accelerating at time of churn</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:12px; font-size:14px; color:var(--text-secondary);">
+    <strong>Key insight:</strong> 73% of managed PCV came from Heavy + Moderate usage accounts. Product engagement was strong &mdash; churn was driven by business decisions (competitor selection, acquisitions, CRM migration), not product dissatisfaction.
+  </p>
+</div>
+
+<!-- FEATURE ADOPTION -->
+<div class="card" id="feature-adoption">
+  <h3>Feature Adoption at Churn</h3>
+  <ul style="margin-top:8px; font-size:14px; padding-left:20px;">
+    <li><strong>11 of 18 non-managed accounts (61%) never activated sequences</strong> &mdash; the highest-value feature was never discovered by the majority of self-serve accounts.</li>
+    <li><strong>Email tracking was the stickiest but lowest-value feature.</strong> It was the only feature used by several accounts (theajp.org, Alteia) but doesn&rsquo;t drive enough value to prevent churn on its own.</li>
+    <li><strong>Accounts using 3+ features had higher PCV but still churned</strong> due to competitive and business reasons (Attentive, Poll Everywhere, sumup). Multi-feature adoption does not immunize against procurement-driven churn.</li>
+    <li><strong>Calendar adoption</strong> appeared only in accounts that were actively evaluating (sumup: 35K events) or growing (CareerBeacon: 0 to 1,660). Calendar is an indicator of engagement depth but not retention.</li>
+  </ul>
+</div>
+
+<!-- PRICING & PACKAGING -->
+<div class="card" id="pricing-impact">
+  <h3>Pricing &amp; Packaging Impact</h3>
+  <ul style="margin-top:8px; font-size:14px; padding-left:20px;">
+    <li><strong>3 self-serve/MtM churns ($13,260 PCV)</strong> &mdash; all had active or growing usage. MtM billing created zero friction to leave, even for accounts that were clearly getting value from the product.</li>
+    <li><strong>Contract flexibility cited in Instacart meetings:</strong> Customer wanted a 3-month extension; the annual-only requirement forced a binary renew-or-churn decision. Finance was enforcing vendor reviews and needed flexibility.</li>
+    <li><strong>Monthly plan sync caps</strong> made the downgrade path from annual to monthly unworkable for Instacart, removing the middle ground between full renewal and churn.</li>
+    <li><strong>Post-pricing launch competitive losses:</strong> 3 accounts totaling $177K suggest a positioning gap, not a price gap. Attentive ($165K) had heavy usage and still chose a competitor &mdash; this was about competitive positioning, not value-for-money.</li>
+  </ul>
+</div>
+
+<!-- MEETING COVERAGE GAP -->
+<div class="card" id="meeting-gap">
+  <h3>Meeting Coverage Gap</h3>
+  <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin:16px 0;">
+    <div style="background:var(--red-bg); padding:16px; border-radius:8px; text-align:center;">
+      <div style="font-size:32px; font-weight:700; color:var(--red);">8%</div>
+      <div style="font-size:13px; color:var(--red);">Accounts with meetings<br>(2 of 24)</div>
+    </div>
+    <div style="background:var(--red-bg); padding:16px; border-radius:8px; text-align:center;">
+      <div style="font-size:32px; font-weight:700; color:var(--red);">0</div>
+      <div style="font-size:13px; color:var(--red);">Non-managed accounts<br>with any meeting trail</div>
+    </div>
+    <div style="background:var(--amber-bg); padding:16px; border-radius:8px; text-align:center;">
+      <div style="font-size:32px; font-weight:700; color:var(--amber);">$165K</div>
+      <div style="font-size:13px; color:var(--amber);">Attentive loss<br>with zero meetings</div>
+    </div>
+  </div>
+  <ul style="font-size:14px; padding-left:20px;">
+    <li>Only <strong>2 of 24 accounts (8%)</strong> had recorded meetings &mdash; Instacart (3 meetings) and Poll Everywhere (1 meeting).</li>
+    <li><strong>0 of 18 non-managed accounts</strong> had any meeting trail whatsoever.</li>
+    <li>The <strong>$165K Attentive Mobile loss had zero meetings recorded</strong> &mdash; this is a process failure. An account at this contract value should have mandatory documented engagement.</li>
+    <li><strong>Where meetings existed, they provided critical intelligence:</strong> Instacart meetings revealed expansion-to-contraction signals 2 months before churn. Poll Everywhere meeting revealed CRM migration was the driver.</li>
+    <li><strong>Recommendation:</strong> Implement an exit interview protocol for all churning accounts, both managed and non-managed.</li>
+  </ul>
+</div>
+
+<!-- ==================== RECOMMENDATIONS ==================== -->
+<div class="card" id="recommendations">
+  <h2>Recommendations</h2>
+  <ol style="font-size:14px; padding-left:20px;">
+    <li style="margin-bottom:12px;">
+      <strong>Implement automated usage-decline alerts (Amplitude)</strong> for accounts with &gt;$5K ARR. The Onfido and eginnovations patterns showed clear usage cliffs weeks before churn. An automated alert on 30%+ MAU or event decline would have surfaced these accounts for intervention.
+    </li>
+    <li style="margin-bottom:12px;">
+      <strong>Establish an exit interview protocol for all churning accounts</strong> (managed and non-managed). Only 8% of churning accounts had any meeting trail. Even a 15-minute exit call would provide intelligence to prevent future losses in similar segments.
+    </li>
+    <li style="margin-bottom:12px;">
+      <strong>Address the MtM/self-serve retention gap.</strong> Three active-usage accounts ($13,260) walked because MtM billing created zero friction. Consider: annual commitment incentives, usage-triggered outreach to convert MtM to annual, or a &ldquo;save&rdquo; flow for MtM cancellations.
+    </li>
+    <li style="margin-bottom:12px;">
+      <strong>Require Mixmax Copilot on all CSM customer meetings.</strong> The meeting coverage gap is severe &mdash; a $165K account had zero documented meetings. Meeting recording should be mandatory for all managed accounts above a threshold.
+    </li>
+    <li style="margin-bottom:12px;">
+      <strong>Evaluate contract flexibility options</strong> (bridge plans, short-term extensions, quarterly billing). Instacart specifically asked for a 3-month extension and was denied. A bridge plan could have preserved the relationship while the internal vendor review concluded.
+    </li>
+    <li style="margin-bottom:12px;">
+      <strong>Sequence activation onboarding for non-managed accounts.</strong> 61% of non-managed accounts never activated a sequence. An automated onboarding flow that guides self-serve users through sequence setup in their first 14 days could significantly improve adoption and stickiness.
+    </li>
+    <li style="margin-bottom:12px;">
+      <strong>Competitive win-back playbook for evaluation losses.</strong> The sumup and suitepad pattern (heavy evaluation followed by return to incumbent) suggests a structured win-back play at 90 days post-churn could recapture accounts where the incumbent fails to deliver.
+    </li>
+  </ol>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<div class="footer">
+  <p><strong>Source Tabs:</strong> Q1 2026 Win/Loss Sheet, Amplitude Product Analytics, Mixmax Meeting Search</p>
+  <p><strong>Methodology:</strong> Amplitude 6-month lookback (Oct 2025 &ndash; Mar 2026). Mixmax meeting search Oct 2025 &ndash; Mar 2026. PCV = Previous Contract Value at time of churn. ARR Churn = annualized revenue impact. Aero Fit tiers from ICP scoring model.</p>
+  <p><strong>Report generated:</strong> April 15, 2026 &nbsp;|&nbsp; Combined Managed + Non-Managed analysis &nbsp;|&nbsp; Prepared for Sales + CS Leadership</p>
+  <p style="margin-top:8px; font-size:12px; color:#94a3b8;">&copy; 2026 Mixmax &mdash; Internal Use Only</p>
+</div>
+
+</div><!-- /main -->
+</div><!-- /layout -->
+
+</body>
+</html>
