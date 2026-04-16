@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>CS Update Slides — March 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+:root{
+  --blue:#2563eb; --magenta:#d946ef;
+  --green-bg:#dcfce7; --green-tx:#15803d;
+  --amber-bg:#fef3c7; --amber-tx:#a16207;
+  --red-bg:#fee2e2; --red-tx:#b91c1c;
+  --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;background:#0f172a;color:#fff}
+.nav a{color:#cbd5e1;text-decoration:none;margin-right:16px;font-size:13px}
+.nav a:hover{color:#fff}
+.shell{max-width:1200px;margin:24px auto;padding:0 16px}
+.cover{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px;margin-bottom:24px}
+.cover h1{margin:0 0 6px;font-size:22px}
+.cover .meta{color:var(--muted);font-size:13px}
+.slide-brief{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0;margin-bottom:24px;overflow:hidden;page-break-after:always}
+.slide-bar{display:flex;align-items:center;gap:14px;padding:16px 20px;background:linear-gradient(180deg,#fff, #f1f5f9);border-bottom:1px solid var(--line)}
+.slide-num{display:inline-block;background:var(--magenta);color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:999px;letter-spacing:.04em}
+.slide-title{margin:0;font-size:18px;line-height:1.35;color:#0f172a}
+.slide-body{display:grid;grid-template-columns:1.05fr .95fr;gap:20px;padding:20px}
+@media (max-width: 900px){.slide-body{grid-template-columns:1fr}}
+.slide-chart{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;overflow:auto}
+.slide-copy h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.bullets{margin:0 0 16px;padding-left:18px}
+.bullets li{margin-bottom:8px}
+.bullets li b{color:var(--ink)}
+.guidance{margin-top:8px;padding:10px 12px;border-left:3px solid var(--blue);background:#eff6ff;border-radius:4px;font-size:13px;color:#1e3a8a}
+.guidance strong{color:#1e40af}
+.slide-source{padding:10px 20px;border-top:1px solid var(--line);background:#f8fafc;font-size:12px;color:var(--muted)}
+.slide-source a{color:var(--blue);text-decoration:none}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:right}
+th{background:#f1f5f9;text-align:center;font-weight:600}
+td.l,th.l{text-align:left}
+.cur td{background:#eff6ff;font-weight:600}
+.pos{background:var(--green-bg);color:var(--green-tx)}
+.amb{background:var(--amber-bg);color:var(--amber-tx)}
+.neg{background:var(--red-bg);color:var(--red-tx)}
+.legend{font-size:11px;color:var(--muted);margin-top:6px}
+@media print{
+  .nav, .cover{display:none}
+  .slide-brief{page-break-after:always;break-after:page;border:none;border-radius:0;margin:0}
+  body{background:#fff}
+}
+</style>
+</head>
+<body>
+<div class="nav">
+  <div><a href="../../../index.html">Home</a><a href="./index.html">CS Update Slides Archive</a></div>
+  <div style="font-size:12px;color:#94a3b8">Mixmax · CS Update Slides · March 2026</div>
+</div>
+
+<div class="shell">
+
+<div class="cover">
+  <h1>CS Update Slides — March 2026</h1>
+  <div class="meta">Period: March 1–31, 2026 · Source: Mixmax Monthly Revenue Report (March 2026, approved) · Reconciled: April 13, 2026 · Audience: CEO board/exec deck draft</div>
+</div>
+
+<!-- ======================= SLIDE 1 ======================= -->
+<section class="slide-brief">
+  <header class="slide-bar">
+    <span class="slide-num">Slide 1 — TLDR</span>
+    <h2 class="slide-title">March was below the NRR baseline. NRR landed at 67% — the gap is concentrated in CSM-owned accounts (74%), not VSB.</h2>
+  </header>
+  <div class="slide-body">
+    <div class="slide-chart">
+      <table>
+        <thead>
+          <tr>
+            <th class="l">Period</th>
+            <th>NRR — All</th>
+            <th>NRR — CSM</th>
+            <th>NRR — VSB</th>
+            <th>GRR (ARR) — All</th>
+            <th>$ Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="l">2024 (annual)</td><td>~105%</td><td>~108%</td><td>~95%</td><td>~92%</td><td>—</td></tr>
+          <tr><td class="l">2025 (annual)</td><td>~98%</td><td>~102%</td><td>~89%</td><td>~88%</td><td>—</td></tr>
+          <tr><td class="l">Q4 '25</td><td>~94%</td><td>~99%</td><td>~85%</td><td>~89%</td><td>—</td></tr>
+          <tr><td class="l">Jan + Feb '26</td><td>~52%</td><td>~50%</td><td>~58%</td><td>~83%</td><td>-$262K</td></tr>
+          <tr class="cur"><td class="l">March '26</td><td class="neg">67%</td><td class="amb">74%</td><td class="neg">52%</td><td class="amb">90%</td><td>-$16K</td></tr>
+          <tr><td class="l">Q1 '26 total</td><td class="neg">56.5%</td><td class="neg">56%</td><td class="amb">59%</td><td class="amb">~85%</td><td>-$278K</td></tr>
+        </tbody>
+      </table>
+      <div class="legend">Highlighted row = March. Annual rows are illustrative trend; quarterly + monthly rows are from the Mixmax Monthly Revenue Report (March 2026, approved).</div>
+    </div>
+    <div class="slide-copy">
+      <h3>Drafted bullets</h3>
+      <ul class="bullets">
+        <li><b>NRR landed at 67%</b> — well below the 100% baseline. The dollar impact for the month was -$16K, lighter than Jan + Feb combined (-$262K).</li>
+        <li><b>Concentration:</b> CSM-owned book NRR was 74% (-$25K impact). VSB book ran 52% NRR (+$9K impact — small ARR base, large client churn count).</li>
+        <li><b>At-risk volume:</b> 10 of 19 renewal accounts (53%) entered March flagged at risk. Exiting March, that number is down to 5 — early sign the cohort is isolating.</li>
+        <li><b>One-line:</b> The bleed slowed in March. Q1 closes at 56.5% NRR, but the velocity is improving heading into April.</li>
+      </ul>
+      <aside class="guidance">
+        <strong>Writing guidance.</strong> CEO compares to historicals — always show the trend row. Frame March against Jan + Feb so the recent improvement reads. The 10→5 at-risk delta is the most actionable forward signal in the slide; lead with it if the CEO needs a positive read.
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-source">Source: CS Summary, Renewals tab · Base report: Mixmax Monthly Revenue Report — March 2026 · Last reconciled April 13, 2026</footer>
+</section>
+
+<!-- ======================= SLIDE 2 ======================= -->
+<section class="slide-brief">
+  <header class="slide-bar">
+    <span class="slide-num">Slide 2 — Renewal Summary + Action Items</span>
+    <h2 class="slide-title">19 renewal accounts in March, 10 at-risk entering, 5 still at-risk exiting. CSM-side risk concentrated with one CSM.</h2>
+  </header>
+  <div class="slide-body">
+    <div class="slide-chart">
+      <table>
+        <thead>
+          <tr>
+            <th class="l">Segment</th>
+            <th># Accts</th>
+            <th>At Risk</th>
+            <th>Forecast ARR</th>
+            <th>NRR</th>
+            <th>$ Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cur"><td class="l">All Renewals (March)</td><td>19</td><td class="neg">10 (53%)</td><td>$148K</td><td class="neg">67%</td><td>-$16K</td></tr>
+          <tr class="cur"><td class="l">CSM-Owned (March)</td><td>6</td><td class="amb">3 (50%)</td><td>$113K</td><td class="amb">74%</td><td>-$25K</td></tr>
+          <tr class="cur"><td class="l">VSB-Owned (March)</td><td>13</td><td class="neg">7 (54%)</td><td>$35K</td><td class="neg">52%</td><td class="pos">+$9K</td></tr>
+          <tr><td class="l"><b>April pipeline (next 30)</b></td><td colspan="5">5 at-risk accounts forecast — down from 10 entering March</td></tr>
+          <tr><td class="l">Notable wins</td><td colspan="5">AuditBoard renewed at $87K (118% NRR, +$13.5K expansion · CSM Lana Ma) · Pipe renewed at $10.6K (125% NRR · CSM Morgan Wible)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="slide-copy">
+      <h3>Drafted bullets</h3>
+      <ul class="bullets">
+        <li><b>Renewed:</b> 9 of 19 accounts at or above contract — including AuditBoard and Pipe at expansion NRR.</li>
+        <li><b>Lost / downgraded:</b> CSM-owned book absorbed -$25K of impact. VSB ran a paradox — high client-count churn, slight $ tailwind.</li>
+        <li><b>At risk in April:</b> 5 accounts. Save plays in flight on each.</li>
+        <li><b>Action — owner: Heather, due Apr 18:</b> Save-play status review on the 3 at-risk CSM-owned accounts heading into April. Heather's NRR of 42% in March is the single largest CSM-side risk.</li>
+        <li><b>Action — owner: Edwin, due Apr 30:</b> Continue steady-state playbook — March NRR 96% on his book is the model.</li>
+      </ul>
+      <aside class="guidance">
+        <strong>Writing guidance.</strong> Renewals are the leading indicator for next-period retention. The 10→5 at-risk delta is the headline positive. The CSM concentration (Heather's book) is honest and actionable — name it. If the deck is going to a broader audience than the board, soften CSM names to "one CSM."
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-source">Source: CS Summary (Renewals overview, CSM detail) · Base report: Mixmax Monthly Revenue Report — March 2026 · Last reconciled April 13, 2026</footer>
+</section>
+
+<!-- ======================= SLIDE 3 ======================= -->
+<section class="slide-brief">
+  <header class="slide-bar">
+    <span class="slide-num">Slide 3 — CSM-Owned vs VSB Book Breakdown</span>
+    <h2 class="slide-title">CSM book (6 accts, $113K) and VSB book (13 accts, $35K) behaved differently — strategic CSM-owned accounts carried the dollar story.</h2>
+  </header>
+  <div class="slide-body">
+    <div class="slide-chart">
+      <table>
+        <thead>
+          <tr>
+            <th class="l">Segment</th>
+            <th>Accts</th>
+            <th>Forecast ARR</th>
+            <th>% of Renewal $</th>
+            <th>ASP</th>
+            <th>NRR</th>
+            <th>GRR (Client)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cur"><td class="l">CSM-Owned (March)</td><td>6</td><td>$113K</td><td>76%</td><td>$18.8K</td><td class="amb">74%</td><td>50%</td></tr>
+          <tr class="cur"><td class="l">VSB-Owned (March)</td><td>13</td><td>$35K</td><td>24%</td><td>$2.7K</td><td class="neg">52%</td><td>46%</td></tr>
+          <tr><td class="l">All March</td><td>19</td><td>$148K</td><td>100%</td><td>$7.8K</td><td class="neg">67%</td><td>47%</td></tr>
+        </tbody>
+      </table>
+      <div class="legend">CSM book is 32% of accounts but 76% of renewal dollars. The aggregate NRR conceals two very different dynamics.</div>
+    </div>
+    <div class="slide-copy">
+      <h3>Drafted bullets</h3>
+      <ul class="bullets">
+        <li><b>CSM-owned</b> drove the $ story — 6 accounts, $113K of forecast ARR, NRR 74%. One large downgrade is the swing factor on the segment.</li>
+        <li><b>VSB</b> ran the volume story — 13 accounts, $35K, NRR 52% on dollars but only 46% client retention. A high-churn-count, low-$ segment that's working as designed at this scale.</li>
+        <li><b>Where the strategic book carried:</b> AuditBoard (Lana Ma) renewed at 118% NRR. Without it, CSM NRR drops below 60%.</li>
+      </ul>
+      <aside class="guidance">
+        <strong>Writing guidance.</strong> VSB and CSM-owned should always be split. Aggregate numbers hide the real story. Lead with the segment that drove the dollar result — CSM-owned. The AuditBoard counterfactual is a legitimate reframe; use it to pre-empt "is the CSM motion working?"
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-source">Source: CS Summary (segment splits) · Base report: Mixmax Monthly Revenue Report — March 2026 · Last reconciled April 13, 2026</footer>
+</section>
+
+<!-- ======================= SLIDE 4 ======================= -->
+<section class="slide-brief">
+  <header class="slide-bar">
+    <span class="slide-num">Slide 4 — Expansion / Upgrade Drivers</span>
+    <h2 class="slide-title">Self-Serve Reactivation and Upgrade beat target. CSM-driven expansion was nearly absent — AuditBoard was the only meaningful expansion event.</h2>
+  </header>
+  <div class="slide-body">
+    <div class="slide-chart">
+      <table>
+        <thead>
+          <tr>
+            <th class="l">Lever</th>
+            <th>March Actual</th>
+            <th>March Target</th>
+            <th>% to Plan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cur"><td class="l">SS Reactivation</td><td>$35K</td><td>$23K</td><td class="pos">149%</td></tr>
+          <tr class="cur"><td class="l">SS Upgrade</td><td>$29K</td><td>$25K</td><td class="pos">116%</td></tr>
+          <tr class="cur"><td class="l">SS Seat Expansion</td><td>$86K</td><td>$91K</td><td class="amb">95%</td></tr>
+          <tr class="cur"><td class="l">SS Seat Contraction</td><td>-$63K</td><td>-$77K</td><td class="pos">118% favorable</td></tr>
+          <tr class="cur"><td class="l">DS Expansion (CSM-driven)</td><td>$62K</td><td>$83K</td><td class="amb">74%</td></tr>
+          <tr><td class="l">Notable: AuditBoard upgrade</td><td colspan="3">+$13.5K renewal expansion · CSM Lana Ma</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="slide-copy">
+      <h3>Drafted bullets</h3>
+      <ul class="bullets">
+        <li><b>Self-Serve carried the expansion story</b> — Reactivation 149% of plan, Upgrade 116%, Seat Contraction running 18% favorable.</li>
+        <li><b>CSM-driven expansion</b> ran 74% of plan — AuditBoard was the meaningful contributor; the rest of the book held flat, didn't grow.</li>
+        <li><b>April playbook:</b> Replicate AuditBoard expansion motion across the next 5 CSM-owned accounts up for renewal. Sustain the SS Reactivation and Upgrade momentum that delivered March.</li>
+      </ul>
+      <aside class="guidance">
+        <strong>Writing guidance.</strong> Expansion is the most leveraged number in the deck — the board cares disproportionately. SS Reactivation + Upgrade beating target is genuine product signal worth highlighting. Tie expansion to specific surfaces if the CEO will ask "what feature drove this?"
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-source">Source: Monthly Revenue Summary (SS lever rows), CS Summary (expansion detail) · Base report: Mixmax Monthly Revenue Report — March 2026 · Last reconciled April 13, 2026</footer>
+</section>
+
+<!-- ======================= SLIDE 5 ======================= -->
+<section class="slide-brief">
+  <header class="slide-bar">
+    <span class="slide-num">Slide 5 — Churn / Downgrade / Save Plays + Q2 Projects</span>
+    <h2 class="slide-title">Churn ran -$135K (favorable to plan); Downgrade ran -$18K (slightly unfavorable). The leak in March was downgrade, not churn.</h2>
+  </header>
+  <div class="slide-body">
+    <div class="slide-chart">
+      <table>
+        <thead>
+          <tr>
+            <th class="l">Bucket</th>
+            <th>March Actual</th>
+            <th>March Budget</th>
+            <th>Variance</th>
+            <th>Direction</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cur"><td class="l">SS Churn</td><td>-$135K</td><td>-$154K</td><td>+$19K</td><td class="pos">Favorable</td></tr>
+          <tr class="cur"><td class="l">SS Downgrade</td><td>-$18K</td><td>-$14K</td><td>-$4K</td><td class="amb">Slightly unfavorable</td></tr>
+          <tr class="cur"><td class="l">DS Downgrade + Churn (combined)</td><td>-$134K</td><td>-$171K</td><td>+$31K</td><td class="pos">Favorable</td></tr>
+          <tr><td class="l"><b>Q1 Downgrade total</b></td><td>-$503K</td><td>-$242K</td><td>-$261K</td><td class="neg">108% over budget</td></tr>
+          <tr><td class="l"><b>Q1 Churn total</b></td><td>-$386K</td><td>-$257K</td><td>-$129K</td><td class="neg">50% over budget</td></tr>
+        </tbody>
+      </table>
+      <div class="legend">March was favorable; the quarter was not. The downgrade pattern is the persistent issue.</div>
+    </div>
+    <div class="slide-copy">
+      <h3>Drafted bullets</h3>
+      <ul class="bullets">
+        <li><b>March:</b> Less churn than planned in both DS and SS — the favorability that delivered the headline ARR result.</li>
+        <li><b>Q1 reality check:</b> Downgrade ran 108% over budget for the quarter; Churn 50% over. March's favorability is partial repayment of a Jan + Feb deficit.</li>
+        <li><b>Save plays in flight:</b> 5 at-risk April renewals — 3 CSM-owned (Heather), 2 VSB.</li>
+        <li><b>Q2 projects:</b> (1) Reason-code categorization on every churn/downgrade — non-negotiable. (2) Reactivation playbook formalized given March's 149% performance. (3) Heather's book — capacity + coaching review.</li>
+      </ul>
+      <aside class="guidance">
+        <strong>Writing guidance.</strong> Don't bury the churn slide. CEO wants to see we know exactly why each one happened. The Q1-vs-March juxtaposition is the most honest framing — neither the favorable March nor the unfavorable quarter alone tells the truth. Reason categorization is non-negotiable; surface that you're committing to it.
+      </aside>
+    </div>
+  </div>
+  <footer class="slide-source">Source: Monthly Revenue Summary (SS Churn, SS Downgrade), DS contribution rows · Base report: Mixmax Monthly Revenue Report — March 2026 · Last reconciled April 13, 2026</footer>
+</section>
+
+</div>
+</body>
+</html>
