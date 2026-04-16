@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Mixmax GTM revenue reporting — weekly, monthly, quarterly, leader cadences, and deal/churn analysis. Every number traces to a source cell.">
+  <meta name="description" content="Mixmax GTM revenue reporting — weekly, monthly, quarterly, and leader cadences. Every number traces to a source cell.">
   <link rel="icon" href="/mixmax-revenue-reports/favicon.ico" sizes="any">
   <link rel="icon" type="image/svg+xml" href="/mixmax-revenue-reports/assets/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/mixmax-revenue-reports/assets/favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/mixmax-revenue-reports/assets/favicon-180.png">
   <meta property="og:title" content="Mixmax Revenue Reports">
-  <meta property="og:description" content="GTM revenue reporting across weekly, monthly, quarterly, leader cadences, and deal/churn analysis.">
+  <meta property="og:description" content="GTM revenue reporting across weekly, monthly, quarterly, and leader cadences.">
   <meta property="og:image" content="https://heath-gtm.github.io/mixmax-revenue-reports/assets/og-image.png">
   <meta property="og:url" content="https://heath-gtm.github.io/mixmax-revenue-reports/">
   <meta property="og:type" content="website">
@@ -25,6 +25,12 @@
       --muted: #5f6673;
       --accent: #2563eb;
       --accent-soft: #eff4ff;
+      --green: #059669;
+      --green-soft: #ecfdf5;
+      --red: #dc2626;
+      --red-soft: #fef2f2;
+      --amber: #d97706;
+      --amber-soft: #fffbeb;
     }
     * { box-sizing: border-box; }
     body {
@@ -42,8 +48,7 @@
     h2 { font-size: 20px; margin: 40px 0 16px; }
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    @media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr; } }
-    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+    @media (max-width: 720px) { .grid, .grid-3 { grid-template-columns: 1fr; } }
     .card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -71,9 +76,9 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
-    .pill-green { background: #ecfdf5; color: #059669; }
-    .pill-red { background: #fef2f2; color: #dc2626; }
-    .pill-amber { background: #fffbeb; color: #d97706; }
+    .pill-green{background:var(--green-soft);color:var(--green);}
+    .pill-red{background:var(--red-soft);color:var(--red);}
+    .pill-amber{background:var(--amber-soft);color:var(--amber);}
     .footer {
       margin-top: 56px;
       padding-top: 20px;
@@ -89,11 +94,11 @@
     <header>
       <img src="/mixmax-revenue-reports/assets/favicon-512.png" alt="" width="56" height="56" style="vertical-align:middle;border-radius:12px;margin-right:14px;">
       <h1 style="display:inline-block;vertical-align:middle;">Mixmax Revenue Reports</h1>
-      <p class="subtitle">GTM revenue reporting across weekly, monthly, quarterly, leader cadences, and deal/churn analysis. Every number traces to a source cell.</p>
+      <p class="subtitle">GTM revenue reporting across weekly, monthly, quarterly, and leader cadences. Every number traces to a source cell.</p>
     </header>
 
     <div style="background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #f59e0b;border-radius:12px;padding:20px 24px;margin-bottom:32px;">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#92400e;margin-bottom:6px;">Live Webinar Demo</div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#92400e;margin-bottom:6px;">🎬 Live Webinar Demo</div>
       <h2 style="margin:0 0 6px;font-size:22px;color:#78350f;">Sales Leader Weekly — MCP Cross-Reference</h2>
       <p style="margin:0 0 14px;color:#78350f;font-size:14px;">See how Salesforce + Mixmax meetings + Amplitude product usage + Octave messaging come together into a single action-ready report for a sales leader. Fictional data, real workflow.</p>
       <a href="reports/demo/sales-leader-weekly.html" style="display:inline-block;background:#78350f;color:white;padding:10px 18px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;">Open the Demo Report →</a>
@@ -130,21 +135,21 @@
     <h2>Analysis Reports</h2>
     <div class="grid-3">
       <div class="card">
-        <a href="churn/">
-          <h3>Churn &amp; Downgrades <span class="pill pill-red">Loss Intel</span></h3>
-          <p>Quarterly churn/downgrade deep-dives. Thematic categorization, Amplitude usage analysis, meeting intelligence, and preventability verdicts.</p>
+        <a href="reports/analysis/closed-won/">
+          <h3>Closed Won <span class="pill pill-green">Wins</span></h3>
+          <p>Win pattern analysis with deal deep-dives, ICP fit, Aero scoring, product adoption, and CSM expansion playbook.</p>
         </a>
       </div>
       <div class="card">
-        <a href="closed-won/">
-          <h3>Closed Won <span class="pill pill-green">Win Intel</span></h3>
-          <p>Quarterly closed-won analysis. Winning patterns, deal velocity, competitive displacement, and replicable playbooks.</p>
+        <a href="reports/analysis/closed-lost/">
+          <h3>Closed Lost <span class="pill pill-red">Losses</span></h3>
+          <p>Loss pattern analysis with competitive intelligence, preventability verdicts, and objection mapping.</p>
         </a>
       </div>
       <div class="card">
-        <a href="closed-lost/">
-          <h3>Closed Lost <span class="pill pill-amber">Loss Intel</span></h3>
-          <p>Quarterly closed-lost analysis. Loss patterns, competitive threats, preventability verdicts, and process improvements.</p>
+        <a href="reports/analysis/churn/">
+          <h3>Churn &amp; Downgrades <span class="pill pill-amber">Retention</span></h3>
+          <p>Account-level churn deep-dives with Amplitude usage validation and retention playbook.</p>
         </a>
       </div>
     </div>
