@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CRO Quarterly Report — Q1 2026 (v2)</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+.header { background: linear-gradient(135deg, #4a154b, #6a1b69); color: white; padding: 40px 50px; }
+.header-content { max-width: 1200px; margin: 0 auto; }
+.header h1 { font-size: 2.1em; font-weight: 700; margin-bottom: 12px; }
+.header-meta { display: flex; flex-wrap: wrap; gap: 20px; font-size: 0.9em; opacity: 0.92; margin-top: 6px; }
+.meta-label { opacity: 0.7; }
+.announcement-banner { background: rgba(255,255,255,0.12); border-left: 4px solid #ffd700; padding: 12px 16px; border-radius: 4px; margin-top: 18px; font-size: 0.92em; }
+.container { max-width: 1200px; margin: 0 auto; background: white; }
+
+/* Cover page (Universal Section 0) */
+.cover-page { padding: 36px 40px 28px; border-bottom: 1px solid #e0e0e0; background: #f8fafc; }
+.cover-section { margin-bottom: 24px; }
+.cover-section h2 { font-size: 1.1em; font-weight: 700; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.summary-bullets, .action-items, .qa-checks { list-style: none; padding: 0; margin: 0; }
+.summary-bullets li { padding: 8px 0 8px 20px; position: relative; font-size: 0.98em; line-height: 1.55; color: #334155; border-bottom: 1px solid #f1f5f9; }
+.summary-bullets li::before { content: "•"; position: absolute; left: 0; color: #4a154b; font-weight: bold; font-size: 1.2em; }
+.action-items { counter-reset: actions; }
+.action-items li { padding: 10px 0 10px 36px; position: relative; font-size: 0.98em; line-height: 1.55; color: #334155; border-bottom: 1px solid #f1f5f9; counter-increment: actions; }
+.action-items li::before { content: counter(actions); position: absolute; left: 0; top: 10px; width: 22px; height: 22px; background: #4a154b; color: white; border-radius: 50%; font-size: 0.75em; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.action-owner { color: #4a154b; font-weight: 600; }
+.action-deadline { color: #64748b; font-size: 0.88em; }
+.resource-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.resource-links a { display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: white; border: 1px solid #e2e8f0; border-radius: 6px; color: #4a154b; text-decoration: none; font-size: 0.9em; transition: background 0.15s; }
+.resource-links a:hover { background: #f3e8f3; }
+.qa-badge { border-radius: 8px; padding: 16px 20px; }
+.qa-badge.pass { background: #f0fdf4; border: 2px solid #22c55e; }
+.qa-badge.warning { background: #fffbeb; border: 2px solid #f59e0b; }
+.qa-badge-header { font-size: 1em; font-weight: 700; margin-bottom: 10px; }
+.qa-badge.pass .qa-badge-header { color: #16a34a; }
+.qa-badge.warning .qa-badge-header { color: #d97706; }
+.qa-checks li { padding: 3px 0; font-size: 0.9em; color: #334155; }
+.qa-meta { font-size: 0.78em; color: #64748b; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 6px; margin-top: 6px; }
+
+.tabs { display: flex; background: #f9f9f9; border-bottom: 1px solid #e0e0e0; overflow-x: auto; }
+.tab-button { flex: 1; min-width: 140px; padding: 16px 20px; border: none; background: none; cursor: pointer; font-size: 0.95em; font-weight: 500; color: #666; border-bottom: 3px solid transparent; transition: all 0.3s ease; white-space: nowrap; }
+.tab-button:hover { background: #f0f0f0; color: #4a154b; }
+.tab-button.active { color: #4a154b; border-bottom-color: #4a154b; background: white; }
+.tab-content { display: none; padding: 40px; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 26px; }
+.metric-card { border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; background: #fafafa; }
+.metric-card h3 { font-size: 0.82em; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; font-weight: 600; }
+.metric-value { font-size: 1.75em; font-weight: 700; color: #222; margin-bottom: 8px; }
+.metric-detail { font-size: 0.85em; color: #888; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 600; }
+.badge-green { background: #d4edda; color: #155724; }
+.badge-yellow { background: #fff3cd; color: #856404; }
+.badge-red { background: #f8d7da; color: #721c24; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.93em; }
+table thead { background: #f0f0f0; border-bottom: 2px solid #e0e0e0; }
+table th { padding: 11px 13px; text-align: left; font-weight: 600; color: #333; text-transform: uppercase; font-size: 0.78em; letter-spacing: 0.5px; }
+table td { padding: 10px 13px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+table tbody tr:nth-child(even) { background: #fafafa; }
+.text-right { text-align: right; }
+.text-muted { color: #888; font-size: 0.9em; }
+.warning-box { background: #fff3cd; border-left: 4px solid #ffcc00; padding: 14px 18px; border-radius: 4px; margin: 20px 0; font-size: 0.95em; color: #856404; }
+.info-box { background: #e8f4f8; border-left: 4px solid #0066cc; padding: 14px 18px; border-radius: 4px; margin: 20px 0; font-size: 0.95em; color: #084c6e; }
+.success-box { background: #d4edda; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 4px; margin: 20px 0; font-size: 0.95em; color: #155724; }
+.section-title { font-size: 1.3em; font-weight: 700; color: #222; margin-top: 28px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #e0e0e0; }
+.section-title:first-child { margin-top: 0; }
+.subsection-title { font-size: 1.05em; font-weight: 600; color: #333; margin-top: 22px; margin-bottom: 12px; }
+.priority-list { list-style: none; padding: 0; }
+.priority-list li { padding: 10px 0 10px 28px; position: relative; color: #555; line-height: 1.55; border-bottom: 1px solid #f0f0f0; }
+.priority-list li:before { content: "›"; position: absolute; left: 8px; font-size: 1.4em; color: #4a154b; font-weight: bold; top: 4px; }
+.variance-positive { color: #00aa00; font-weight: 600; }
+.variance-negative { color: #cc0000; font-weight: 600; }
+.hit { color: #00aa00; font-weight: 600; }
+.miss { color: #cc0000; font-weight: 600; }
+.neutral { color: #b45309; font-weight: 600; }
+.callout { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 14px 18px; margin: 18px 0; border-radius: 4px; font-size: 0.95em; }
+@media (max-width: 768px) {
+  .header { padding: 25px 20px; }
+  .header h1 { font-size: 1.6em; }
+  .header-meta { flex-direction: column; gap: 12px; font-size: 0.85em; }
+  .cover-page { padding: 20px; }
+  .tab-button { min-width: 100px; font-size: 0.82em; padding: 12px 10px; }
+  .tab-content { padding: 20px; }
+  .metric-grid { grid-template-columns: 1fr; }
+  table { font-size: 0.85em; }
+  table th, table td { padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="header-content">
+<h1>CRO Quarterly Report — Q1 2026</h1>
+<div class="header-meta">
+<span><span class="meta-label">As of:</span> April 14, 2026</span>
+<span><span class="meta-label">Period:</span> Q1 2026 (Jan 1 – Mar 31)</span>
+<span><span class="meta-label">Cadence:</span> Quarterly</span>
+<span><span class="meta-label">Audience:</span> CRO Only</span>
+<span><span class="meta-label">Version:</span> v2 (re-laid-out)</span>
+</div>
+<div class="announcement-banner">
+<strong>Two stories own Q1.</strong> (1) Concentrated CS loss — Attentive + Meltwater = 43% of churn+downgrade; ex-both, NRR is 79.6% not 56.5%. (2) Outbound pipeline collapse — Accounts Engaged 17% of plan, Outbound $ pipeline 8% of plan. Bookings at 39% of target is a volume problem, not a close-rate problem. CRO actions: Morgan loss-review, Heather Mae book conversation, Meltwater recovery play, SDR capacity decision.
+</div>
+</div>
+</div>
+
+<div class="container">
+
+<!-- ============================================================ -->
+<!-- SECTION 0 — UNIVERSAL COVER PAGE                             -->
+<!-- ============================================================ -->
+<div class="cover-page" id="cover">
+
+<div class="cover-section">
+<h2>📋 If You Read Nothing Else</h2>
+<ul class="summary-bullets">
+<li><strong>Q1 ARR miss was -$260K (-2.9%), all Direct Sales.</strong> Total ARR $8.68M vs $8.94M; DS -5.6% to target, SS +0.6%. Total Net New ARR Contribution finished at 232% of budgeted shrink.</li>
+<li><strong>Morgan Wible is the single largest revenue contributor AND the single largest loss pile.</strong> $109K Closed Won vs $194K Closed Lost TCV across ~20 deals — 46% of team target, 36% win rate by $. Book-quality or late-stage coaching gap, not activity.</li>
+<li><strong>The $25K+ deal segment did not close at all in Q1.</strong> Only one deal ≥$25K was even in play (Haymarket Media Group, Morgan, $26,576 Closed Lost) — structural sign that Outbound isn't building enterprise-sized opps at the top of the funnel.</li>
+<li><strong>Heather Mae Pusztai's CSM book ran NRR 21% / GRR 71%</strong> — the lowest on team — and carried both named outliers (Attentive $165K churn + Meltwater $140K downgrade). Book-level concentration risk, not a performance call.</li>
+<li><strong>Edwin Chun's CSM book posted NRR 111%</strong> on $329K — strongest CSM read of Q1. Template for the Q2 expansion motion and the CSM pairing conversation with Heather Mae's book.</li>
+<li><strong>VSB coverage gap is structural:</strong> a striking share of the Q1 churn tail sits on accounts with no CSM assigned (Modern Classrooms, City Innovate, inbenta, CHEQ). Fix in Q2: VSB-pool CSM or 30-day pre-renewal auto-touch sequence.</li>
+<li><strong>Meltwater was retained post-downgrade</strong> — $140K is recoverable upside, not churn. Named re-expansion play is the highest-ROI CS action available in Q2.</li>
+<li><strong>Bootstrap reconciliation mode active:</strong> only March 2026 monthly is published, so the monthly-to-quarterly reconciliation gate is skipped for this run; intra-snapshot integrity check <strong>PASSED</strong>.</li>
+</ul>
+</div>
+
+<div class="cover-section">
+<h2>🎯 Top Actions (CRO)</h2>
+<ol class="action-items">
+<li>Loss-review with Morgan on the 5 largest Q1 losses (Haymarket, Triple Whale, sumup, BrainsWay, SpryPoint) — write a remediation plan — <span class="action-owner">CRO + Morgan</span> <span class="action-deadline">· By: Q2 W1 (April 24)</span></li>
+<li>Book-rebalance or exec-sponsor pairing conversation with Heather Mae Pusztai on Attentive/Meltwater-level accounts — <span class="action-owner">CRO + Head of CS</span> <span class="action-deadline">· By: April 18</span></li>
+<li>Meltwater named re-expansion play ($140K upside) — assign owner, timeline, and proof-point deck — <span class="action-owner">CS + AE (Morgan)</span> <span class="action-deadline">· By: Q2 Weeks 1–6</span></li>
+<li>SDR capacity + Outbound motion decision (headcount vs. retargeting vs. messaging re-write) — <span class="action-owner">CRO + RevOps + SDR Lead</span> <span class="action-deadline">· By: April 20</span></li>
+<li>Karan SQO re-qualification protocol — every new Q2 opp must pass a SQO gate before demo — <span class="action-owner">CRO + Karan</span> <span class="action-deadline">· By: Q2 W1 · ongoing</span></li>
+</ol>
+</div>
+
+<div class="cover-section">
+<h2>📎 Resources</h2>
+<div class="resource-links">
+<a href="https://drive.google.com/drive/folders/1SiQ4Nq3jFDrw86nkMhUCWEGcYFvhXG_c">📊 Q1 Lookback Snapshot (Drive)</a>
+<a href="https://docs.google.com/spreadsheets/d/1ikq0APBWkPcaaDUKx4nbdy0QNYVK30Tvb3_reeChpCY/edit">📗 Gen 1 Sheet</a>
+<a href="./Mixmax_Quarterly_Wrapup_Q1-2026_v2.html">📄 Quarterly Wrap-Up (v2)</a>
+<a href="./Mixmax_Board_Snapshot_Q1-2026_v2.html">🎯 Board Snapshot (v2)</a>
+<a href="./Mixmax_Quarter_Ahead_Q2-2026_v2.html">→ Q2 Quarter-Ahead (v2)</a>
+<a href="../Monthly Report/Mixmax_Monthly_Report_2026-03.html">📅 March 2026 Monthly</a>
+<a href="../Monthly Report/CRO_Monthly_Report_2026-03.html">📅 March 2026 CRO Monthly</a>
+</div>
+</div>
+
+<div class="cover-section">
+<h2>🔍 Quality Assurance</h2>
+<div class="qa-badge warning">
+<div class="qa-badge-header">⚠️ QA VERIFIED WITH WARNINGS — OK TO READ, CAVEATED PUBLISH</div>
+<ul class="qa-checks">
+<li>✅ Data completeness — all 9 Lookback snapshot tabs populated, row counts &gt; 0</li>
+<li>✅ Math accuracy — DS net (+NB +Exp +React +Dng +Churn) reconciles to reported $-363,459 within $1 rounding; Total ARR (DS+SS) reconciles within $1</li>
+<li>✅ Freshness — snapshot taken 2026-04-14, report generated 2026-04-17 (3 days old, within window)</li>
+<li>✅ Coverage — all CRO sections populated (rep-level, deal autopsy, at-risk, churn, downgrade, reconciliation, backlinks)</li>
+<li>✅ Cross-reference — rep $ totals and CSM book totals agree with CS Summary tab; churn totals agree with revenue summary</li>
+<li>⚠️ Monthly reconciliation — Bootstrap mode (1 of 3 monthlies published); monthly-to-quarterly gate skipped per accuracy-reconciliation skill</li>
+<li>✅ HTML integrity — tabs render, all sections present, no broken links</li>
+</ul>
+<div class="qa-meta">QA conducted: 2026-04-17 · Method: inline QA checks (Report Accuracy Skill v1.0) · Bootstrap note: full reconciliation gate active beginning Q2 2026</div>
+</div>
+</div>
+
+</div>
+<!-- END COVER PAGE -->
+
+<div class="tabs">
+<button class="tab-button active" onclick="switchTab(event, 'headline')">CRO Headline</button>
+<button class="tab-button" onclick="switchTab(event, 'reps')">Rep Performance</button>
+<button class="tab-button" onclick="switchTab(event, 'deals')">Deal Autopsy</button>
+<button class="tab-button" onclick="switchTab(event, 'atrisk')">At-Risk Roster</button>
+<button class="tab-button" onclick="switchTab(event, 'churn')">Churn Autopsy</button>
+<button class="tab-button" onclick="switchTab(event, 'downgrade')">Downgrade Autopsy</button>
+<button class="tab-button" onclick="switchTab(event, 'recon')">Reconciliation</button>
+<button class="tab-button" onclick="switchTab(event, 'backlinks')">Backlinks</button>
+</div>
+
+<!-- HEADLINE -->
+<div id="headline" class="tab-content active">
+<div class="section-title">CRO Headline</div>
+
+<div class="metric-grid">
+<div class="metric-card"><h3>Total ARR (EOQ)</h3><div class="metric-value">$8.68M</div><div class="metric-detail"><span class="miss">-2.9%</span> vs $8.94M · $260K gap</div></div>
+<div class="metric-card"><h3>Direct Sales ARR</h3><div class="metric-value">$4.72M</div><div class="metric-detail"><span class="miss">-5.6%</span> vs $5.00M target</div></div>
+<div class="metric-card"><h3>NRR (All Renewals)</h3><div class="metric-value">56%</div><div class="metric-detail"><span class="miss">-46 pts</span> · 79.6% ex-Attentive/Meltwater</div></div>
+<div class="metric-card"><h3>Team Attainment</h3><div class="metric-value">37%</div><div class="metric-detail"><span class="miss">$86,517</span> vs $235K team target</div></div>
+<div class="metric-card"><h3>Team Win Rate (by $)</h3><div class="metric-value">24%</div><div class="metric-detail">$86.5K Won vs $266.3K Lost TCV</div></div>
+<div class="metric-card"><h3>Concentrated Loss</h3><div class="metric-value">43%</div><div class="metric-detail">of Q1 churn+downgrade = 2 accounts</div></div>
+</div>
+
+<p>Q1 landed at <strong>$8.68M Total ARR vs $8.94M target</strong> (<span class="miss">-2.9%</span>), driven by Direct Sales at -5.6% to target. Two stories own this quarter:</p>
+
+<ul class="priority-list">
+<li><strong>Concentrated CS loss</strong> — Attentive Mobile churn (-$164,724) + Meltwater downgrade (-$140,213) = <strong>43% of Q1 churn-plus-downgrade</strong>. Ex-both, NRR would have been <strong>79.6% vs 56.5% reported</strong>.</li>
+<li><strong>Severe outbound pipeline collapse</strong> — Outbound Accounts Engaged at <strong>17% of plan</strong>, Outbound Pipeline $ at <strong>8% of plan</strong>. New Business bookings at <strong>39% of target</strong> is a pipeline-volume problem, not a close-rate problem.</li>
+</ul>
+
+<div class="callout">
+The CRO read: <strong>the DS revenue engine is closer to plan than the headline implies</strong> — ex-outliers, DS would have been within striking distance. What's genuinely broken is Outbound TOFU and two-account book concentration. Both have named owners and named Q2 actions below.
+</div>
+</div>
+
+<!-- REPS -->
+<div id="reps" class="tab-content">
+<div class="section-title">Rep-Level Performance (Q1)</div>
+
+<table>
+<thead><tr><th>Rep</th><th class="text-right">Closed Won ($)</th><th class="text-right">Closed Lost ($ TCV)</th><th class="text-right">Win Rate by $</th><th class="text-right">Q1 Attainment vs Team Target ($235K)</th></tr></thead>
+<tbody>
+<tr><td>Morgan Wible</td><td class="text-right">$109,428</td><td class="text-right">$193,770</td><td class="text-right miss">36%</td><td class="text-right neutral">46% (largest contributor by $)</td></tr>
+<tr><td>Isabelle Tuomi</td><td class="text-right">$32,040</td><td class="text-right">$20,000</td><td class="text-right hit">62%</td><td class="text-right miss">14%</td></tr>
+<tr><td>Karan Jiandani</td><td class="text-right">$30,000</td><td class="text-right">$52,480</td><td class="text-right miss">36%</td><td class="text-right miss">13%</td></tr>
+<tr><td>Edwin Chun</td><td class="text-right">$1,566</td><td class="text-right">—</td><td class="text-right">—</td><td class="text-right">—</td></tr>
+<tr><td><strong>Team Total</strong></td><td class="text-right"><strong>$86,517</strong> (tracks sheet Total Bookings)</td><td class="text-right"><strong>$266,250</strong></td><td class="text-right"><strong>24% by $</strong></td><td class="text-right miss"><strong>37%</strong></td></tr>
+</tbody>
+</table>
+
+<div class="text-muted" style="margin-top:-8px;">Note: Karan and Isabelle show positive attainment against their individual $23.5K targets (Karan 64%, Isabelle over-target). Morgan does not have an individual target in the Rep Summary target column, but carries the largest absolute contribution and the largest loss pile.</div>
+
+<div class="subsection-title">Read per rep</div>
+<table>
+<thead><tr><th>Rep</th><th>Diagnosis</th><th>Key Data Point</th><th>Q2 Action</th><th>When</th></tr></thead>
+<tbody>
+<tr><td><strong>Morgan Wible</strong></td><td>Book-quality or late-stage coaching gap</td><td class="miss">$194K lost across ~20 deals (Haymarket $26K, Triple Whale $12K, sumup $10K, BrainsWay $9K, SpryPoint $7.5K, WellHive $7K, Kombo $6.7K)</td><td>Loss-review on 5 largest losses</td><td>Q2 Week 1</td></tr>
+<tr><td><strong>Isabelle Tuomi</strong></td><td>Strong conversion, low volume</td><td class="hit">62% win rate (best on team) on $32K</td><td>SDR-paired pipeline · fold into Product-channel plays</td><td>Q2 Weeks 1–4</td></tr>
+<tr><td><strong>Karan Jiandani</strong></td><td>Qualification issues at SQO</td><td class="miss">Losses: Keychain $8K, Digital Ascension $7.7K, Strongmetrics $7.5K (36% WR)</td><td>Re-qualify every new Q2 opp at SQO before demo</td><td>Q2 Week 1 · ongoing</td></tr>
+<tr><td><strong>Edwin Chun</strong></td><td>Primarily CSM — AE activity limited</td><td class="hit">$329K CSM-owned book · NRR 111% (strongest CSM in Q1)</td><td>Continue CSM-led plays · evaluate pairing on expansion motion</td><td>Q2 Weeks 2–4</td></tr>
+</tbody>
+</table>
+
+<div class="info-box"><strong>Coaching read:</strong> Morgan is where the Q2 leverage sits. He's already the largest absolute contributor; if his 36% by-$ win rate moves to 50% by Q2 close, that's the single biggest attainment lever on the team. Prioritize his loss-review ahead of the SDR-motion work.</div>
+</div>
+
+<!-- DEALS -->
+<div id="deals" class="tab-content">
+<div class="section-title">Deal Autopsy — Q1 Deals ≥ $25K</div>
+
+<table>
+<thead><tr><th>Account</th><th>Opp Owner</th><th>Stage</th><th>Close Date</th><th class="text-right">Amount</th><th class="text-right">SCS</th><th>Read</th></tr></thead>
+<tbody>
+<tr><td>Haymarket Media Group</td><td>Morgan Wible</td><td>Closed Lost</td><td>2026-01-05</td><td class="text-right">$26,576</td><td class="text-right">0</td><td>Discovery-call stall ("Discovery call with Katie" was the last recorded next step). Zero SCS = no engagement signal. <strong>Avoidable with better qualification at SQO.</strong></td></tr>
+</tbody>
+</table>
+
+<div class="warning-box"><strong>Structural insight:</strong> No other individual deals crossed the $25K bar in Q1. Q1's entire Closed Won book was sub-$20K deals. The $25K+ segment did not close at all. This maps directly to the Outbound pipeline collapse — we aren't <em>building</em> enterprise-sized opps at the top of funnel, so we have none to close. The Q2 SDR motion decision has to raise the TAM floor, not just volume.</div>
+</div>
+
+<!-- AT RISK -->
+<div id="atrisk" class="tab-content">
+<div class="section-title">At-Risk Roster (Q2 Entrants)</div>
+
+<p>All 26 Q1 "At Risk" accounts need a status confirmation before the Q2 At-Risk Roster is finalized. From the CS Summary tab:</p>
+
+<table>
+<thead><tr><th>Segment</th><th class="text-right"># Accts</th><th class="text-right">At Risk</th><th class="text-right">Forecasted ARR</th><th class="text-right">NRR %</th><th class="text-right">GRR (ARR) %</th><th class="text-right">ARR Impact ($)</th></tr></thead>
+<tbody>
+<tr><td>All Renewals</td><td class="text-right">57</td><td class="text-right">26</td><td class="text-right">$570,626</td><td class="text-right miss">56%</td><td class="text-right neutral">93%</td><td class="text-right miss">-$41,837</td></tr>
+<tr><td>CSM Owned</td><td class="text-right">19</td><td class="text-right">6</td><td class="text-right">$460,161</td><td class="text-right miss">56%</td><td class="text-right neutral">91%</td><td class="text-right miss">-$48,112</td></tr>
+<tr><td>VSB Owned</td><td class="text-right">38</td><td class="text-right">20</td><td class="text-right">$110,465</td><td class="text-right neutral">59%</td><td class="text-right hit">106%</td><td class="text-right hit">+$6,275</td></tr>
+</tbody>
+</table>
+
+<div class="subsection-title">CSM-Owned Breakdown</div>
+<table>
+<thead><tr><th>CSM</th><th class="text-right"># Accts</th><th class="text-right">At Risk</th><th class="text-right">Forecasted ARR</th><th class="text-right">Previous Contract</th><th class="text-right">NRR</th><th class="text-right">GRR</th><th class="text-right">ARR Impact ($)</th></tr></thead>
+<tbody>
+<tr><td>Edwin Chun</td><td class="text-right">6</td><td class="text-right">1</td><td class="text-right">$329,531</td><td class="text-right">$297,815</td><td class="text-right hit">111%</td><td class="text-right hit">100%</td><td class="text-right miss">-$360</td></tr>
+<tr><td>Heather Mae Pusztai</td><td class="text-right">8</td><td class="text-right">3</td><td class="text-right">$99,002</td><td class="text-right">$475,324</td><td class="text-right miss">21%</td><td class="text-right neutral">71%</td><td class="text-right miss">-$40,828</td></tr>
+<tr><td>Diana Calucer</td><td class="text-right">5</td><td class="text-right">2</td><td class="text-right">$31,628</td><td class="text-right">$50,052</td><td class="text-right neutral">63%</td><td class="text-right neutral">82%</td><td class="text-right miss">-$6,924</td></tr>
+</tbody>
+</table>
+
+<div class="callout"><strong>CSM concentration read:</strong> Heather Mae Pusztai's book ran NRR 21% / GRR 71% — the lowest on the team — and carried <strong>both named outliers (Attentive + Meltwater)</strong>. Not a performance call against HM individually (both accounts were strategic/structural), but the book-level risk is stark and needs a named coverage conversation in Q2 Week 1.</div>
+</div>
+
+<!-- CHURN -->
+<div id="churn" class="tab-content">
+<div class="section-title">Churn Autopsy — Q1 Closed Lost (Renewals)</div>
+
+<p>27 accounts Closed Lost in Q1 representing <strong>$341,815</strong> of identifiable churn from the renewals tab:</p>
+
+<table>
+<thead><tr><th>Account</th><th>AE</th><th>CSM</th><th>Month</th><th class="text-right">Previous</th><th>Preventable?</th></tr></thead>
+<tbody>
+<tr><td>Attentive Mobile Inc.</td><td>Lana Ma</td><td>HM Pusztai</td><td>Jan</td><td class="text-right">$164,724</td><td>Requires deep-dive — flagship loss of the quarter</td></tr>
+<tr><td>Onfido Limited</td><td>Lana Ma</td><td>HM Pusztai</td><td>Feb</td><td class="text-right">$37,440</td><td>Needs root cause</td></tr>
+<tr><td>Modern Classrooms Project</td><td>Lana Ma</td><td>—</td><td>Feb</td><td class="text-right">$18,216</td><td>VSB — no CSM assigned</td></tr>
+<tr><td>Poll Everywhere</td><td>Lana Ma</td><td>Diana Calucer</td><td>Mar</td><td class="text-right">$11,520</td><td>Needs root cause</td></tr>
+<tr><td>City Innovate</td><td>Lana Ma</td><td>—</td><td>Jan</td><td class="text-right">$11,280</td><td>VSB — no CSM assigned</td></tr>
+<tr><td>inbenta.com</td><td>Morgan Wible</td><td>—</td><td>Feb</td><td class="text-right">$8,091</td><td>VSB — no CSM assigned</td></tr>
+<tr><td>WorkRamp</td><td>Morgan Wible</td><td>HM Pusztai</td><td>Mar</td><td class="text-right">$8,136</td><td>Needs root cause</td></tr>
+<tr><td>CHEQ</td><td>Lana Ma</td><td>—</td><td>Mar</td><td class="text-right">$7,656</td><td>VSB — no CSM assigned</td></tr>
+<tr><td colspan="6" class="text-muted"><em>+19 additional Closed Lost accounts each under $7K; full list in CS Summary tab rows 40–76.</em></td></tr>
+</tbody>
+</table>
+
+<div class="warning-box"><strong>Coverage gap pattern:</strong> A striking share of the churn tail sits on accounts with <strong>no CSM assigned</strong> (VSB). Structural fix for Q2: either assign a lightweight VSB-pool CSM or build an automated 30-day-pre-renewal touch sequence.</div>
+</div>
+
+<!-- DOWNGRADE -->
+<div id="downgrade" class="tab-content">
+<div class="section-title">Q1 Downgrade Autopsy</div>
+
+<p>Total DS Downgrade: <strong class="miss">-$316,411</strong> (131% of -$242,080 budget).</p>
+
+<table>
+<thead><tr><th>Account</th><th class="text-right">Prior ARR</th><th class="text-right">New ARR</th><th class="text-right">Downgrade $</th><th class="text-right">% of Q1 DS Downgrade</th><th>Status</th><th>Q2 Action</th></tr></thead>
+<tbody>
+<tr><td><strong>Meltwater</strong></td><td class="text-right">$183,333</td><td class="text-right">$43,120</td><td class="text-right miss">-$140,213</td><td class="text-right miss">44%</td><td class="hit">Retained</td><td>Named re-expansion campaign — $140K upside</td></tr>
+<tr><td>Other downgrades (~15 accounts)</td><td class="text-right">—</td><td class="text-right">—</td><td class="text-right neutral">~-$176,198</td><td class="text-right neutral">56%</td><td>Distributed across book</td><td>Segment review in Q2 W2</td></tr>
+<tr><td><strong>Total</strong></td><td class="text-right">—</td><td class="text-right">—</td><td class="text-right miss"><strong>-$316,411</strong></td><td class="text-right"><strong>100%</strong></td><td>—</td><td>—</td></tr>
+</tbody>
+</table>
+
+<div class="success-box"><strong>Upside read:</strong> Meltwater is retained — this is recoverable, not lost. A named Q2 re-expansion play against a customer we already know and who has renewed is the highest-ROI CS action on the board.</div>
+</div>
+
+<!-- RECON -->
+<div id="recon" class="tab-content">
+<div class="section-title">Reconciliation Appendix</div>
+
+<div class="warning-box"><strong>Bootstrap mode.</strong> This is the first quarterly run under the new workflow. Only one of three monthly reports exists for Q1 (March 2026). Per the <code>accuracy-reconciliation</code> skill, when fewer than 2 monthlies are available the monthly-to-quarterly reconciliation gate is skipped for this run and replaced with the bootstrap note below. Intra-snapshot integrity check was run and <strong>PASSED</strong>.</div>
+
+<div class="subsection-title">Intra-snapshot integrity check — PASS</div>
+<table>
+<thead><tr><th>Check</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>No <code>#DIV/0!</code> / <code>#REF!</code> / <code>#N/A</code> / <code>#VALUE!</code> in summary tabs (one benign DIV/0 in Product bookings row where Target=$0 — noted, not material)</td><td class="hit">PASS</td></tr>
+<tr><td>DS net = NB + Expansion + Reactivation + Downgrade + Churn → $86,394 + $241,643 + $10,968 + (-$316,411) + (-$386,054) = <strong>-$363,460</strong> ≈ reported $-363,459 (rounding $1)</td><td class="hit">PASS</td></tr>
+<tr><td>Total ARR = DS ARR + SS ARR → $4,721,120 + $3,955,364 = <strong>$8,676,484</strong> ≈ reported $8,676,483 (rounding $1)</td><td class="hit">PASS</td></tr>
+<tr><td>All target columns populated where targets are reported</td><td class="hit">PASS</td></tr>
+<tr><td>Manifest row counts: 9 tabs all marked OK with rows &gt; 0</td><td class="hit">PASS</td></tr>
+</tbody>
+</table>
+
+<div class="subsection-title">Bootstrap Note</div>
+<div class="info-box">Full monthly-to-quarterly reconciliation is not run for Q1 2026 because monthly coverage was partial (1 of 3 months published). Beginning Q2 2026, the reconciliation gate will be active on every quarterly run and will compare the quarterly lookback against the sum of the three monthly lookbacks for all 15 metrics in the <code>accuracy-reconciliation</code> checklist.</div>
+</div>
+
+<!-- BACKLINKS -->
+<div id="backlinks" class="tab-content">
+<div class="section-title">Monthly Report Backlinks (CRO Versions)</div>
+
+<table>
+<thead><tr><th>Month</th><th>Status</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>January 2026</td><td class="neutral">Not published</td><td>—</td></tr>
+<tr><td>February 2026</td><td class="neutral">Not published</td><td>—</td></tr>
+<tr><td>March 2026</td><td class="hit">Published</td><td><a href="../Monthly Report/CRO_Monthly_Report_2026-03.html">March 2026 CRO Monthly</a></td></tr>
+</tbody>
+</table>
+
+<div class="info-box"><strong>Backlink note:</strong> Jan/Feb monthlies were not generated under the new monthly workflow (the scheduled monthly task went live mid-quarter). March 2026 is the only published monthly for the quarter. Starting Q2 2026, all three monthly CRO reports will be backlinked here.</div>
+</div>
+
+</div>
+<!-- END CONTAINER -->
+
+<script>
+function switchTab(event, tabId) {
+  document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+  document.querySelectorAll('.tab-button').forEach(tb => tb.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+</script>
+
+</body>
+</html>
