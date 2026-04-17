@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mixmax Board Snapshot — Q1 2026 (v2)</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+.header { background: linear-gradient(135deg, #4a154b, #6a1b69); color: white; padding: 40px 50px; }
+.header-content { max-width: 1200px; margin: 0 auto; }
+.header h1 { font-size: 2.1em; font-weight: 700; margin-bottom: 12px; }
+.header-meta { display: flex; flex-wrap: wrap; gap: 20px; font-size: 0.9em; opacity: 0.92; margin-top: 6px; }
+.meta-label { opacity: 0.7; }
+.announcement-banner { background: rgba(255,255,255,0.12); border-left: 4px solid #ffd700; padding: 12px 16px; border-radius: 4px; margin-top: 18px; font-size: 0.92em; }
+.container { max-width: 1200px; margin: 0 auto; background: white; }
+
+/* Cover page (Universal Section 0) */
+.cover-page { padding: 36px 40px 28px; border-bottom: 1px solid #e0e0e0; background: #f8fafc; }
+.cover-section { margin-bottom: 24px; }
+.cover-section h2 { font-size: 1.1em; font-weight: 700; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.summary-bullets, .action-items, .qa-checks { list-style: none; padding: 0; margin: 0; }
+.summary-bullets li { padding: 8px 0 8px 20px; position: relative; font-size: 0.98em; line-height: 1.55; color: #334155; border-bottom: 1px solid #f1f5f9; }
+.summary-bullets li::before { content: "•"; position: absolute; left: 0; color: #4a154b; font-weight: bold; font-size: 1.2em; }
+.action-items { counter-reset: actions; }
+.action-items li { padding: 10px 0 10px 36px; position: relative; font-size: 0.98em; line-height: 1.55; color: #334155; border-bottom: 1px solid #f1f5f9; counter-increment: actions; }
+.action-items li::before { content: counter(actions); position: absolute; left: 0; top: 10px; width: 22px; height: 22px; background: #4a154b; color: white; border-radius: 50%; font-size: 0.75em; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.action-owner { color: #4a154b; font-weight: 600; }
+.action-deadline { color: #64748b; font-size: 0.88em; }
+.resource-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.resource-links a { display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: white; border: 1px solid #e2e8f0; border-radius: 6px; color: #4a154b; text-decoration: none; font-size: 0.9em; transition: background 0.15s; }
+.resource-links a:hover { background: #f3e8f3; }
+.qa-badge { border-radius: 8px; padding: 16px 20px; }
+.qa-badge.pass { background: #f0fdf4; border: 2px solid #22c55e; }
+.qa-badge.warning { background: #fffbeb; border: 2px solid #f59e0b; }
+.qa-badge-header { font-size: 1em; font-weight: 700; margin-bottom: 10px; }
+.qa-badge.pass .qa-badge-header { color: #16a34a; }
+.qa-badge.warning .qa-badge-header { color: #d97706; }
+.qa-checks li { padding: 3px 0; font-size: 0.9em; color: #334155; }
+.qa-meta { font-size: 0.78em; color: #64748b; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 6px; margin-top: 6px; }
+
+.content-body { padding: 40px 50px; }
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-bottom: 26px; }
+.metric-card { border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; background: #fafafa; }
+.metric-card h3 { font-size: 0.82em; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; font-weight: 600; }
+.metric-value { font-size: 1.75em; font-weight: 700; color: #222; margin-bottom: 8px; }
+.metric-detail { font-size: 0.85em; color: #888; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.93em; }
+table thead { background: #f0f0f0; border-bottom: 2px solid #e0e0e0; }
+table th { padding: 11px 13px; text-align: left; font-weight: 600; color: #333; text-transform: uppercase; font-size: 0.78em; letter-spacing: 0.5px; }
+table td { padding: 10px 13px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+table tbody tr:nth-child(even) { background: #fafafa; }
+.text-right { text-align: right; }
+.text-muted { color: #888; font-size: 0.9em; }
+.warning-box { background: #fff3cd; border-left: 4px solid #ffcc00; padding: 14px 18px; border-radius: 4px; margin: 20px 0; font-size: 0.95em; color: #856404; }
+.info-box { background: #e8f4f8; border-left: 4px solid #0066cc; padding: 14px 18px; border-radius: 4px; margin: 20px 0; font-size: 0.95em; color: #084c6e; }
+.success-box { background: #d4edda; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 4px; margin: 20px 0; font-size: 0.95em; color: #155724; }
+.section-title { font-size: 1.3em; font-weight: 700; color: #222; margin-top: 28px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #e0e0e0; }
+.section-title:first-child { margin-top: 0; }
+.variance-positive { color: #00aa00; font-weight: 600; }
+.variance-negative { color: #cc0000; font-weight: 600; }
+.hit { color: #00aa00; font-weight: 600; }
+.miss { color: #cc0000; font-weight: 600; }
+.neutral { color: #b45309; font-weight: 600; }
+.callout { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 14px 18px; margin: 18px 0; border-radius: 4px; font-size: 0.98em; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 20px 0; }
+.two-col h3 { font-size: 1.05em; font-weight: 700; color: #222; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #e0e0e0; }
+.two-col ol { padding-left: 22px; }
+.two-col li { margin: 8px 0; line-height: 1.5; }
+.narrative-block { background: #f8fafc; border-left: 4px solid #4a154b; padding: 18px 22px; border-radius: 4px; margin: 20px 0; font-size: 1em; line-height: 1.65; }
+@media (max-width: 768px) {
+  .header { padding: 25px 20px; }
+  .header h1 { font-size: 1.6em; }
+  .header-meta { flex-direction: column; gap: 12px; font-size: 0.85em; }
+  .cover-page { padding: 20px; }
+  .content-body { padding: 22px; }
+  .metric-grid { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  table { font-size: 0.85em; }
+  table th, table td { padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="header-content">
+<h1>Mixmax — Q1 2026 Board Snapshot</h1>
+<div class="header-meta">
+<span><span class="meta-label">As of:</span> April 14, 2026</span>
+<span><span class="meta-label">Period:</span> Q1 2026</span>
+<span><span class="meta-label">Cadence:</span> Quarterly</span>
+<span><span class="meta-label">Audience:</span> Board</span>
+<span><span class="meta-label">Version:</span> v2 (re-laid-out)</span>
+</div>
+<div class="announcement-banner">
+<strong>Q1 landed -$260K below Total ARR target (-2.9%).</strong> Two accounts = 43% of churn+downgrade. Outbound Accounts Engaged at 17% of plan is the single largest structural issue. Q2 opens with a 2x pipeline-coverage gap; interventions: SDR motion fix + named At-Risk Roster.
+</div>
+</div>
+</div>
+
+<div class="container">
+
+<!-- ============================================================ -->
+<!-- SECTION 0 — UNIVERSAL COVER PAGE                             -->
+<!-- ============================================================ -->
+<div class="cover-page" id="cover">
+
+<div class="cover-section">
+<h2>📋 If You Read Nothing Else</h2>
+<ul class="summary-bullets">
+<li><strong>Total ARR finished $8.68M vs $8.94M target — a -$260K (-2.9%) miss,</strong> entirely in Direct Sales (-5.6% to plan). Self-Serve held at +0.6%.</li>
+<li><strong>Two named accounts drove 43% of Q1 churn+downgrade:</strong> Attentive Mobile (-$165K churn) + Meltwater (-$140K downgrade, retained). Ex-both, NRR would have been 79.6% vs the reported 56.5% — concentration risk, not broad retention failure.</li>
+<li><strong>Outbound TOFU collapsed:</strong> Accounts Engaged at 17% of target, Outbound Pipeline $ at 8% of plan. This is structural and is the single largest driver of the Q2 risk picture.</li>
+<li><strong>New Business Bookings at 39% of plan,</strong> every Closed Won sub-$20K — the $25K+ deal segment did not close at all in Q1.</li>
+<li><strong>Self-Serve over-performed:</strong> Reactivation 142% of target, Upgrade 112%, SS Churn 15% better than budgeted. Product PQLs at 818% of target are a strong under-harvested signal.</li>
+<li><strong>Q2 opens with a 2x pipeline coverage gap.</strong> Two first-30-day interventions decide the quarter: SDR-motion fix and a named At-Risk Roster with preventive-save plays.</li>
+</ul>
+</div>
+
+<div class="cover-section">
+<h2>🎯 Top Actions</h2>
+<ol class="action-items">
+<li>Approve SDR capacity / motion plan for Q2 (headcount vs retargeting vs messaging) — <span class="action-owner">CRO + CEO</span> <span class="action-deadline">· By: Q2 W1</span></li>
+<li>Publish Q2 At-Risk Roster with named save owners and preventive plays — <span class="action-owner">CS Leadership</span> <span class="action-deadline">· By: April 24</span></li>
+<li>Meltwater named re-expansion campaign ($140K upside, retained logo) — <span class="action-owner">CS + Morgan</span> <span class="action-deadline">· By: Q2 Weeks 1–6</span></li>
+<li>Product-led motion plan to harvest the 818% PQL over-delivery — <span class="action-owner">Head of Product + RevOps</span> <span class="action-deadline">· By: Q2 W2</span></li>
+</ol>
+</div>
+
+<div class="cover-section">
+<h2>📎 Resources</h2>
+<div class="resource-links">
+<a href="./Mixmax_Quarterly_Wrapup_Q1-2026_v2.html">📄 Quarterly Wrap-Up (v2)</a>
+<a href="./CRO_Quarterly_Report_Q1-2026_v2.html">📄 CRO Quarterly (v2)</a>
+<a href="./Mixmax_Quarter_Ahead_Q2-2026_v2.html">→ Q2 Quarter-Ahead (v2)</a>
+<a href="../Monthly Report/Mixmax_Monthly_Report_2026-03.html">📅 March 2026 Monthly</a>
+<a href="https://drive.google.com/drive/folders/1SiQ4Nq3jFDrw86nkMhUCWEGcYFvhXG_c">📊 Q1 Lookback Snapshot</a>
+</div>
+</div>
+
+<div class="cover-section">
+<h2>🔍 Quality Assurance</h2>
+<div class="qa-badge warning">
+<div class="qa-badge-header">⚠️ QA VERIFIED WITH WARNINGS — BOARD-READY WITH BOOTSTRAP CAVEAT</div>
+<ul class="qa-checks">
+<li>✅ Data completeness — all 9 Lookback snapshot tabs populated</li>
+<li>✅ Math accuracy — DS + SS reconcile to Total ARR within $1 rounding</li>
+<li>✅ Freshness — snapshot 2026-04-14, report 2026-04-17 (3 days)</li>
+<li>✅ Coverage — all board-required sections populated (headlines, risks, wins, forward-looking)</li>
+<li>✅ Cross-reference — board metrics match Wrap-Up and CRO versions</li>
+<li>⚠️ Monthly reconciliation — Bootstrap mode; monthly-to-quarterly gate skipped (first quarterly under new workflow)</li>
+<li>✅ HTML integrity — clean single-page board format</li>
+</ul>
+<div class="qa-meta">QA conducted: 2026-04-17 · Method: inline QA checks (Report Accuracy Skill v1.0) · Full reconciliation gate active beginning Q2 2026</div>
+</div>
+</div>
+
+</div>
+<!-- END COVER PAGE -->
+
+<div class="content-body">
+
+<div class="section-title">Headline Metrics</div>
+<div class="metric-grid">
+<div class="metric-card"><h3>Total ARR</h3><div class="metric-value">$8.68M</div><div class="metric-detail"><span class="miss">-2.9%</span> vs $8.94M target</div></div>
+<div class="metric-card"><h3>Direct Sales ARR</h3><div class="metric-value">$4.72M</div><div class="metric-detail"><span class="miss">-5.6%</span> vs $5.00M target</div></div>
+<div class="metric-card"><h3>Self-Serve ARR</h3><div class="metric-value">$3.96M</div><div class="metric-detail"><span class="hit">+0.6%</span> vs $3.93M target</div></div>
+<div class="metric-card"><h3>NRR (All Renewals)</h3><div class="metric-value">56%</div><div class="metric-detail"><span class="miss">-46 pts</span> vs 102% · 79.6% ex-outliers</div></div>
+<div class="metric-card"><h3>GRR</h3><div class="metric-value">93%</div><div class="metric-detail"><span class="neutral">Within band</span></div></div>
+<div class="metric-card"><h3>New Business Bookings</h3><div class="metric-value">$86K</div><div class="metric-detail"><span class="miss">39%</span> of $219K target</div></div>
+<div class="metric-card"><h3>Churn ($)</h3><div class="metric-value">-$386K</div><div class="metric-detail"><span class="miss">150%</span> of -$257K budget</div></div>
+<div class="metric-card"><h3>Expansion Contribution</h3><div class="metric-value">$242K</div><div class="metric-detail"><span class="hit">102%</span> of $238K target</div></div>
+</div>
+
+<div class="section-title">Narrative</div>
+<div class="narrative-block">
+Q1 landed <strong>$260K below Total ARR target (-2.9%)</strong>, concentrated entirely in Direct Sales (-5.6%) while Self-Serve finished +0.6% to target. Two named accounts — <strong>Attentive Mobile</strong> (churn -$165K) and <strong>Meltwater</strong> (downgrade -$140K, logo retained) — account for <strong>43% of Q1 combined churn-plus-downgrade</strong>; excluding them, NRR would have been 79.6% vs the reported 56.5%. The larger structural issue is top-of-funnel: <strong>Outbound Accounts Engaged came in at 17% of target</strong> and Inbound MQLs at 56%, producing New Business bookings at 39% of plan. Q2 opens with pipeline at roughly $432K future-period coverage against a target that will require an immediate SDR-capacity/motion decision and a named at-risk save plan.
+</div>
+
+<div class="two-col">
+<div>
+<h3>🚨 Top 3 Risks</h3>
+<ol>
+<li><strong>Outbound TOFU collapse</strong> — Outbound pipeline at 8% of $ plan, structural. <em>Owner: SDR + RevOps. Exposure: single largest driver of Q2 miss if unsolved.</em></li>
+<li><strong>CS concentration risk</strong> — 2 accounts = 43% of Q1 churn+downgrade. <em>Owner: CS. Action: named At-Risk Roster by Q2 W1.</em></li>
+<li><strong>Bookings engine under-powered</strong> — New Business at 39% of target, all Closed Won under $20K. <em>Owner: AE + Marketing demand. Exposure: Q2 attainment.</em></li>
+</ol>
+</div>
+<div>
+<h3>🏆 Top 3 Wins</h3>
+<ol>
+<li><strong>Self-Serve over-performed</strong> — +0.6% to target, SS Reactivation at 142%, SS Churn 15% better than plan.</li>
+<li><strong>Expansion Contribution at 102%</strong> — the renewal-book expansion motion worked in dollars (even if Expansion bookings did not).</li>
+<li><strong>Product PQLs at 818% of target</strong> — strong product-led signal waiting to be operationalized.</li>
+</ol>
+</div>
+</div>
+
+<div class="section-title">Forward-Looking Headline</div>
+<p>We expect Q2 2026 to open with a <strong>2x pipeline-coverage gap</strong> against target. The quarter will be won or lost on two interventions in the first 30 days: (1) <strong>fixing the Outbound SDR motion</strong> (diagnosis by W1, remediation by W3) and (2) <strong>publishing the named At-Risk Roster</strong> and executing preventive-save plays before renewal dates land. Self-Serve is projected to continue over-plan; the <strong>Meltwater re-expansion play</strong> is a known-dollar Q2 upside opportunity.</p>
+
+<div class="section-title">Reconciliation Posture</div>
+<div class="info-box"><strong>Bootstrap mode.</strong> This is the first quarterly report under the new workflow; only the March 2026 monthly exists for cross-reference. Intra-snapshot integrity check passed. Full monthly-to-quarterly reconciliation will be active starting Q2 2026.</div>
+
+</div>
+<!-- END CONTENT BODY -->
+
+</div>
+<!-- END CONTAINER -->
+
+</body>
+</html>
