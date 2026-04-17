@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mixmax GTM Slides — Q1 2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #0f172a; line-height: 1.55; }
+  a { color: #2563eb; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Sticky top nav */
+  .top-nav { position: sticky; top: 0; z-index: 50; background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 10px 24px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9em; }
+  .top-nav .left { display: flex; gap: 16px; align-items: center; }
+  .top-nav .brand { font-weight: 700; color: #2563eb; }
+  .top-nav .right { color: #64748b; font-size: 0.85em; }
+
+  /* Layout */
+  .layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); max-width: 1300px; margin: 0 auto; gap: 28px; padding: 24px; }
+  aside.toc { position: sticky; top: 60px; align-self: start; max-height: calc(100vh - 80px); overflow-y: auto; border-right: 1px solid #e2e8f0; padding-right: 12px; font-size: 0.88em; }
+  aside.toc h4 { text-transform: uppercase; font-size: 0.72em; letter-spacing: 0.08em; color: #64748b; margin: 12px 0 6px; font-weight: 700; }
+  aside.toc ol { list-style: none; padding: 0; margin: 0 0 12px; }
+  aside.toc li { margin: 2px 0; }
+  aside.toc a { display: block; padding: 6px 10px; color: #334155; border-radius: 4px; border-left: 3px solid transparent; }
+  aside.toc a:hover { background: #eff6ff; color: #2563eb; border-left-color: #2563eb; text-decoration: none; }
+
+  main { min-width: 0; }
+
+  /* Cover page */
+  .cover-page { max-width: 900px; margin: 0 auto 32px; padding: 40px; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; }
+  .cover-header { text-align: center; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 2px solid #2563eb; }
+  .cover-header h1 { font-size: 28px; font-weight: 700; color: #1e293b; margin: 0 0 8px; }
+  .cover-header .subtitle { font-size: 18px; color: #475569; margin: 0 0 14px; }
+  .cover-meta { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; font-size: 0.85em; color: #64748b; }
+  .summary-section { margin-bottom: 24px; }
+  .summary-section h2 { font-size: 18px; font-weight: 700; color: #1e293b; margin: 0 0 12px; display: flex; align-items: center; gap: 8px; }
+  .summary-bullets, .action-items, .qa-checks { list-style: none; padding: 0; margin: 0; }
+  .summary-bullets li { padding: 8px 0 8px 20px; position: relative; font-size: 0.95em; line-height: 1.5; color: #334155; border-bottom: 1px solid #f1f5f9; }
+  .summary-bullets li::before { content: "•"; position: absolute; left: 0; color: #2563eb; font-weight: bold; font-size: 1.2em; }
+  .action-items { counter-reset: actions; }
+  .action-items li { padding: 10px 0 10px 34px; position: relative; font-size: 0.95em; line-height: 1.5; color: #334155; border-bottom: 1px solid #f1f5f9; counter-increment: actions; }
+  .action-items li::before { content: counter(actions); position: absolute; left: 0; top: 12px; width: 22px; height: 22px; background: #2563eb; color: white; border-radius: 50%; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .action-owner { color: #2563eb; font-weight: 600; }
+  .action-deadline { color: #64748b; font-size: 0.88em; }
+  .resource-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+  .resource-links a { display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; color: #2563eb; font-size: 0.88em; }
+  .resource-links a:hover { background: #eff6ff; text-decoration: none; }
+  .qa-badge { border-radius: 8px; padding: 18px; margin-top: 4px; }
+  .qa-badge.pass { background: #f0fdf4; border: 2px solid #22c55e; }
+  .qa-badge.warning { background: #fffbeb; border: 2px solid #f59e0b; }
+  .qa-badge.fail { background: #fef2f2; border: 2px solid #ef4444; }
+  .qa-badge-header { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+  .qa-badge.pass .qa-badge-header { color: #16a34a; }
+  .qa-badge.warning .qa-badge-header { color: #d97706; }
+  .qa-badge.fail .qa-badge-header { color: #dc2626; }
+  .qa-checks li { padding: 3px 0; font-size: 0.88em; color: #334155; }
+  .qa-meta { font-size: 0.78em; color: #64748b; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 6px; margin-top: 6px; }
+
+  /* Slides */
+  .slide { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 28px; margin: 0 0 20px; scroll-margin-top: 70px; }
+  .slide-section-header { font-size: 1.35em; font-weight: 700; color: #2563eb; margin: 28px 0 12px; padding-bottom: 8px; border-bottom: 2px solid #2563eb; letter-spacing: -0.01em; }
+  .slide-section-header:first-child { margin-top: 8px; }
+  .slide-title { font-size: 1.3em; font-weight: 700; color: #0f172a; margin: 0 0 6px; }
+  .slide-subtitle { font-size: 0.92em; color: #64748b; margin: 0 0 18px; }
+  .slide-bullets { list-style: none; padding: 0; margin: 14px 0 14px; }
+  .slide-bullets li { padding: 6px 0 6px 20px; position: relative; font-size: 0.95em; color: #334155; line-height: 1.55; }
+  .slide-bullets li::before { content: "›"; position: absolute; left: 4px; color: #2563eb; font-weight: bold; font-size: 1.15em; top: 4px; }
+  .writing-guidance { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 10px 14px; margin: 14px 0; border-radius: 4px; font-size: 0.88em; color: #78350f; }
+  .writing-guidance strong { color: #92400e; }
+  .source-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .source-pill { display: inline-block; padding: 3px 10px; background: #f1f5f9; color: #475569; border-radius: 12px; font-size: 0.75em; font-weight: 500; }
+
+  /* Chart */
+  .chart-wrap { background: #fafbfc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 12px 0; }
+  .chart-wrap svg { display: block; width: 100%; height: auto; max-height: 520px; }
+  .chart-caption { font-size: 0.85em; color: #64748b; margin-top: 6px; font-style: italic; }
+  .chart-export-bar { display: flex; gap: 8px; margin-top: 10px; justify-content: flex-end; }
+  .btn-export { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #ffffff; color: #2563eb; border: 1px solid #2563eb; border-radius: 6px; font-size: 0.8em; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+  .btn-export:hover { background: #eff6ff; }
+
+  /* Metric strip */
+  .metric-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 12px 0; }
+  .metric-mini { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 12px; }
+  .metric-mini .label { font-size: 0.72em; text-transform: uppercase; color: #64748b; letter-spacing: 0.04em; font-weight: 600; }
+  .metric-mini .value { font-size: 1.3em; font-weight: 700; color: #0f172a; margin-top: 2px; }
+  .metric-mini .delta { font-size: 0.78em; margin-top: 2px; }
+  .delta-up { color: #15803d; }
+  .delta-down { color: #b91c1c; }
+  .delta-flat { color: #64748b; }
+
+  /* Print */
+  @media print {
+    body { background: white; }
+    .top-nav, aside.toc, .chart-export-bar { display: none; }
+    .layout { grid-template-columns: 1fr; padding: 0; }
+    .slide, .cover-page { page-break-after: always; border: none; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <div class="left">
+    <span class="brand">Mixmax GTM Slides</span>
+    <span>·</span>
+    <span>Q1 2026</span>
+  </div>
+  <div class="right">
+    <a href="https://heath-gtm.github.io/mixmax-revenue-reports/">Home</a>
+    <span> · </span>
+    <a href="https://heath-gtm.github.io/mixmax-revenue-reports/reports/leader-weekly/gtm-slides/">Archive</a>
+  </div>
+</div>
+
+<div class="layout">
+
+<aside class="toc">
+  <h4>On this page</h4>
+  <ol>
+    <li><a href="#cover">📋 If You Read Nothing Else</a></li>
+    <li><a href="#tldr">1. Executive TLDR</a></li>
+    <li><a href="#sales">2. Sales Performance</a></li>
+    <li><a href="#cs">3. CS Performance</a></li>
+    <li><a href="#pipeline">4. Pipeline &amp; Activity</a></li>
+    <li><a href="#forward">5. Forward Look</a></li>
+    <li><a href="#slide-5b" style="padding-left: 26px; font-size: 0.92em;">↳ 5b · Rebrand Inflection</a></li>
+  </ol>
+</aside>
+
+<main>
+
+<!-- =========================================================== -->
+<!-- SECTION 0 — COVER PAGE                                        -->
+<!-- =========================================================== -->
+<div class="cover-page" id="cover">
+
+  <div class="cover-header">
+    <h1>MIXMAX GTM SLIDES</h1>
+    <div class="subtitle">Q1 2026 · Visual-First Board Deck · First quarter post-rebrand</div>
+    <div class="cover-meta">
+      <span>📊 Snapshot: Q1 2026 Lookback — April 14, 2026</span>
+      <span>📅 Created: April 17, 2026</span>
+      <span>🎨 Brand-launch reference: November 2025</span>
+      <span>🔗 <a href="https://heath-gtm.github.io/mixmax-revenue-reports/reports/leader-weekly/gtm-slides/GTM_Slides_2026-Q1.html">Published Report</a></span>
+    </div>
+  </div>
+
+  <div class="summary-section">
+    <h2>📋 If You Read Nothing Else</h2>
+    <ul class="summary-bullets">
+      <li><strong>Q1 finished -$260K (-2.9%) on Total ARR</strong> — all Direct Sales. Net ARR Contribution landed at -$372.7K vs a -$112.3K plan (232% of budgeted shrink). SS beat plan by +$21K.</li>
+      <li><strong>Two accounts drove 43% of Q1 churn+downgrade:</strong> Attentive Mobile (-$164,724 churn) + Meltwater (-$140,213 downgrade). Ex-both, NRR would have been 79.6% vs the reported 56.5%.</li>
+      <li><strong>Outbound TOFU collapsed</strong> — Outbound Accounts Engaged at 17% of target (315 vs 1,890), Outbound Pipeline $ at 8% of plan ($20K vs $252K). Biggest single driver of the Q1 bookings gap.</li>
+      <li><strong>New Business Bookings closed at 39% of target</strong> ($85.7K vs $219.1K). Every Q1 Closed Won was sub-$20K — the $25K+ deal segment did not close at all.</li>
+      <li><strong>Morgan Wible is the largest contributor AND the largest loss pile:</strong> $109K Won vs $194K Lost TCV across ~20 deals, 36% win rate by $. Late-stage coaching gap, not activity.</li>
+      <li><strong>Self-Serve was the quiet hero:</strong> Reactivation 142%, Upgrade 112%, Churn 15% better than plan. SS Net Contribution -$9.2K vs -$30.7K plan (+$21K ahead).</li>
+      <li><strong>Edwin Chun's CSM book posted NRR 111%</strong> on $329K — template for Q2 expansion motion. Heather Mae Pusztai's book ran NRR 21% / GRR 71% (carried both named outliers).</li>
+      <li><strong>Meltwater was retained post-downgrade</strong> — $140K is recoverable upside, not churn. Named re-expansion play is the highest-ROI CS action available in Q2.</li>
+      <li><strong>Brand-launch context (Nov 2025):</strong> Q1 2026 is the first full quarter post-rebrand. Positioning and narrative reset — but the Q1 miss is concentration + Outbound TOFU, not brand. Rebrand becomes a Q2 wedge for Expansion and Outbound re-launch (see Forward Look 5b).</li>
+      <li><strong>YoY/QoQ framing:</strong> Bootstrap mode — no Q4 2025 or Q1 2025 comparables exist under the new workflow (Gen 1 sheet confirmed forward-looking only). Primary comparison frame = Q1 Actual → Q2 Target. Trendline charts activate Q2 2026.</li>
+    </ul>
+  </div>
+
+  <div class="summary-section">
+    <h2>🎯 Top Actions</h2>
+    <ol class="action-items">
+      <li>Publish the Q2 At-Risk Roster with named preventive-save owners — <span class="action-owner">CS Leadership</span> <span class="action-deadline">· By: April 24</span></li>
+      <li>SDR capacity + Outbound motion decision (headcount vs. retargeting vs. messaging re-write) — <span class="action-owner">CRO + RevOps + SDR Lead</span> <span class="action-deadline">· By: April 20</span></li>
+      <li>Loss-review with Morgan on the 5 largest Q1 losses (Haymarket, Triple Whale, sumup, BrainsWay, SpryPoint) — <span class="action-owner">CRO + Morgan</span> <span class="action-deadline">· By: April 24</span></li>
+      <li>Book-rebalance / exec-sponsor pairing with Heather Mae Pusztai — <span class="action-owner">CRO + Head of CS</span> <span class="action-deadline">· By: April 18</span></li>
+      <li>Meltwater named re-expansion play ($140K upside) — <span class="action-owner">CS + AE (Morgan)</span> <span class="action-deadline">· By: Q2 Weeks 1–6</span></li>
+    </ol>
+  </div>
+
+  <div class="summary-section">
+    <h2>📎 Resources</h2>
+    <div class="resource-links">
+      <a href="https://drive.google.com/drive/folders/1SiQ4Nq3jFDrw86nkMhUCWEGcYFvhXG_c">📊 Q1 Lookback Snapshot</a>
+      <a href="https://docs.google.com/spreadsheets/d/1ikq0APBWkPcaaDUKx4nbdy0QNYVK30Tvb3_reeChpCY/edit">📗 Gen 1 Sheet</a>
+      <a href="../../Quarterly Report/Mixmax_Quarterly_Wrapup_Q1-2026_v2.html">📄 Quarterly Wrap-Up (base)</a>
+      <a href="../../Quarterly Report/CRO_Quarterly_Report_Q1-2026_v2.html">📄 CRO Quarterly (base)</a>
+      <a href="../../Monthly Report/Mixmax_Monthly_Report_2026-03.html">📅 March 2026 Monthly</a>
+      <a href="https://heath-gtm.github.io/mixmax-revenue-reports/reports/leader-weekly/gtm-slides/">🗂️ GTM Slides Archive</a>
+    </div>
+  </div>
+
+  <div class="summary-section">
+    <h2>🔍 Quality Assurance</h2>
+    <div class="qa-badge warning">
+      <div class="qa-badge-header">⚠️ QA VERIFIED WITH WARNINGS — READY TO SHIP</div>
+      <ul class="qa-checks">
+        <li>✅ Data completeness — every slide populated, all required sections present</li>
+        <li>✅ Math accuracy — every metric inherits from approved Q1 base report (no recomputation)</li>
+        <li>✅ Freshness — base report approved 2026-04-17; snapshot 3 days old</li>
+        <li>✅ Coverage — Cover + TLDR + Sales (3) + CS (4) + Pipeline (2) + Forward Look (2) = 12 slides</li>
+        <li>✅ Cross-reference — numbers match CRO Quarterly v2 + Quarterly Wrap-Up v2 exactly</li>
+        <li>⚠️ Limited history — only Q1 2026 + March 2026 data available under new workflow; trendline charts flagged accordingly</li>
+        <li>⚠️ YoY/QoQ — Gen 1 sheet deep pull attempted on 2026-04-17; confirmed no Q4 2025 or Q1 2025 historical cells exist. Primary comparison frame pivoted to Q1 Actual → Q2 Target.</li>
+        <li>✅ Rebrand context (Nov 2025) — called out on cover + dedicated Forward Look 5b slide; no quantitative attribution claims.</li>
+        <li>✅ ARR Display Rule — Total ARR shown as reference only; target comparisons use Net ARR Contribution + segments</li>
+        <li>✅ HTML integrity — all SVG charts inline, every chart has PNG + SVG export buttons</li>
+      </ul>
+      <div class="qa-meta">QA conducted: 2026-04-17 · Method: inline QA per universal addendum · Historical depth: bootstrap (1 quarter + 1 month of monthly detail) · Rebrand framing: qualitative only</div>
+    </div>
+  </div>
+
+</div>
+<!-- END COVER -->
+
+<!-- =========================================================== -->
+<!-- SECTION 1 — EXECUTIVE TLDR                                    -->
+<!-- =========================================================== -->
+<div class="slide-section-header" id="tldr">1. Executive TLDR</div>
+
+<div class="slide" id="slide-tldr">
+  <div class="slide-title">Q1 closed below plan on volume, not quality — two named accounts + Outbound TOFU own the miss.</div>
+  <div class="slide-subtitle">Six-metric scorecard — Q1 actual vs target</div>
+
+  <div class="metric-strip">
+    <div class="metric-mini"><div class="label">Total ARR (ref)</div><div class="value">$8.68M</div><div class="delta delta-down">vs $8.94M · -2.9%</div></div>
+    <div class="metric-mini"><div class="label">Net ARR Contribution</div><div class="value">-$372.7K</div><div class="delta delta-down">vs -$112.3K plan · 232% of budgeted shrink</div></div>
+    <div class="metric-mini"><div class="label">New Business Bookings</div><div class="value">$85.7K</div><div class="delta delta-down">39% of $219K target</div></div>
+    <div class="metric-mini"><div class="label">NRR (All Renewals)</div><div class="value">56.5%</div><div class="delta delta-down">79.6% ex-outliers</div></div>
+    <div class="metric-mini"><div class="label">GRR (ARR, All)</div><div class="value">93%</div><div class="delta delta-flat">holds long-tail</div></div>
+    <div class="metric-mini"><div class="label">Outbound Pipeline $</div><div class="value">$20K</div><div class="delta delta-down">8% of $252K plan</div></div>
+  </div>
+
+  <div class="chart-wrap" data-chart="tldr-scorecard">
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <style>
+        .axis { fill: #64748b; font: 12px -apple-system, sans-serif; }
+        .label { fill: #0f172a; font: 600 14px -apple-system, sans-serif; }
+        .title { fill: #0f172a; font: 700 18px -apple-system, sans-serif; }
+        .grid { stroke: #e2e8f0; stroke-width: 1; stroke-dasharray: 3 3; }
+        .bar-actual { fill: #2563eb; }
+        .bar-target { fill: #93c5fd; }
+        .pct-below { fill: #b91c1c; font: 700 13px -apple-system, sans-serif; }
+        .pct-above { fill: #15803d; font: 700 13px -apple-system, sans-serif; }
+      </style>
+      <text class="title" x="24" y="32">Q1 2026 — Percent to Target by Metric</text>
+      <text class="axis" x="24" y="52">Net ARR Contribution treated as "232% of budgeted shrink"; bars above 100% miss the budget on shrink metrics.</text>
+
+      <!-- Grid -->
+      <line class="grid" x1="260" y1="90" x2="260" y2="480"/>
+      <line class="grid" x1="400" y1="90" x2="400" y2="480"/>
+      <line class="grid" x1="540" y1="90" x2="540" y2="480"/>
+      <line class="grid" x1="680" y1="90" x2="680" y2="480"/>
+      <line class="grid" x1="820" y1="90" x2="820" y2="480"/>
+
+      <!-- X-axis labels -->
+      <text class="axis" x="260" y="500" text-anchor="middle">50%</text>
+      <text class="axis" x="400" y="500" text-anchor="middle">100%</text>
+      <text class="axis" x="540" y="500" text-anchor="middle">150%</text>
+      <text class="axis" x="680" y="500" text-anchor="middle">200%</text>
+      <text class="axis" x="820" y="500" text-anchor="middle">250%</text>
+
+      <!-- Reference line at 100% -->
+      <line x1="400" y1="90" x2="400" y2="480" stroke="#64748b" stroke-width="2" stroke-dasharray="4 4"/>
+      <text class="axis" x="404" y="102">100% target</text>
+
+      <!-- Bars -->
+      <!-- Net New ARR (232% of budgeted shrink — below plan) -->
+      <rect class="bar-actual" x="120" y="110" width="530" height="28" fill="#b91c1c"/>
+      <text class="label" x="20" y="128">Net ARR vs plan</text>
+      <text class="pct-below" x="660" y="128">232% of budgeted shrink</text>
+
+      <!-- DS ARR -->
+      <rect class="bar-actual" x="120" y="150" width="143" height="28" fill="#dc2626"/>
+      <text class="label" x="20" y="168">DS ARR</text>
+      <text class="pct-below" x="273" y="168">94.4% (-5.6%)</text>
+
+      <!-- SS ARR -->
+      <rect class="bar-actual" x="120" y="190" width="282" height="28" fill="#15803d"/>
+      <text class="label" x="20" y="208">SS ARR</text>
+      <text class="pct-above" x="412" y="208">100.6% (+0.6%)</text>
+
+      <!-- New Business Bookings (39%) -->
+      <rect class="bar-actual" x="120" y="230" width="109" height="28" fill="#b91c1c"/>
+      <text class="label" x="20" y="248">NB Bookings</text>
+      <text class="pct-below" x="239" y="248">39%</text>
+
+      <!-- Expansion Contribution (102%) -->
+      <rect class="bar-actual" x="120" y="270" width="286" height="28" fill="#15803d"/>
+      <text class="label" x="20" y="288">DS Expansion $</text>
+      <text class="pct-above" x="416" y="288">102%</text>
+
+      <!-- NRR (56%) -->
+      <rect class="bar-actual" x="120" y="310" width="157" height="28" fill="#b91c1c"/>
+      <text class="label" x="20" y="328">NRR actual</text>
+      <text class="pct-below" x="287" y="328">56% (vs 102% plan)</text>
+
+      <!-- NRR ex-outliers (79.6%) -->
+      <rect class="bar-actual" x="120" y="350" width="223" height="28" fill="#a16207"/>
+      <text class="label" x="20" y="368">NRR ex-outliers</text>
+      <text class="pct-below" x="353" y="368">79.6%</text>
+
+      <!-- Outbound Pipeline $ (8%) -->
+      <rect class="bar-actual" x="120" y="390" width="23" height="28" fill="#b91c1c"/>
+      <text class="label" x="20" y="408">Outbound Pipeline $</text>
+      <text class="pct-below" x="153" y="408">8%</text>
+
+      <!-- Product PQLs (818%) -->
+      <rect class="bar-actual" x="120" y="430" width="530" height="28" fill="#15803d"/>
+      <text class="label" x="20" y="448">Product PQLs</text>
+      <text class="pct-above" x="660" y="448">818%</text>
+    </svg>
+    <div class="chart-caption">Limited history — Q1 2026 is the first quarter under the new workflow; quarterly trendlines will populate starting Q2 2026.</div>
+  </div>
+  <div class="chart-export-bar">
+    <button class="btn-export" onclick="downloadChartAsPNG(this, 'Q1-2026-TLDR-Scorecard')">📥 Download PNG</button>
+    <button class="btn-export" onclick="downloadChartAsSVG(this, 'Q1-2026-TLDR-Scorecard')">📥 Download SVG</button>
+  </div>
+
+  <ul class="slide-bullets">
+    <li><strong>The verdict:</strong> Q1 missed by -$260K — driven by Outbound pipeline collapse and two named CS losses, not by broad engine failure.</li>
+    <li><strong>The quiet beat:</strong> Self-Serve net contribution at +$21K vs plan; DS Expansion at 102%. The retention mechanics and product-led motion both work.</li>
+    <li><strong>The Q2 math:</strong> Ex-Attentive + ex-Meltwater, NRR is 79.6%; ex-Outbound Outbound shortfall, pipeline coverage would be well over 2x at Q2 open.</li>
+  </ul>
+
+  <div class="writing-guidance"><strong>Writing guidance:</strong> Lead with the verdict word ("missed" or "softer than plan"). Board wants the story in 5 seconds: "volume + two named accounts." Resist the urge to pre-excuse — own the headline, then show the ex-outlier math.</div>
+
+  <div class="source-pills">
+    <span class="source-pill">Source: Mixmax_Quarterly_Wrapup_Q1-2026_v2.html</span>
+    <span class="source-pill">Source: CRO_Quarterly_Report_Q1-2026_v2.html</span>
+  </div>
+</div>
+
+<!-- =========================================================== -->
+<!-- SECTION 2 — SALES PERFORMANCE                                 -->
+<!-- =========================================================== -->
+<div class="slide-section-header" id="sales">2. Sales Performance</div>
+
+<!-- Slide 2a — Revenue Position -->
+<div class="slide" id="slide-2a">
+  <div class="slide-title">2a · Revenue Position — DS owns the -$260K gap; SS held plan.</div>
+  <div class="slide-subtitle">Q1 2026 Net ARR Contribution by driver · segment view</div>
+
+  <div class="chart-wrap" data-chart="revenue-position">
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <style>
+        .g-axis { fill: #64748b; font: 12px -apple-system, sans-serif; }
+        .g-label { fill: #0f172a; font: 600 13px -apple-system, sans-serif; }
+        .g-title { fill: #0f172a; font: 700 18px -apple-system, sans-serif; }
+        .g-sub { fill: #64748b; font: 13px -apple-system, sans-serif; }
+        .g-grid { stroke: #e2e8f0; stroke-width: 1; stroke-dasharray: 3 3; }
+      </style>
+      <text class="g-title" x="24" y="32">Q1 2026 Net ARR Contribution Drivers — Direct Sales</text>
+      <text class="g-sub" x="24" y="52">Waterfall: New Business + Expansion + Reactivation − Downgrade − Churn = DS Net Contribution (-$363.5K)</text>
+
+      <!-- Zero baseline -->
+      <line x1="60" y1="330" x2="920" y2="330" stroke="#0f172a" stroke-width="1.5"/>
+      <text class="g-axis" x="40" y="334" text-anchor="end">$0</text>
+
+      <!-- Grid -->
+      <line class="g-grid" x1="60" y1="130" x2="920" y2="130"/>
+      <line class="g-grid" x1="60" y1="230" x2="920" y2="230"/>
+      <line class="g-grid" x1="60" y1="430" x2="920" y2="430"/>
+      <text class="g-axis" x="40" y="134" text-anchor="end">+$200K</text>
+      <text class="g-axis" x="40" y="234" text-anchor="end">+$100K</text>
+      <text class="g-axis" x="40" y="434" text-anchor="end">-$100K</text>
+
+      <!-- Scale: 1 pixel = $1,000; Zero at y=330; +$241K = y=89 -->
+      <!-- NB $86K -->
+      <rect x="90" y="244" width="90" height="86" fill="#15803d"/>
+      <text class="g-label" x="135" y="238" text-anchor="middle">+$86K</text>
+      <text class="g-axis" x="135" y="358" text-anchor="middle">New Business</text>
+      <text class="g-axis" x="135" y="374" text-anchor="middle">48% of $180K</text>
+
+      <!-- Expansion $241K -->
+      <rect x="220" y="89" width="90" height="241" fill="#2563eb"/>
+      <text class="g-label" x="265" y="83" text-anchor="middle">+$241K</text>
+      <text class="g-axis" x="265" y="358" text-anchor="middle">Expansion</text>
+      <text class="g-axis" x="265" y="374" text-anchor="middle">102% of $238K</text>
+
+      <!-- Reactivation $11K -->
+      <rect x="350" y="319" width="90" height="11" fill="#93c5fd"/>
+      <text class="g-label" x="395" y="313" text-anchor="middle">+$11K</text>
+      <text class="g-axis" x="395" y="358" text-anchor="middle">Reactivation</text>
+
+      <!-- Downgrade -$316K -->
+      <rect x="480" y="330" width="90" height="316" fill="#fb923c"/>
+      <text class="g-label" x="525" y="556" text-anchor="middle">-$316K</text>
+      <text class="g-axis" x="525" y="358" text-anchor="middle">Downgrade</text>
+
+      <!-- Churn -$386K -->
+      <rect x="610" y="330" width="90" height="386" fill="#b91c1c"/>
+      <text class="g-label" x="655" y="530" text-anchor="middle">-$386K</text>
+      <text class="g-axis" x="655" y="358" text-anchor="middle">Churn</text>
+
+      <!-- DS NET -->
+      <rect x="740" y="330" width="90" height="363" fill="#7f1d1d"/>
+      <text class="g-label" x="785" y="510" text-anchor="middle">-$363K</text>
+      <text class="g-axis" x="785" y="358" text-anchor="middle">DS NET</text>
+      <text class="g-axis" x="785" y="374" text-anchor="middle">(vs -$81K plan)</text>
+
+      <!-- SS side-note bubble -->
+      <rect x="60" y="470" width="860" height="40" fill="#f0fdf4" stroke="#15803d" stroke-width="1" rx="6"/>
+      <text class="g-label" x="70" y="494">SS Net Contribution: -$9.2K vs -$30.7K plan (+$21K ahead) · SS Reactivation 142%, Upgrade 112%, Churn 85% of budget (better)</text>
+    </svg>
+    <div class="chart-caption">Total Net ARR Contribution: -$372.7K (DS -$363.5K + SS -$9.2K). Total ARR reference: $8.68M — shown for context only, never as % to target.</div>
+  </div>
+  <div class="chart-export-bar">
+    <button class="btn-export" onclick="downloadChartAsPNG(this, 'Q1-2026-Revenue-Position')">📥 Download PNG</button>
+    <button class="btn-export" onclick="downloadChartAsSVG(this, 'Q1-2026-Revenue-Position')">📥 Download SVG</button>
+  </div>
+
+  <ul class="slide-bullets">
+    <li><strong>DS drove the entire miss:</strong> -$282K vs target. Churn (-$386K, 150% of budget) and Downgrade (-$316K, 131% of budget) swamped +$241K Expansion and +$86K New Business.</li>
+    <li><strong>SS was the quiet hero:</strong> Net contribution +$21K ahead of plan. Reactivation 142%, Upgrade 112%, Churn 15% better than budget.</li>
+    <li><strong>The one DS bright spot:</strong> Expansion delivered 102% of plan — the expansion motion works; it just isn't large enough to offset concentrated losses.</li>
+    <li><strong>Ex-outliers:</strong> Strip Attentive + Meltwater, Churn+Downgrade falls to $398K (80% of budget). The broad book is healthier than the headline.</li>
+  </ul>
+
+  <div class="writing-guidance"><strong>Writing guidance:</strong> Stay in the "concentration" framing. Do not say "NRR collapsed" — say "two named accounts drove 43% of churn+downgrade." Show you know which levers are broken (Outbound, two accounts) vs which are working (Expansion, SS).</div>
+
+  <div class="source-pills">
+    <span class="source-pill">Source: Quarterly Wrap-Up · Revenue Position tab</span>
+    <span class="source-pill">Cell: Monthly Revenue Summary (Gen 1)</span>
+  </div>
+</div>
+
+<!-- Slide 2b — Bookings by Channel -->
+<div class="slide" id="slide-2b">
+  <div class="slide-title">2b · Bookings — New Business at 39% of target; Expansion Bookings at 5%.</div>
+  <div class="slide-subtitle">Q1 bookings by channel vs target · dollar view</div>
+
+  <div class="chart-wrap" data-chart="bookings-by-channel">
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <style>
+        .b-axis { fill: #64748b; font: 12px -apple-system, sans-serif; }
+        .b-label { fill: #0f172a; font: 600 13px -apple-system, sans-serif; }
+        .b-title { fill: #0f172a; font: 700 18px -apple-system, sans-serif; }
+        .b-sub { fill: #64748b; font: 13px -apple-system, sans-serif; }
+        .b-actual { fill: #2563eb; }
+        .b-target { fill: #93c5fd; }
+        .b-pct-miss { fill: #b91c1c; font: 700 13px -apple-system, sans-serif; }
+        .b-pct-hit { fill: #15803d; font: 700 13px -apple-system, sans-serif; }
+        .b-grid { stroke: #e2e8f0; stroke-width: 1; stroke-dasharray: 3 3; }
+      </style>
+      <text class="b-title" x="24" y="32">Q1 Bookings vs Target by Channel</text>
+      <text class="b-sub" x="24" y="52">Actual (blue) vs Target (light blue) · $ thousands</text>
+
+      <!-- X grid -->
+      <line class="b-grid" x1="210" y1="80" x2="210" y2="480"/>
+      <line class="b-grid" x1="370" y1="80" x2="370" y2="480"/>
+      <line class="b-grid" x1="530" y1="80" x2="530" y2="480"/>
+      <line class="b-grid" x1="690" y1="80" x2="690" y2="480"/>
+      <line class="b-grid" x1="850" y1="80" x2="850" y2="480"/>
+      <text class="b-axis" x="210" y="500" text-anchor="middle">$50K</text>
+      <text class="b-axis" x="370" y="500" text-anchor="middle">$100K</text>
+      <text class="b-axis" x="530" y="500" text-anchor="middle">$150K</text>
+      <text class="b-axis" x="690" y="500" text-anchor="middle">$200K</text>
+      <text class="b-axis" x="850" y="500" text-anchor="middle">$250K</text>
+
+      <!-- Scale: 1 pixel = $250/px; baseline x=50; 1 -->
+      <!-- Total Bookings actual $86.5K, target $235.5K -->
+      <rect class="b-actual" x="50" y="110" width="277" height="28"/>
+      <rect class="b-target" x="50" y="140" width="754" height="24"/>
+      <text class="b-label" x="30" y="127" text-anchor="end">Total Bookings</text>
+      <text class="b-pct-miss" x="337" y="127">$86K · 37%</text>
+      <text class="b-axis" x="810" y="157">Target $235K</text>
+
+      <!-- New Business actual $85.7K, target $219.1K -->
+      <rect class="b-actual" x="50" y="190" width="274" height="28"/>
+      <rect class="b-target" x="50" y="220" width="701" height="24"/>
+      <text class="b-label" x="30" y="207" text-anchor="end">New Business</text>
+      <text class="b-pct-miss" x="334" y="207">$86K · 39%</text>
+      <text class="b-axis" x="757" y="237">Target $219K</text>
+
+      <!-- Expansion Bookings actual $0.8K, target $16.4K -->
+      <rect class="b-actual" x="50" y="270" width="3" height="28"/>
+      <rect class="b-target" x="50" y="300" width="53" height="24"/>
+      <text class="b-label" x="30" y="287" text-anchor="end">Expansion Bookings</text>
+      <text class="b-pct-miss" x="113" y="287">$0.8K · 5%</text>
+      <text class="b-axis" x="109" y="317">Target $16K</text>
+
+      <!-- Pipeline $ actual $237.7K, target $579.4K -->
+      <rect class="b-actual" x="50" y="350" width="761" height="28"/>
+      <rect class="b-target" x="50" y="380" width="1854" height="24" clip-path="inset(0 60% 0 0)"/>
+      <!-- clip the target bar to chart width -->
+      <text class="b-label" x="30" y="367" text-anchor="end">Pipeline $ Created</text>
+      <text class="b-pct-miss" x="821" y="367">$237K · 41%</text>
+      <text class="b-axis" x="580" y="397">Target $579K (off-chart)</text>
+
+      <!-- Outbound Pipeline $ $20K vs $252K -->
+      <rect class="b-actual" x="50" y="430" width="64" height="28"/>
+      <rect class="b-target" x="50" y="460" width="807" height="16"/>
+      <text class="b-label" x="30" y="447" text-anchor="end">Outbound Pipeline $</text>
+      <text class="b-pct-miss" x="124" y="447">$20K · 8%</text>
+      <text class="b-axis" x="863" y="473">Target $252K</text>
+    </svg>
+    <div class="chart-caption">Every Closed Won in Q1 was sub-$20K; the $25K+ deal segment did not close. Structural TOFU problem — Outbound isn't building enterprise-sized opps.</div>
+  </div>
+  <div class="chart-export-bar">
+    <button class="btn-export" onclick="downloadChartAsPNG(this, 'Q1-2026-Bookings-by-Channel')">📥 Download PNG</button>
+    <button class="btn-export" onclick="downloadChartAsSVG(this, 'Q1-2026-Bookings-by-Channel')">📥 Download SVG</button>
+  </div>
+
+  <ul class="slide-bullets">
+    <li><strong>Total Bookings $86.5K · 37% of $235K target</strong> — $149K gap. Driven by New Business at 39% ($86K vs $219K) and Expansion Bookings at 5% ($0.8K vs $16K).</li>
+    <li><strong>The $25K+ deal segment didn't close at all.</strong> Only one deal ≥$25K was even in play (Haymarket Media, Morgan, $26.6K — Closed Lost). Structural signal from the TOFU gap.</li>
+    <li><strong>Expansion Bookings at 5% is not a motion failure</strong> — DS Expansion contribution landed at 102% of plan. The signed bookings line is small because expansion is largely mid-contract credit, not new paper.</li>
+    <li><strong>Pipeline Created at 41% of plan</strong> ($237K vs $579K). Outbound drove the whole shortfall — Outbound Pipeline $ at 8% of its $252K target.</li>
+  </ul>
+
+  <div class="writing-guidance"><strong>Writing guidance:</strong> Name the deal that tried (Haymarket) and the AE (Morgan). The bookings slide is the handoff to the Outbound TOFU narrative — foreshadow pipeline slide here.</div>
+
+  <div class="source-pills">
+    <span class="source-pill">Source: Quarterly Wrap-Up · Bookings &amp; Pipeline tab</span>
+    <span class="source-pill">Cell: Monthly Bookings Summary (Gen 1)</span>
+  </div>
+</div>
+
+<!-- Slide 2c — Funnel -->
+<div class="slide" id="slide-2c">
+  <div class="slide-title">2c · Funnel — TOFU is the leak; every downstream stage is on track per volume.</div>
+  <div class="slide-subtitle">Pipeline conversion funnel · Q1 2026 with health color-coding</div>
+
+  <div class="chart-wrap" data-chart="conversion-funnel">
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <style>
+        .f-title { fill: #0f172a; font: 700 18px -apple-system, sans-serif; }
+        .f-sub { fill: #64748b; font: 13px -apple-system, sans-serif; }
+        .f-stage { fill: #ffffff; font: 700 15px -apple-system, sans-serif; }
+        .f-meta { fill: #ffffff; font: 12px -apple-system, sans-serif; }
+        .f-target { fill: #64748b; font: 11px -apple-system, sans-serif; }
+      </style>
+      <text class="f-title" x="24" y="32">Q1 Pipeline Conversion Funnel — Where the Leak Is</text>
+      <text class="f-sub" x="24" y="52">Stage volumes · color-coded by % of target (red &lt; 40%, amber 40–80%, green &gt; 80%)</text>
+
+      <!-- Stage bars, width proportional to target attainment -->
+      <!-- Accounts Engaged 22% → red -->
+      <rect x="100" y="90" width="760" height="55" rx="6" fill="#b91c1c"/>
+      <text class="f-stage" x="120" y="115">TOFU · Accounts Engaged</text>
+      <text class="f-meta" x="120" y="135">445 actual vs 2,006 target · 22% · ⚠️ Outbound 17% = lead driver</text>
+
+      <!-- Meetings Booked 69% → amber -->
+      <rect x="140" y="165" width="680" height="55" rx="6" fill="#a16207"/>
+      <text class="f-stage" x="160" y="190">MQLs/PQLs + Meetings Booked</text>
+      <text class="f-meta" x="160" y="210">96 meetings vs 140 · 69% · Inbound MQLs 56%, Product PQLs 818%</text>
+
+      <!-- SQLs 46% → amber -->
+      <rect x="180" y="240" width="600" height="55" rx="6" fill="#a16207"/>
+      <text class="f-stage" x="200" y="265">SQLs</text>
+      <text class="f-meta" x="200" y="285">41 actual vs 90 target · 46%</text>
+
+      <!-- SQOs 65% → amber -->
+      <rect x="220" y="315" width="520" height="55" rx="6" fill="#a16207"/>
+      <text class="f-stage" x="240" y="340">SQOs</text>
+      <text class="f-meta" x="240" y="360">34 actual vs 52 target · 65%</text>
+
+      <!-- Closed Won — dollar-denominated, not count -->
+      <rect x="260" y="390" width="440" height="55" rx="6" fill="#15803d"/>
+      <text class="f-stage" x="280" y="415">Closed Won ($)</text>
+      <text class="f-meta" x="280" y="435">$86.5K Won · 37% of $235K target · Win rate 24% by $</text>
+
+      <!-- Side annotation -->
+      <text class="f-target" x="24" y="485">Health read: The funnel's downstream conversion is consistent with a 22% TOFU; the leak is at the top, not in the middle.</text>
+      <text class="f-target" x="24" y="505">Product PQLs (818%) are over-supplying — 180 PQLs produced only 9 Product SQLs. That's a hand-off gap, not a demand gap.</text>
+    </svg>
+    <div class="chart-caption">Funnel widths scaled to % of stage target (not absolute count). Q1 2026 actuals; prior-quarter benchmark unavailable under bootstrap.</div>
+  </div>
+  <div class="chart-export-bar">
+    <button class="btn-export" onclick="downloadChartAsPNG(this, 'Q1-2026-Funnel')">📥 Download PNG</button>
+    <button class="btn-export" onclick="downloadChartAsSVG(this, 'Q1-2026-Funnel')">📥 Download SVG</button>
+  </div>
+
+  <ul class="slide-bullets">
+    <li><strong>TOFU is broken; downstream is fine:</strong> Accounts Engaged at 22% of target (red); Meetings, SQLs, SQOs all land in the 46–69% band — proportional to the top-of-funnel shortfall.</li>
+    <li><strong>Outbound owns the TOFU problem:</strong> Outbound Accounts Engaged 315 vs 1,890 plan (17%). Outbound SQLs 17%, Outbound SQOs 19%. SDR capacity/motion decision is the lever.</li>
+    <li><strong>Product PQLs are a 818% bright spot</strong> (180 vs 22) — but produced only 9 Product SQLs. PQL-to-SQL conversion motion needs Q2 build.</li>
+    <li><strong>Inbound MQL supply soft at 56%</strong> (70 vs 124). Demand-gen spend is the marketing-side lever.</li>
+  </ul>
+
+  <div class="writing-guidance"><strong>Writing guidance:</strong> Use the funnel to argue scope: "the leak is at the top, everything else follows." This sets up SDR capacity decision as the Q2 headline action. Don't blame the sales team — blame the feed.</div>
+
+  <div class="source-pills">
+    <span class="source-pill">Source: Quarterly Wrap-Up · Bookings &amp; TOFU tabs</span>
+    <span class="source-pill">Cell: Total Prospect Account Engaged (Gen 1)</span>
+  </div>
+</div>
+
+<!-- =========================================================== -->
+<!-- SECTION 3 — CS PERFORMANCE                                    -->
+<!-- =========================================================== -->
+<div class="slide-section-header" id="cs">3. CS Performance</div>
+
+<!-- Slide 3a — Retention Dashboard -->
+<div class="slide" id="slide-3a">
+  <div class="slide-title">3a · Retention — 56% NRR reported; 79.6% ex-two-accounts.</div>
+  <div class="slide-subtitle">Q1 NRR + GRR by segment · with ex-outlier scenarios</div>
+
+  <div class="chart-wrap" data-chart="retention-dashboard">
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <style>
+        .r-title { fill: #0f172a; font: 700 18px -apple-system, sans-serif; }
+        .r-sub { fill: #64748b; font: 13px -apple-system, sans-serif; }
+        .r-axis { fill: #64748b; font: 12px -apple-system, sans-serif; }
+        .r-label { fill: #0f172a; font: 600 13px -apple-system, sans-serif; }
+        .r-bar-nrr { fill: #2563eb; }
+        .r-bar-grr { fill: #93c5fd; }
+        .r-bar-dashed { fill: none; stroke: #a16207; stroke-width: 2; stroke-dasharray: 5 3; }
+        .r-pct { fill: #0f172a; font: 700 13px -apple-system, sans-serif; }
+        .r-ref { stroke: #64748b; stroke-width: 2; stroke-dasharray: 5 5; }
+        .r-refl { fill: #64748b; font: 12px -apple-system, sans-serif; }
+        .r-grid { stroke: #e2e8f0; stroke-width: 1; stroke-dasharray: 3 3; }
+      </style>
+      <text class="r-title" x="24" y="32">Q1 NRR &amp; GRR — Actual vs Ex-Outliers</text>
+      <text class="r-sub" x="24" y="52">NRR (dark blue) · GRR ARR (light blue) · Plan target line at 100%</text>
+
+      <!-- Y scale: 0-120%; x=300 is 0; x=760 is 120%, each 10% = 38.3px. baseline -->
+      <!-- Plan target line at 102% (NRR target), x = 300 + 102 * 3.83 = 690.66 -->
+      <line class="r-ref" x1="691" y1="90" x2="691" y2="480"/>
+      <text class="r-refl" x="696" y="100">102% NRR plan</text>
+
+      <!-- Grid -->
+      <line class="r-grid" x1="300" y1="90" x2="300" y2="480"/>
+      <line class="r-grid" x1="376" y1="90" x2="376" y2="480"/>
+      <line class="r-grid" x1="453" y1="90" x2="453" y2="480"/>
+      <line class="r-grid" x1="529" y1="90" x2="529" y2="480"/>
+      <line class="r-grid" x1="606" y1="90" x2="606" y2="480"/>
+      <line class="r-grid" x1="683" y1="90" x2="683" y2="480"/>
+      <line class="r-grid" x1="759" y1="90" x2="759" y2="480"/>
+      <text class="r-axis" x="300" y="500" text-anchor="middle">0%</text>
+      <text class="r-axis" x="376" y="500" text-anchor="middle">20%</text>
+      <text class="r-axis" x="453" y="500" text-anchor="middle">40%</text>
+      <text class="r-axis" x="529" y="500" text-anchor="middle">60%</text>
+      <text class="r-axis" x="606" y="500" text-anchor="middle">80%</text>
+      <text class="r-axis" x="683" y="500" text-anchor="middle">100%</text>
+      <text class="r-axis" x="759" y="500" text-anchor="middle">120%</text>
+
+      <!-- All Renewals: NRR 56%, GRR 93% -->
+      <rect class="r-bar-nrr" x="300" y="110" width="214" height="24"/>
+      <rect class="r-bar-grr" x="300" y="138" width="356" height="24"/>
+      <text class="r-label" x="280" y="127" text-anchor="end">All Renewals</text>
+      <text class="r-pct" x="520" y="127">NRR 56%</text>
+      <text class="r-pct" x="662" y="155">GRR 93%</text>
+
+      <!-- CSM Owned: NRR 56%, GRR 91% -->
+      <rect class="r-bar-nrr" x="300" y="180" width="214" height="24"/>
+      <rect class="r-bar-grr" x="300" y="208" width="348" height="24"/>
+      <text class="r-label" x="280" y="197" text-anchor="end">CSM Owned</text>
+      <text class="r-pct" x="520" y="197">NRR 56%</text>
+      <text class="r-pct" x="654" y="225">GRR 91%</text>
+
+      <!-- VSB Owned: NRR 59%, GRR 106% -->
+      <rect class="r-bar-nrr" x="300" y="250" width="226" height="24"/>
+      <rect class="r-bar-grr" x="300" y="278" width="406" height="24"/>
+      <text class="r-label" x="280" y="267" text-anchor="end">VSB Owned</text>
+      <text class="r-pct" x="532" y="267">NRR 59%</text>
+      <text class="r-pct" x="712" y="295">GRR 106%</text>
+
+      <!-- Ex-Attentive: NRR 67.5% -->
+      <rect class="r-bar-nrr" x="300" y="320" width="258" height="24" opacity="0.5"/>
+      <text class="r-label" x="280" y="337" text-anchor="end">Ex-Attentive</text>
+      <text class="r-pct" x="564" y="337">NRR 67.5% (+11 pts)</text>
+
+      <!-- Ex-Meltwater: NRR 63.8% -->
+      <rect class="r-bar-nrr" x="300" y="360" width="244" height="24" opacity="0.5"/>
+      <text class="r-label" x="280" y="377" text-anchor="end">Ex-Meltwater</text>
+      <text class="r-pct" x="550" y="377">NRR 63.8% (+7 pts)</text>
+
+      <!-- Ex-Both: NRR 79.6% -->
+      <rect class="r-bar-nrr" x="300" y="400" width="305" height="24"/>
+      <text class="r-label" x="280" y="417" text-anchor="end">Ex-Both</text>
+      <text class="r-pct" x="611" y="417">NRR 79.6% (+23 pts)</text>
+    </svg>
+    <div class="chart-caption">Limited history — Q1 2026 is the first full quarter under the new workflow. Retention trendlines activate starting Q2 2026.</div>
+  </div>
+  <div class="chart-export-bar">
+    <button class="btn-export" onclick="downloadChartAsPNG(this, 'Q1-2026-Retention-Dashboard')">📥 Download PNG</button>
+    <button class="btn-export" onclick="downloadChartAsSVG(this, 'Q1-2026-Retention-Dashboard')">📥 Download SVG</button>
+  </div>
+
+  <ul class="slide-bullets">
+    <li><strong>Reported NRR 56% · GRR (ARR) 93%.</strong> Against a 102% NRR plan, the shortfall is -46 points. CSM-owned book and VSB-owned book both land at 56–59% NRR.</li>
+    <li><strong>Ex-Attentive + Ex-Meltwater, NRR = 79.6%</strong> (+23.1 pts). The broad book would have performed within striking distance of plan absent two named outliers.</li>
+    <li><strong>VSB GRR at 106%</strong> is structurally strong on the dollar-retention side — it's a long-tail at-risk count problem (20 of 38 VSB flagged), not a dollar problem.</li>
+    <li><strong>CSM-owned ARR impact -$48K</strong> vs VSB-owned +$6K. The risk concentration lives in the CSM book — specifically Heather Mae's book (next slide).</li>
+  </ul>
+
+  <div class="writing-guidance"><strong>Writing guidance:</strong> Lead with the ex-outlier number — it tells the Q2 story faster. Then name Attentive + Meltwater as concentration risk, not CS-motion failure. "NRR is a concentration story" is your one-line.</div>
+
+  <div class="source-pills">
+    <span class="source-pill">Source: CS Summary tab (Gen 1)</span>
+    <span class="source-pill">Source: Quarterly Wrap-Up · CS tab</span>
+  </div>
+</div>
+
+<!-- Slide 3b — Renewal Summary -->
+<div class="slide" id="slide-3b">
+  <div class="slide-title">3b · Renewals — 26 of 57 Q1 accounts flagged At-Risk; CSM book holds ARR, VSB book holds count.</div>
+  <div class="slide-subtitle">Renewal mix by outcome · CSM performance breakdown</div>
+
+  <div class="chart-wrap" data-chart="renewal-summary">
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <style>
+        .rs-title { fill: #0f172a; font: 700 18px -apple-system, sans-serif; }
+        .rs-sub { fill: #64748b; font: 13px -apple-system, sans-serif; }
+        .rs-axis { fill: #64748b; font: 12px -apple-system, sans-serif; }
+        .rs-label { fill: #0f172a; font: 600 12px -apple-system, sans-serif; }
+        .rs-csm-label { fill: #0f172a; font: 600 13px -apple-system, sans-serif; }
+        .rs-value { fill: #ffffff; font: 700 12px -apple-system, sans-serif; }
+      </style>
+      <text class="rs-title" x="24" y="32">Q1 Renewal Portfolio by Segment (ARR)</text>
+      <text class="rs-sub" x="24" y="52">CSM Owned $460K forecasted ARR (19 accounts) · VSB Owned $110K (38 accounts)</text>
+
+      <!-- ARR treemap: All Renewals $570,626 forecasted; CSM 460,161 / VSB 110,465 -->
+      <rect x="30" y="80" width="700" height="220" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+      <!-- CSM Owned (80.6% of ARR) width = 700 * 0.806 = 564 -->
+      <rect x="30" y="80" width="564" height="220" fill="#2563eb"/>
+      <text class="rs-value" x="312" y="180" text-anchor="middle">CSM Owned · $460K (19 accts · 6 at-risk)</text>
+      <text class="rs-value" x="312" y="200" text-anchor="middle">NRR 56% · GRR (ARR) 91% · ARR Impact -$48K</text>
+      <!-- VSB Owned width = 136 -->
+      <rect x="594" y="80" width="136" height="220" fill="#93c5fd"/>
+      <text class="rs-value" x="662" y="180" text-anchor="middle" style="fill:#0f172a">VSB</text>
+      <text class="rs-value" x="662" y="200" text-anchor="middle" style="fill:#0f172a">$110K</text>
+      <text class="rs-value" x="662" y="220" text-anchor="middle" style="fill:#0f172a">38 accts</text>
+      <text class="rs-value" x="662" y="240" text-anchor="middle" style="fill:#0f172a">20 at-risk</text>
+      <text class="rs-value" x="662" y="260" text-anchor="middle" style="fill:#0f172a">GRR 106%</text>
+
+      <!-- CSM breakdown below -->
+      <text class="rs-title" x="24" y="340" style="font-size:16px">CSM-Owned Breakdown</text>
+
+      <!-- Edwin 111% NRR -->
+      <rect x="160" y="360" width="260" height="24" fill="#15803d"/>
+      <text class="rs-csm-label" x="140" y="377" text-anchor="end">Edwin Chun</text>
+      <text class="rs-label" x="430" y="377">NRR 111% · $329K · 1 at-risk · -$360 impact</text>
+
+      <!-- Heather Mae 21% NRR -->
+      <rect x="160" y="390" width="50" height="24" fill="#b91c1c"/>
+      <text class="rs-csm-label" x="140" y="407" text-anchor="end">Heather Mae Pusztai</text>
+      <text class="rs-label" x="220" y="407">NRR 21% · $99K · 3 at-risk · -$40.8K impact (Attentive, Meltwater)</text>
+
+      <!-- Diana 63% NRR -->
+      <rect x="160" y="420" width="147" height="24" fill="#a16207"/>
+      <text class="rs-csm-label" x="140" y="437" text-anchor="end">Diana Calucer</text>
+      <text class="rs-label" x="317" y="437">NRR 63% · $31K · 2 at-risk · -$6.9K impact</text>
+
+      <!-- Legend -->
+      <rect x="30" y="470" width="14" height="14" fill="#15803d"/>
+      <text class="rs-axis" x="50" y="482">NRR &gt; 100%</text>
+      <rect x="160" y="470" width="14" height="14" fill="#a16207"/>
+      <text class="rs-axis" x="180" y="482">NRR 50–99%</text>
+      <rect x="290" y="470" width="14" height="14" fill="#b91c1c"/>
+      <text class="rs-axis" x="310" y="482">NRR &lt; 50%</text>
+    </svg>
+    <div class="chart-caption">Note: Heather Mae's book carried BOTH named outliers (Attentive $164.7K churn + Meltwater $140.2K downgrade). Book-level concentration risk, not a performance call.</div>
+  </div>
+  <div class="chart-export-bar">
+    <button class="btn-export" onclick="downloadChartAsPNG(this, 'Q1-2026-Renewal-Summary')">📥 Download PNG</button>
+    <button class="btn-export" onclick="downloadChartAsSVG(this, 'Q1-2026-Renewal-Summary')">📥 Download SVG</button>
+  </div>
+
+  <ul class="slide-bullets">
+    <li><strong>26 of 57 Q1 renewals flagged At-Risk</strong> at some point — 46% of the book. CSM-owned: 6 of 19 (32%). VSB-owned: 20 of 38 (53%).</li>
+    <li><strong>Edwin Chun's book is the Q1 template:</strong> 6 accounts, 1 at-risk, $329K ARR, NRR 111%, GRR 100%. Strongest CSM read of the quarter.</li>
+    <li><strong>Heather Mae's book needs a structural conversation</strong> (not a performance call) — her book NRR 21% / GRR 71% is entirely driven by Attentive + Meltwater, both strategic/structural losses.</li>
+    <li><strong>VSB coverage gap:</strong> 4 of 8 named Q1 churn accounts had NO CSM assigned (Modern Classrooms, City Innovate, inbenta, CHEQ). Fix: VSB-pool CSM or 30-day pre-renewal auto-touch.</li>
+  </ul>
+
+  <div class="writing-guidance"><strong>Writing guidance:</strong> When naming CSMs, use Edwin as the positive template first. The Heather Mae conversation is about book concentration, not individual performance. Lead with the systems fix (VSB pool) for the long tail.</div>
+
+  <div class="source-pills">
+    <span class="source-pill">Source: CS Summary tab rows 19–38</span>
+    <span class="source-pill">Source: CRO Quarterly · At-Risk Roster tab</span>
+  </div>
+</div>
+
+<!-- Slide 3c — Expansion -->
+<div class="slide" id="slide-3c">
+  <div class="slide-title">3c · Expansion — Contribution at 102% of plan; Bookings only 5%.</div>
+  <div class="slide-subtitle">Expansion mix: DS contribution (motion works) · SS drivers (seats + upgrades)</div>
+
+  <div class="chart-wrap" data-chart="expansion-drivers">
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <style>
+        .e-title { fill: #0f172a; font: 700 18px -apple-system, sans-serif; }
+        .e-sub { fill: #64748b; font: 13px -apple-system, sans-serif; }
+        .e-axis { fill: #64748b; font: 12px -apple-system, sans-serif; }
+        .e-label { fill: #ffffff; font: 700 13px -apple-system, sans-serif; }
+        .e-sidelabel { fill: #0f172a; font: 600 13px -apple-system, sans-serif; }
+      </style>
+      <text class="e-title" x="24" y="32">Q1 Expansion Drivers — Mixmax Brand Palette</text>
+      <text class="e-sub" x="24" y="52">DS Expansion Contribution $241.6K · SS Seat Expansion + Reactivation + Upgrade combined $459.9K</text>
+
+      <!-- Treemap: DS Expansion 241.6 + SS Seat Exp 275.4 + SS Reactivation 99.6 + SS Upgrade 84.9 = 701.5K total -->
+      <!-- Scale: 700px wide by 300px tall. Scale width = 700/701.5 px per $1K -->
+      <!-- DS Expansion 241.6 → 241/701 * 700 = 240 px -->
+      <rect x="30" y="80" width="240" height="300" fill="#2563eb"/>
+      <text class="e-label" x="150" y="210" text-anchor="middle">DS Expansion</text>
+      <text class="e-label" x="150" y="232" text-anchor="middle">$241.6K</text>
+      <text class="e-label" x="150" y="252" text-anchor="middle">102% of plan</text>
+
+      <!-- SS Seat Expansion 275.4 → 275 px; but split column. Place SS Upgrades stacked on right -->
+      <rect x="270" y="80" width="275" height="300" fill="#93c5fd"/>
+      <text class="e-sidelabel" x="408" y="210" text-anchor="middle">SS Seat Expansion</text>
+      <text class="e-sidelabel" x="408" y="232" text-anchor="middle">$275.4K</text>
+      <text class="e-sidelabel" x="408" y="252" text-anchor="middle">100% of plan</text>
+
+      <!-- SS Reactivation 99.6 -->
+      <rect x="545" y="80" width="100" height="300" fill="#d946ef"/>
+      <text class="e-label" x="595" y="210" text-anchor="middle">SS Reactivation</text>
+      <text class="e-label" x="595" y="232" text-anchor="middle">$99.6K</text>
+      <text class="e-label" x="595" y="252" text-anchor="middle">142% of plan</text>
+
+      <!-- SS Upgrade 84.9 -->
+      <rect x="645" y="80" width="85" height="300" fill="#15803d"/>
+      <text class="e-label" x="687" y="210" text-anchor="middle">SS Upgrade</text>
+      <text class="e-label" x="687" y="232" text-anchor="middle">$84.9K</text>
+      <text class="e-label" x="687" y="252" text-anchor="middle">112% of plan</text>
+
+      <!-- Annotations below -->
+      <text class="e-axis" x="24" y="420">Expansion Bookings line-item (5% of target) is largely mid-contract uplift, not new paper — that's why the motion</text>
+      <text class="e-axis" x="24" y="440">metric beats plan while the bookings metric misses. Treat them as separate reads, not a contradiction.</text>
+
+      <!-- Meltwater callout -->
+      <rect x="24" y="460" width="700" height="40" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" rx="6"/>
+      <text class="e-sidelabel" x="34" y="485">Top Q2 expansion target: <tspan style="fill:#b45309">Meltwater re-expansion — $140K upside (retained at $43K from $183K prior)</tspan></text>
+    </svg>
+    <div class="chart-caption">Expansion motion is the Q1 win story — under-celebrated because the Bookings line-item reads 5%. Track contribution $, not signed-paper $, for this motion.</div>
+  </div>
+  <div class="chart-export-bar">
+    <button class="btn-export" onclick="downloadChartAsPNG(this, 'Q1-2026-Expansion-Drivers')">📥 Download PNG</button>
+    <button class="btn-export" onclick="downloadChartAsSVG(this, 'Q1-2026-Expansion-Drivers')">📥 Download SVG</button>
+  </div>
+
+  <ul class="slide-bullets">
+    <li><strong>DS Expansion Contribution $241.6K · 102% of plan.</strong> The expansion motion is the single DS "hit" line of Q1.</li>
+    <li><strong>SS Reactivation 142% ($99.6K) + Upgrade 112% ($84.9K)</strong> — self-serve retention mechanics over-delivered and kept the SS segment +$21K ahead of plan.</li>
+    <li><strong>Meltwater retention = recoverable upside:</strong> account renewed at $43K (was $183K). The $140K delta is a re-expansion target, not churn.</li>
+    <li><strong>Expansion Bookings at 5% ≠ motion failure:</strong> bookings line is mid-contract paper; contribution line (102%) is the better read.</li>
+  </ul>
+
+  <div class="writing-guidance"><strong>Writing guidance:</strong> Clear up the 5% vs 102% paradox upfront — the two metrics measure different things. Lead with "the motion works" then name Meltwater as the highest-ROI Q2 play on the board.</div>
+
+  <div class="source-pills">
+    <span class="source-pill">Source: Monthly Revenue Summary (Gen 1)</span>
+    <span class="source-pill">Source: Renewals Downgrade Autopsy · CRO Quarterly</span>
+  </div>
+</div>
+
+<!-- Slide 3d — Churn & Downgrade -->
+<div class="slide" id="slide-3d">
+  <div class="slide-title">3d · Churn + Downgrade — Attentive + Meltwater = 43% of the pile.</div>
+  <div class="slide-subtitle">Q1 churn/downgrade concentration · named-account view</div>
+
+  <div class="chart-wrap" data-chart="churn-waterfall">
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <style>
+        .c-title { fill: #0f172a; font: 700 18px -apple-system, sans-serif; }
+        .c-sub { fill: #64748b; font: 13px -apple-system, sans-serif; }
+        .c-axis { fill: #64748b; font: 12px -apple-system, sans-serif; }
+        .c-label { fill: #0f172a; font: 600 12px -apple-system, sans-serif; }
+        .c-amount { fill: #ffffff; font: 700 12px -apple-system, sans-serif; }
+      </style>
+      <text class="c-title" x="24" y="32">Q1 Churn + Downgrade Concentration</text>
+      <text class="c-sub" x="24" y="52">Total Q1 Churn+Downgrade: -$702K · Two accounts = -$305K (43%)</text>
+
+      <!-- Stacked horizontal bar: Attentive, Meltwater, Remaining -->
+      <!-- Width 860; Attentive 164.7/702.5 = 23.4% = 202; Meltwater 140.2/702.5 = 20.0% = 172; Remaining 397.5/702.5 = 56.6% = 486 -->
+      <rect x="30" y="90" width="860" height="72" fill="#fee2e2"/>
+
+      <rect x="30" y="90" width="202" height="72" fill="#b91c1c"/>
+      <text class="c-amount" x="131" y="128" text-anchor="middle">Attentive</text>
+      <text class="c-amount" x="131" y="146" text-anchor="middle">-$164.7K</text>
+
+      <rect x="232" y="90" width="172" height="72" fill="#fb923c"/>
+      <text class="c-amount" x="318" y="128" text-anchor="middle">Meltwater</text>
+      <text class="c-amount" x="318" y="146" text-anchor="middle">-$140.2K</text>
+
+      <rect x="404" y="90" width="486" height="72" fill="#fca5a5"/>
+      <text class="c-label" x="647" y="128" text-anchor="middle" style="fill:#0f172a">Remaining 25 accounts (long tail)</text>
+      <text class="c-label" x="647" y="146" text-anchor="middle" style="fill:#0f172a">-$397.5K</text>
+
+      <!-- Scenario comparison below: Actual vs Ex-Both -->
+      <text class="c-title" x="24" y="220" style="font-size:16px">Churn + Downgrade vs Plan — Scenario View</text>
+
+      <!-- Bar 1: Actual $702K vs plan $499K -->
+      <rect x="180" y="250" width="430" height="36" fill="#b91c1c"/>
+      <text class="c-label" x="160" y="273" text-anchor="end">Actual Q1</text>
+      <text class="c-amount" x="600" y="273" text-anchor="end">-$702K (141% of -$499K plan)</text>
+
+      <!-- Bar 2: Ex-Both $398K -->
+      <rect x="180" y="296" width="244" height="36" fill="#15803d"/>
+      <text class="c-label" x="160" y="319" text-anchor="end">Ex-Both</text>
+      <text class="c-amount" x="414" y="319" text-anchor="end">-$398K (80% of plan · BETTER)</text>
+
+      <!-- Plan line at 499/702 * 430 = 305.6; x = 180+305 = 485 -->
+      <line x1="485" y1="240" x2="485" y2="340" stroke="#64748b" stroke-dasharray="4 4" stroke-width="2"/>
+      <text class="c-axis" x="490" y="242">Plan -$499K</text>
+
+      <!-- Notes -->
+      <text class="c-axis" x="24" y="400">Attentive Mobile: CSM HM Pusztai · AE Lana Ma · Previous $164,724 · Closed Lost January 2026 · root cause in CRO report</text>
+      <text class="c-axis" x="24" y="418">Meltwater: CSM HM Pusztai · AE Morgan Wible · Previous $183,333 · Downgraded to $43,120 February 2026 · RETAINED</text>
+      <text class="c-axis" x="24" y="436">VSB long-tail pattern: 4 of 8 named Q1 Closed Lost accounts had no CSM assigned (Modern Classrooms, City Innovate, inbenta, CHEQ)</text>
+      <text class="c-axis" x="24" y="472" style="font-weight:700;fill:#15803d">Read: Ex-outliers, CS motion beats plan. Q2 fix = named preventive-save roster + VSB auto-touch — not motion redesign.</text>
+    </svg>
+    <div class="chart-caption">Attentive + Meltwater = 43% of Q1 churn+downgrade. Ex-both, total lands 20% BETTER than plan (-$398K vs -$499K budget).</div>
+  </div>
+  <div class="chart-export-bar">
+    <button class="btn-export" onclick="downloadChartAsPNG(this, 'Q1-2026-Churn-Waterfall')">📥 Download PNG</button>
+    <button class="btn-export" onclick="downloadChartAsSVG(this, 'Q1-2026-Churn-Waterfall')">📥 Download SVG</button>
+  </div>
+
+  <ul class="slide-bullets">
+    <li><strong>Concentration is the story:</strong> two accounts = 43% of the -$702K pile. Remove both and the quarter runs 20% BETTER than plan on Churn+Downgrade.</li>
+    <li><strong>Meltwater is recoverable</strong> — retained at $43K from $183K. Named re-expansion play is the highest-ROI Q2 CS motion.</li>
+    <li><strong>Attentive is the deep-dive</strong> — largest single churn of the quarter at -$164.7K. Root cause lives in the CRO report; Q2 "Attentive-shape" detection on CSM top-20 accounts needed.</li>
+    <li><strong>VSB long tail requires structural fix:</strong> four named losses had no CSM assigned. VSB-pool CSM or 30-day auto-touch solves it.</li>
+  </ul>
+
+  <div class="writing-guidance"><strong>Writing guidance:</strong> Attentive is a "we are sorry this happened" note. Meltwater is a "we are going to go get it back" note. Use both tones. Do not lump them — they're different stories.</div>
+
+  <div class="source-pills">
+    <span class="source-pill">Source: Quarterly Wrap-Up · Churn tab</span>
+    <span class="source-pill">Source: CRO Quarterly · Downgrade Autopsy</span>
+  </div>
+</div>
+
+<!-- =========================================================== -->
+<!-- SECTION 4 — PIPELINE & ACTIVITY                               -->
+<!-- =========================================================== -->
+<div class="slide-section-header" id="pipeline">4. Pipeline &amp; Activity</div>
+
+<!-- Slide 4a — Pipeline Health -->
+<div class="slide" id="slide-4a">
+  <div class="slide-title">4a · Pipeline Health — Q2 open carries ~$431K in future-period pipeline; coverage math is the day-1 gate.</div>
+  <div class="slide-subtitle">Pipeline created vs target · coverage posture</div>
+
+  <div class="chart-wrap" data-chart="pipeline-health">
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <style>
+        .ph-title { fill: #0f172a; font: 700 18px -apple-system, sans-serif; }
+        .ph-sub { fill: #64748b; font: 13px -apple-system, sans-serif; }
+        .ph-axis { fill: #64748b; font: 12px -apple-system, sans-serif; }
+        .ph-label { fill: #0f172a; font: 600 13px -apple-system, sans-serif; }
+        .ph-gauge-bg { fill: #e2e8f0; }
+        .ph-gauge-fill { fill: #b91c1c; }
+        .ph-big { fill: #0f172a; font: 700 32px -apple-system, sans-serif; }
+        .ph-sub2 { fill: #64748b; font: 13px -apple-system, sans-serif; }
+      </style>
+      <text class="ph-title" x="24" y="32">Pipeline Created vs Target · Q1 &amp; Q2 Open Posture</text>
+      <text class="ph-sub" x="24" y="52">Q1 Pipeline Created: $237.7K (41% of $579K target)</text>
+
+      <!-- Gauge: donut-style for Q1 pipeline coverage. 41% filled -->
+      <!-- Use SVG arc. center (180,250), radius 110 -->
+      <circle cx="180" cy="260" r="110" fill="none" stroke="#e2e8f0" stroke-width="28"/>
+      <!-- Arc for 41% — path length = 2*PI*110 = 691; fill = 283 -->
+      <circle cx="180" cy="260" r="110" fill="none" stroke="#b91c1c" stroke-width="28"
+        stroke-dasharray="283 691" transform="rotate(-90 180 260)"/>
+      <text class="ph-big" x="180" y="250" text-anchor="middle">41%</text>
+      <text class="ph-sub2" x="180" y="274" text-anchor="middle">of Q1 target</text>
+      <text class="ph-sub2" x="180" y="294" text-anchor="middle">$237.7K / $579K</text>
+
+      <!-- Right side: pipeline by source -->
+      <text class="ph-label" x="360" y="110">Q1 Pipeline $ by Channel</text>
+
+      <!-- Outbound $20K (8% of $252K target) -->
+      <rect x="360" y="130" width="36" height="30" fill="#b91c1c"/>
+      <rect x="360" y="130" width="452" height="6" fill="#e2e8f0"/>
+      <text class="ph-axis" x="360" y="176">Outbound · $20K · 8% of $252K plan</text>
+
+      <!-- Inbound (remainder of total 237 - 20 - 79 = ~$138K against $308K plan = 45%) -->
+      <rect x="360" y="200" width="249" height="30" fill="#a16207"/>
+      <rect x="360" y="200" width="554" height="6" fill="#e2e8f0"/>
+      <text class="ph-axis" x="360" y="246">Inbound · ~$138K · ~45% of ~$308K plan</text>
+
+      <!-- Product $79K vs $19K = 414% -->
+      <rect x="360" y="270" width="140" height="30" fill="#15803d"/>
+      <rect x="360" y="270" width="35" height="6" fill="#e2e8f0"/>
+      <text class="ph-axis" x="360" y="316">Product · $79K · 414% of $19K plan</text>
+
+      <!-- Q2 open posture -->
+      <rect x="360" y="350" width="555" height="100" fill="#f8fafc" stroke="#e2e8f0" rx="8"/>
+      <text class="ph-label" x="378" y="376">Q2 Open Posture</text>
+      <text class="ph-axis" x="378" y="398">• Future-period pipeline on rep summary: ~$431K</text>
+      <text class="ph-axis" x="378" y="418">• Q2 target (implied from attack plan): 2x coverage gate on day 1</text>
+      <text class="ph-axis" x="378" y="438">• Gap: depends on Q2 NB target resetting; SDR capacity decision due April 20</text>
+
+      <!-- Bottom note -->
+      <text class="ph-axis" x="24" y="490">Pipeline Health Verdict: Below 2x coverage threshold at Q2 open. Structural — driven by Outbound TOFU collapse (slide 2c).</text>
+    </svg>
+    <div class="chart-caption">Q1 2026 pipeline coverage — gauge based on Gen 1 Total Pipeline $ line. Prior-quarter benchmark unavailable (bootstrap mode).</div>
+  </div>
+  <div class="chart-export-bar">
+    <button class="btn-export" onclick="downloadChartAsPNG(this, 'Q1-2026-Pipeline-Health')">📥 Download PNG</button>
+    <button class="btn-export" onclick="downloadChartAsSVG(this, 'Q1-2026-Pipeline-Health')">📥 Download SVG</button>
+  </div>
+
+  <ul class="slide-bullets">
+    <li><strong>Q1 Pipeline Created $237.7K · 41% of $579K plan.</strong> Outbound delivered 8% of its $252K plan. Product over-delivered at 414%.</li>
+    <li><strong>Future-period pipeline at Q2 open: ~$431K</strong> (per Rep Summary). Below 2x coverage vs Q2 NB target — day-1 math gate required.</li>
+    <li><strong>Every stuck opp needs a named next-step</strong> (AE attack plan, Week 1). "Carried forward" without a step is Q1 debt, not Q2 pipeline.</li>
+    <li><strong>SDR capacity decision gates the coverage fix:</strong> 1,575 Accounts Engaged short in Q1 cannot be solved with motion alone.</li>
+  </ul>
+
+  <div class="writing-guidance"><strong>Writing guidance:</strong> Use "below 2x coverage" as the trigger phrase. The decision is a capacity decision, not a forecast edit — be explicit about that. Close with the SDR decision date (April 20).</div>
+
+  <div class="source-pills">
+    <span class="source-pill">Source: Rep Summary (Gen 1)</span>
+    <span class="source-pill">Source: Monthly Bookings Summary (Gen 1)</span>
+  </div>
+</div>
+
+<!-- Slide 4b — Activity & Engagement -->
+<div class="slide" id="slide-4b">
+  <div class="slide-title">4b · Activity — Outbound Accounts Engaged at 17% of plan is the single largest lever.</div>
+  <div class="slide-subtitle">Accounts Engaged, Meetings Booked, SQLs · by channel</div>
+
+  <div class="chart-wrap" data-chart="activity-engagement">
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <style>
+        .ae-title { fill: #0f172a; font: 700 18px -apple-system, sans-serif; }
+        .ae-sub { fill: #64748b; font: 13px -apple-system, sans-serif; }
+        .ae-axis { fill: #64748b; font: 12px -apple-system, sans-serif; }
+        .ae-label { fill: #0f172a; font: 600 12px -apple-system, sans-serif; }
+        .ae-grid { stroke: #e2e8f0; stroke-width: 1; stroke-dasharray: 3 3; }
+      </style>
+      <text class="ae-title" x="24" y="32">Q1 Activity — Accounts Engaged by Channel</text>
+      <text class="ae-sub" x="24" y="52">Blue = actual · Gray = target · Numbers in account counts</text>
+
+      <!-- Grid lines at 500, 1000, 1500, 2000 -->
+      <line class="ae-grid" x1="220" y1="80" x2="220" y2="460"/>
+      <line class="ae-grid" x1="380" y1="80" x2="380" y2="460"/>
+      <line class="ae-grid" x1="540" y1="80" x2="540" y2="460"/>
+      <line class="ae-grid" x1="700" y1="80" x2="700" y2="460"/>
+      <line class="ae-grid" x1="860" y1="80" x2="860" y2="460"/>
+      <text class="ae-axis" x="220" y="480" text-anchor="middle">500</text>
+      <text class="ae-axis" x="380" y="480" text-anchor="middle">1,000</text>
+      <text class="ae-axis" x="540" y="480" text-anchor="middle">1,500</text>
+      <text class="ae-axis" x="700" y="480" text-anchor="middle">2,000</text>
+
+      <!-- Scale: 500/160px => 3.125 px/account. baseline x=60 -->
+      <!-- Inbound actual 62, target 93 -->
+      <rect x="60" y="110" width="20" height="26" fill="#2563eb"/>
+      <rect x="60" y="138" width="29" height="22" fill="#93c5fd"/>
+      <text class="ae-label" x="50" y="127" text-anchor="end">Inbound AE</text>
+      <text class="ae-axis" x="95" y="127">62 · 67% of 93</text>
+
+      <!-- Outbound actual 315, target 1890 -->
+      <rect x="60" y="180" width="98" height="26" fill="#b91c1c"/>
+      <rect x="60" y="208" width="591" height="22" fill="#93c5fd"/>
+      <text class="ae-label" x="50" y="197" text-anchor="end">Outbound AE</text>
+      <text class="ae-axis" x="170" y="197">315 · 17% of 1,890</text>
+
+      <!-- Product actual 51, target 23 -->
+      <rect x="60" y="250" width="16" height="26" fill="#15803d"/>
+      <rect x="60" y="278" width="7" height="22" fill="#93c5fd"/>
+      <text class="ae-label" x="50" y="267" text-anchor="end">Product AE</text>
+      <text class="ae-axis" x="85" y="267">51 · 225% of 23</text>
+
+      <!-- Meetings Booked 96 vs 140 -->
+      <rect x="60" y="320" width="30" height="26" fill="#a16207"/>
+      <rect x="60" y="348" width="44" height="22" fill="#93c5fd"/>
+      <text class="ae-label" x="50" y="337" text-anchor="end">Meetings Booked</text>
+      <text class="ae-axis" x="100" y="337">96 · 69% of 140</text>
+
+      <!-- SQLs 41 vs 90 -->
+      <rect x="60" y="390" width="13" height="26" fill="#a16207"/>
+      <rect x="60" y="418" width="28" height="22" fill="#93c5fd"/>
+      <text class="ae-label" x="50" y="407" text-anchor="end">SQLs</text>
+      <text class="ae-axis" x="85" y="407">41 · 46% of 90</text>
+    </svg>
+    <div class="chart-caption">Limited history — single-period view. Monthly activity trendline activates once two full months of monthly reporting exist (April 2026 will be month 2).</div>
+  </div>
+  <div class="chart-export-bar">
+    <button class="btn-export" onclick="downloadChartAsPNG(this, 'Q1-2026-Activity')">📥 Download PNG</button>
+    <button class="btn-export" onclick="downloadChartAsSVG(this, 'Q1-2026-Activity')">📥 Download SVG</button>
+  </div>
+
+  <ul class="slide-bullets">
+    <li><strong>Outbound Accounts Engaged at 17% of plan</strong> — 1,575 accounts short of target. Single-largest driver of every downstream miss.</li>
+    <li><strong>Product Accounts Engaged 225% of plan</strong> (51 vs 23) — the product-led channel is over-supplying. PQL-to-SQL hand-off is the gap (180 PQLs → 9 Product SQLs).</li>
+    <li><strong>Meetings Booked 69% · SQLs 46%</strong> — proportional to the TOFU shortfall; not a pass-through rate problem.</li>
+    <li><strong>Q2 leading indicator to watch:</strong> Accounts Engaged in April. If the April run-rate holds below 700, the SDR decision becomes a hire decision.</li>
+  </ul>
+
+  <div class="writing-guidance"><strong>Writing guidance:</strong> Don't try to hide the 17% number — but frame it as "1,575 accounts short" so the fix sizing is obvious. Pair with the SDR decision from slide 4a.</div>
+
+  <div class="source-pills">
+    <span class="source-pill">Source: Total Prospect Account Engaged tab (Gen 1)</span>
+    <span class="source-pill">Source: Monthly Bookings Summary · Pipeline block</span>
+  </div>
+</div>
+
+<!-- =========================================================== -->
+<!-- SECTION 5 — FORWARD LOOK                                      -->
+<!-- =========================================================== -->
+<div class="slide-section-header" id="forward">5. Forward Look</div>
+
+<!-- Slide 5a — Q2 Pacing -->
+<div class="slide" id="slide-5a">
+  <div class="slide-title">5a · Q2 Pacing — five named Q2-Week-1 interventions; no forecast edit required.</div>
+  <div class="slide-subtitle">Q1 close → Q2 actions · owner and date for every intervention</div>
+
+  <div class="chart-wrap" data-chart="q2-pacing">
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <style>
+        .q-title { fill: #0f172a; font: 700 18px -apple-system, sans-serif; }
+        .q-sub { fill: #64748b; font: 13px -apple-system, sans-serif; }
+        .q-action { fill: #0f172a; font: 600 13px -apple-system, sans-serif; }
+        .q-owner { fill: #2563eb; font: 600 12px -apple-system, sans-serif; }
+        .q-date { fill: #64748b; font: 12px -apple-system, sans-serif; }
+        .q-val { fill: #15803d; font: 700 13px -apple-system, sans-serif; }
+      </style>
+      <text class="q-title" x="24" y="32">Q2 Week-1 Intervention Map</text>
+      <text class="q-sub" x="24" y="52">Each action has an owner, a date, and an implied $ lever. No forecast edits — interventions first.</text>
+
+      <!-- Timeline bar from April 17 → May 8 -->
+      <line x1="60" y1="100" x2="900" y2="100" stroke="#cbd5e1" stroke-width="3"/>
+      <!-- Tick marks at Apr 17, 18, 20, 24, May 1, May 8 -->
+      <circle cx="60" cy="100" r="5" fill="#2563eb"/>
+      <text class="q-date" x="60" y="90" text-anchor="middle">Apr 17 today</text>
+      <circle cx="180" cy="100" r="5" fill="#b91c1c"/>
+      <text class="q-date" x="180" y="90" text-anchor="middle">Apr 18</text>
+      <circle cx="310" cy="100" r="5" fill="#b91c1c"/>
+      <text class="q-date" x="310" y="90" text-anchor="middle">Apr 20</text>
+      <circle cx="460" cy="100" r="5" fill="#b91c1c"/>
+      <text class="q-date" x="460" y="90" text-anchor="middle">Apr 24</text>
+      <circle cx="660" cy="100" r="5" fill="#a16207"/>
+      <text class="q-date" x="660" y="90" text-anchor="middle">May 1</text>
+      <circle cx="900" cy="100" r="5" fill="#a16207"/>
+      <text class="q-date" x="900" y="90" text-anchor="middle">Q2 Wk 1-6</text>
+
+      <!-- Action rows -->
+      <!-- 1. Apr 18 -->
+      <rect x="50" y="135" width="860" height="40" fill="#fafbfc" rx="6" stroke="#e2e8f0"/>
+      <text class="q-action" x="70" y="155">1. Book rebalance / exec-sponsor pairing with Heather Mae Pusztai</text>
+      <text class="q-owner" x="70" y="171">CRO + Head of CS</text>
+      <text class="q-date" x="170" y="171">· By April 18</text>
+      <text class="q-val" x="880" y="164" text-anchor="end">prevents Attentive-shape</text>
+
+      <!-- 2. Apr 20 -->
+      <rect x="50" y="180" width="860" height="40" fill="#fafbfc" rx="6" stroke="#e2e8f0"/>
+      <text class="q-action" x="70" y="200">2. SDR capacity + Outbound motion decision (headcount vs. motion)</text>
+      <text class="q-owner" x="70" y="216">CRO + RevOps + SDR Lead</text>
+      <text class="q-date" x="210" y="216">· By April 20</text>
+      <text class="q-val" x="880" y="209" text-anchor="end">unlocks $231K pipeline gap</text>
+
+      <!-- 3. Apr 24 -->
+      <rect x="50" y="225" width="860" height="40" fill="#fafbfc" rx="6" stroke="#e2e8f0"/>
+      <text class="q-action" x="70" y="245">3. Loss-review with Morgan on top 5 losses · 3a. Q2 At-Risk Roster published</text>
+      <text class="q-owner" x="70" y="261">CRO + Morgan / CS Leadership</text>
+      <text class="q-date" x="250" y="261">· By April 24</text>
+      <text class="q-val" x="880" y="254" text-anchor="end">+$194K win-back ceiling</text>
+
+      <!-- 4. May 1 -->
+      <rect x="50" y="270" width="860" height="40" fill="#fafbfc" rx="6" stroke="#e2e8f0"/>
+      <text class="q-action" x="70" y="290">4. Karan SQO re-qualification protocol · every Q2 opp passes SQO gate before demo</text>
+      <text class="q-owner" x="70" y="306">CRO + Karan</text>
+      <text class="q-date" x="150" y="306">· By Q2 W1 (May 1) · ongoing</text>
+      <text class="q-val" x="880" y="299" text-anchor="end">lifts WR from 36%</text>
+
+      <!-- 5. May 1 -->
+      <rect x="50" y="315" width="860" height="40" fill="#fafbfc" rx="6" stroke="#e2e8f0"/>
+      <text class="q-action" x="70" y="335">5. 2x pipeline coverage gate at Q2-open · math on day 1</text>
+      <text class="q-owner" x="70" y="351">CRO + RevOps</text>
+      <text class="q-date" x="150" y="351">· By Q2 W1 (May 1)</text>
+      <text class="q-val" x="880" y="344" text-anchor="end">coverage day-1 posture</text>
+
+      <!-- 6. Weeks 1-6 -->
+      <rect x="50" y="360" width="860" height="40" fill="#fafbfc" rx="6" stroke="#e2e8f0"/>
+      <text class="q-action" x="70" y="380">6. Meltwater re-expansion play — named recovery</text>
+      <text class="q-owner" x="70" y="396">CS + AE (Morgan)</text>
+      <text class="q-date" x="180" y="396">· Q2 Weeks 1–6</text>
+      <text class="q-val" x="880" y="389" text-anchor="end">+$140K upside</text>
+
+      <!-- Total available upside note -->
+      <rect x="50" y="420" width="860" height="40" fill="#f0fdf4" stroke="#15803d" rx="6"/>
+      <text class="q-action" x="70" y="446" style="fill:#15803d">Visible Q2 upside from named actions: &gt;$500K ceiling (Meltwater $140K + win-back potential + Outbound pipeline restoration)</text>
+    </svg>
+    <div class="chart-caption">Every action has a named owner, date, and visible dollar-lever. Q2 forecast will reset after these decisions land — no edits until May 1.</div>
+  </div>
+  <div class="chart-export-bar">
+    <button class="btn-export" onclick="downloadChartAsPNG(this, 'Q1-2026-Q2-Pacing')">📥 Download PNG</button>
+    <button class="btn-export" onclick="downloadChartAsSVG(this, 'Q1-2026-Q2-Pacing')">📥 Download SVG</button>
+  </div>
+
+  <ul class="slide-bullets">
+    <li><strong>Six named actions in the first two weeks of Q2.</strong> Four are decisions; two are deliverables (roster + loss-review). Every one has an owner and a date.</li>
+    <li><strong>Visible Q2 upside ceiling &gt;$500K</strong> from Meltwater re-expansion + Morgan loss-review win-back + Outbound pipeline restoration (if SDR decision lands).</li>
+    <li><strong>Do not edit the Q2 forecast before May 1.</strong> The math resets after the SDR capacity decision and the At-Risk Roster — not before.</li>
+    <li><strong>Weekly check-in cadence during April:</strong> RevOps tracks Accounts Engaged, At-Risk conversions, and Meltwater motion progress. Re-baseline May 1.</li>
+  </ul>
+
+  <div class="writing-guidance"><strong>Writing guidance:</strong> End with a "what you'll see next" — specifically, the Q2 Week-1 report will re-forecast after the SDR decision. This protects against "why hasn't the forecast changed?" questions.</div>
+
+  <div class="source-pills">
+    <span class="source-pill">Source: CRO Quarterly · Top Actions</span>
+    <span class="source-pill">Source: Quarterly Wrap-Up · Q2 Attack Plan tab</span>
+  </div>
+</div>
+
+<!-- Slide 5b — Rebrand Inflection -->
+<div class="slide" id="slide-5b">
+  <div class="slide-title">5b · Rebrand Inflection — November 2025 rebrand becomes the Q2 narrative wedge.</div>
+  <div class="slide-subtitle">Q1 2026 = first full quarter post-rebrand · strategic inflection framing · no quantitative attribution</div>
+
+  <div class="chart-wrap" data-chart="rebrand-inflection">
+    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <style>
+        .rb-title { fill: #0f172a; font: 700 18px -apple-system, sans-serif; }
+        .rb-sub { fill: #64748b; font: 13px -apple-system, sans-serif; }
+        .rb-axis { fill: #64748b; font: 12px -apple-system, sans-serif; }
+        .rb-label { fill: #0f172a; font: 600 13px -apple-system, sans-serif; }
+        .rb-milestone { fill: #2563eb; font: 700 12px -apple-system, sans-serif; }
+        .rb-phase-q4 { fill: #f1f5f9; stroke: #cbd5e1; stroke-width: 1; }
+        .rb-phase-q1 { fill: #eff6ff; stroke: #2563eb; stroke-width: 1; }
+        .rb-phase-q2 { fill: #f0fdf4; stroke: #15803d; stroke-width: 1; }
+        .rb-phase-label { fill: #0f172a; font: 700 14px -apple-system, sans-serif; }
+        .rb-phase-body { fill: #334155; font: 12px -apple-system, sans-serif; }
+        .rb-arrow { fill: #2563eb; }
+      </style>
+      <text class="rb-title" x="24" y="32">Rebrand Timeline — Launch to Commercial Inflection</text>
+      <text class="rb-sub" x="24" y="52">Narrative framing only — no attribution of Q1 numbers to the rebrand. Q2 is where brand shows up in the funnel.</text>
+
+      <!-- Timeline spine -->
+      <line x1="60" y1="130" x2="900" y2="130" stroke="#cbd5e1" stroke-width="3"/>
+
+      <!-- Milestone dots -->
+      <circle cx="120" cy="130" r="8" fill="#64748b"/>
+      <text class="rb-milestone" x="120" y="118" text-anchor="middle">Nov 2025</text>
+      <text class="rb-axis" x="120" y="156" text-anchor="middle">Brand launch</text>
+
+      <circle cx="360" cy="130" r="8" fill="#2563eb"/>
+      <text class="rb-milestone" x="360" y="118" text-anchor="middle">Jan–Mar 2026</text>
+      <text class="rb-axis" x="360" y="156" text-anchor="middle">Q1 — first post-rebrand quarter</text>
+
+      <circle cx="600" cy="130" r="8" fill="#2563eb"/>
+      <text class="rb-milestone" x="600" y="118" text-anchor="middle">Apr–Jun 2026</text>
+      <text class="rb-axis" x="600" y="156" text-anchor="middle">Q2 — inflection window</text>
+
+      <circle cx="860" cy="130" r="8" fill="#15803d"/>
+      <text class="rb-milestone" x="860" y="118" text-anchor="middle">Jul 2026+</text>
+      <text class="rb-axis" x="860" y="156" text-anchor="middle">Trendline: 2 quarters post-rebrand</text>
+
+      <!-- Phase panels -->
+      <!-- Q4 2025 (rebrand build) -->
+      <rect class="rb-phase-q4" x="30" y="190" width="280" height="320" rx="8"/>
+      <text class="rb-phase-label" x="44" y="212">Q4 2025 · Build</text>
+      <text class="rb-phase-body" x="44" y="236">· Identity + positioning rebuilt</text>
+      <text class="rb-phase-body" x="44" y="254">· Site + product marketing re-skinned</text>
+      <text class="rb-phase-body" x="44" y="272">· Internal rollout, sales enablement</text>
+      <text class="rb-phase-body" x="44" y="290">· Launch event · Nov 2025</text>
+      <text class="rb-phase-body" x="44" y="316" style="font-weight:700">What we DON'T claim:</text>
+      <text class="rb-phase-body" x="44" y="334">· No Q4 2025 revenue comparable in</text>
+      <text class="rb-phase-body" x="44" y="352">  Gen 1 sheet (bootstrap)</text>
+      <text class="rb-phase-body" x="44" y="370">· No attribution of Q1 miss to rebrand</text>
+      <text class="rb-phase-body" x="44" y="388">· No MQL / pipeline delta measurable</text>
+      <text class="rb-phase-body" x="44" y="406">  at this reporting depth yet</text>
+
+      <!-- Q1 2026 (post-rebrand) -->
+      <rect class="rb-phase-q1" x="340" y="190" width="280" height="320" rx="8"/>
+      <text class="rb-phase-label" x="354" y="212">Q1 2026 · First Quarter After</text>
+      <text class="rb-phase-body" x="354" y="236">· First full commercial quarter in</text>
+      <text class="rb-phase-body" x="354" y="254">  new brand system</text>
+      <text class="rb-phase-body" x="354" y="276" style="font-weight:700">Observed without attribution:</text>
+      <text class="rb-phase-body" x="354" y="294">· Product PQLs 818% of plan (self-</text>
+      <text class="rb-phase-body" x="354" y="312">  serve surface of the funnel held)</text>
+      <text class="rb-phase-body" x="354" y="330">· SS Reactivation 142% — retention</text>
+      <text class="rb-phase-body" x="354" y="348">  mechanics over-delivered</text>
+      <text class="rb-phase-body" x="354" y="366">· DS Expansion Contribution 102%</text>
+      <text class="rb-phase-body" x="354" y="388" style="font-weight:700">Q1 miss drivers (NOT brand):</text>
+      <text class="rb-phase-body" x="354" y="406">· Outbound TOFU capacity (SDR)</text>
+      <text class="rb-phase-body" x="354" y="424">· Two named account losses</text>
+      <text class="rb-phase-body" x="354" y="442">· $25K+ deal segment didn't close</text>
+
+      <!-- Q2 2026 (inflection) -->
+      <rect class="rb-phase-q2" x="650" y="190" width="280" height="320" rx="8"/>
+      <text class="rb-phase-label" x="664" y="212" style="fill:#15803d">Q2 2026 · Inflection</text>
+      <text class="rb-phase-body" x="664" y="236">· Q2 Net New target +$534,967</text>
+      <text class="rb-phase-body" x="664" y="254">  (vs -$372,656 Q1 = $907K swing)</text>
+      <text class="rb-phase-body" x="664" y="272">· Pipeline target $2.05M (8.6× Q1)</text>
+      <text class="rb-phase-body" x="664" y="294" style="font-weight:700">Rebrand used as Q2 wedge:</text>
+      <text class="rb-phase-body" x="664" y="312">· Outbound re-launch under new</text>
+      <text class="rb-phase-body" x="664" y="330">  brand positioning (SDR decision</text>
+      <text class="rb-phase-body" x="664" y="348">  April 20)</text>
+      <text class="rb-phase-body" x="664" y="366">· Expansion narrative refreshed</text>
+      <text class="rb-phase-body" x="664" y="384">  (Tegus template +71% under new</text>
+      <text class="rb-phase-body" x="664" y="402">  positioning)</text>
+      <text class="rb-phase-body" x="664" y="420">· Meltwater re-expansion pitch</text>
+      <text class="rb-phase-body" x="664" y="438">  leans on new value story ($140K</text>
+      <text class="rb-phase-body" x="664" y="456">  upside)</text>
+    </svg>
+    <div class="chart-caption">The rebrand is strategic context — it is NOT used to explain the Q1 miss. Q2 is where brand shows up in the funnel; trendline readability arrives Q3 2026 (two quarters post-launch).</div>
+  </div>
+  <div class="chart-export-bar">
+    <button class="btn-export" onclick="downloadChartAsPNG(this, 'Q1-2026-Rebrand-Inflection')">📥 Download PNG</button>
+    <button class="btn-export" onclick="downloadChartAsSVG(this, 'Q1-2026-Rebrand-Inflection')">📥 Download SVG</button>
+  </div>
+
+  <ul class="slide-bullets">
+    <li><strong>Q1 2026 is the first full post-rebrand quarter.</strong> Brand launched November 2025 — Q1 is the first clean commercial period inside the new identity. Not yet a trend; a baseline.</li>
+    <li><strong>No quantitative attribution.</strong> Bootstrap mode means no Q4 2025 or Q1 2025 comparables exist in Gen 1. We cannot claim the rebrand caused or prevented anything measurable at this depth. Anyone who does is overreaching.</li>
+    <li><strong>Self-serve surface held post-rebrand:</strong> Product PQLs 818%, SS Reactivation 142%, SS Upgrade 112%. Qualitatively consistent with a brand that resonates with existing-user self-serve demand.</li>
+    <li><strong>The Q1 miss is concentration + Outbound TOFU — not brand.</strong> Two named accounts = 43% of churn+downgrade. Outbound Accounts Engaged at 17% = SDR capacity, not messaging.</li>
+    <li><strong>Q2 uses the rebrand as a commercial wedge</strong> — Outbound re-launch under new positioning, Expansion narrative refresh (Tegus +71% template), Meltwater re-expansion pitch built on new value story.</li>
+    <li><strong>Measurement readiness:</strong> Two quarters post-rebrand (Q3 2026) is the earliest honest window to read brand-on-funnel impact. Track MQL quality, Inbound win rate, and Expansion motion uptake as directional leading indicators in Q2.</li>
+  </ul>
+
+  <div class="writing-guidance"><strong>Writing guidance:</strong> Do NOT say "the rebrand drove X." Say "Q1 is our first quarter in the new brand system — here's what held, here's what broke, and here's how Q2 uses brand as a wedge." The rebrand is an inflection-point framing, not a causal variable. Expect one board member to push for attribution — point them to the two-quarters readiness window.</div>
+
+  <div class="source-pills">
+    <span class="source-pill">Context: November 2025 brand launch</span>
+    <span class="source-pill">Source: Mixmax_Quarter_Ahead_Q2-2026_v2.html · Q2 target math</span>
+    <span class="source-pill">Bootstrap note: No Q4 2025 comparable in Gen 1</span>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+// ============================================================
+// Export helpers — download each chart as PNG or SVG
+// ============================================================
+function _getChartSvg(buttonEl) {
+  // Find the chart wrapper that contains this button
+  const wrap = buttonEl.closest('.slide').querySelector('[data-chart]');
+  // Walk up the wrap's parent .chart-wrap and look for sibling chart-wrap if needed
+  // The wrap itself may be the closest data-chart carrier. Find its <svg>.
+  const svg = wrap ? wrap.querySelector('svg') : null;
+  return { svg, wrap };
+}
+
+function _svgToSerialized(svgEl) {
+  const cloned = svgEl.cloneNode(true);
+  // Ensure xmlns present
+  if (!cloned.getAttribute('xmlns')) cloned.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  if (!cloned.getAttribute('xmlns:xlink')) cloned.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+  const serializer = new XMLSerializer();
+  return serializer.serializeToString(cloned);
+}
+
+function downloadChartAsSVG(buttonEl, filename) {
+  const { svg } = _getChartSvg(buttonEl);
+  if (!svg) return alert('Chart SVG not found');
+  const str = _svgToSerialized(svg);
+  const blob = new Blob([str], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (filename || 'chart') + '.svg';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function downloadChartAsPNG(buttonEl, filename) {
+  const { svg } = _getChartSvg(buttonEl);
+  if (!svg) return alert('Chart SVG not found');
+  const str = _svgToSerialized(svg);
+  const blob = new Blob([str], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+
+  const img = new Image();
+  img.onload = function() {
+    // Target 1920 x 1080 PNG (2x of 960 x 540 viewBox)
+    const canvas = document.createElement('canvas');
+    canvas.width = 1920;
+    canvas.height = 1080;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, 1920, 1080);
+    ctx.drawImage(img, 0, 0, 1920, 1080);
+    URL.revokeObjectURL(url);
+    canvas.toBlob(function(blob) {
+      const pngUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = pngUrl;
+      a.download = (filename || 'chart') + '.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(pngUrl);
+    }, 'image/png');
+  };
+  img.onerror = function() {
+    URL.revokeObjectURL(url);
+    alert('PNG export failed — your browser may block SVG rendering for foreign content. Try Download SVG.');
+  };
+  img.src = url;
+}
+</script>
+
+</body>
+</html>
