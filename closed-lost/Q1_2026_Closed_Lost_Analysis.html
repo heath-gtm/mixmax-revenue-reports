@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q1 2026 Closed Lost Analysis — Mixmax</title>
+<style>
+:root {
+    --brand: #2563eb;
+    --brand-light: #dbeafe;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --red: #dc2626;
+    --amber: #d97706;
+    --green: #059669;
+    --purple: #7c3aed;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+/* Sticky Nav */
+.top-nav { position: sticky; top: 0; z-index: 100; background: var(--brand); color: white; padding: 12px 24px; display: flex; align-items: center; gap: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.top-nav a { color: white; text-decoration: none; font-size: 14px; opacity: 0.85; }
+.top-nav a:hover { opacity: 1; }
+.top-nav .nav-title { font-weight: 700; font-size: 16px; opacity: 1; }
+
+/* Layout */
+.layout { display: flex; min-height: 100vh; }
+.sidebar { width: 280px; background: var(--card-bg); border-right: 1px solid var(--border); padding: 20px 16px; position: sticky; top: 48px; height: calc(100vh - 48px); overflow-y: auto; flex-shrink: 0; }
+.sidebar h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-light); margin: 16px 0 8px; }
+.sidebar a { display: block; padding: 4px 8px; font-size: 13px; color: var(--text); text-decoration: none; border-radius: 4px; }
+.sidebar a:hover { background: var(--brand-light); }
+.toc-account { font-size: 12px !important; color: var(--text-light) !important; padding-left: 16px !important; }
+.main { flex: 1; padding: 32px; max-width: 1100px; }
+
+/* Cards */
+.card { background: var(--card-bg); border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.card h2 { font-size: 20px; margin-bottom: 16px; color: var(--brand); }
+
+/* Executive Summary */
+.exec-summary { background: linear-gradient(135deg, #991b1b, #dc2626); color: white; border-radius: 12px; padding: 32px; margin-bottom: 24px; }
+.exec-summary h1 { font-size: 28px; margin-bottom: 8px; }
+.exec-summary .subtitle { opacity: 0.85; margin-bottom: 20px; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 20px 0; }
+.stat-box { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 16px; text-align: center; }
+.stat-box .stat-value { font-size: 28px; font-weight: 700; }
+.stat-box .stat-label { font-size: 12px; opacity: 0.85; }
+
+/* Cover TL;DR */
+.cover-tldr { background: var(--card-bg); border-radius: 12px; padding: 28px; margin-bottom: 24px; border-top: 6px solid var(--brand); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.cover-tldr h2 { color: var(--brand); font-size: 18px; margin-bottom: 12px; }
+.cover-tldr ol { padding-left: 24px; }
+.cover-tldr li { margin-bottom: 10px; font-size: 14px; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { background: #f1f5f9; text-align: left; padding: 10px 12px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; }
+td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.total-row td { background: #f1f5f9; font-weight: 600; }
+.small-text { font-size: 12px; color: var(--text-light); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.trend-table { margin: 12px 0; }
+.trend-table th, .trend-table td { padding: 6px 10px; font-size: 13px; }
+
+/* Account Cards */
+.account-card { background: var(--card-bg); border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; }
+.card-header { padding: 20px 24px; background: #f8fafc; }
+.card-title-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.card-title-row h3 { font-size: 18px; }
+.meta-bar { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; font-size: 13px; }
+.meta-item { color: var(--text-light); }
+.card-body { padding: 20px 24px; }
+.subsection { margin-bottom: 20px; }
+.subsection h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--brand); }
+.details { font-size: 13px; color: var(--text-light); margin-top: 4px; }
+.no-data { color: var(--text-light); font-style: italic; }
+.usage-summary { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; margin-bottom: 12px; }
+
+/* Badges */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; color: white; }
+.badge-amount { background: var(--brand); }
+.badge-netnew { background: #0891b2; }
+.badge-expansion { background: #059669; }
+.badge-conversion { background: #7c3aed; }
+.badge-not-prev { background: #64748b; }
+.badge-possibly { background: var(--amber); }
+.badge-preventable { background: var(--red); }
+
+/* Verdict boxes */
+.verdict-box { border-radius: 8px; padding: 16px; margin-top: 12px; }
+.verdict-not-prev { background: #f1f5f9; border-left: 4px solid #64748b; }
+.verdict-possibly { background: #fffbeb; border-left: 4px solid var(--amber); }
+.verdict-preventable { background: #fef2f2; border-left: 4px solid var(--red); }
+
+/* Side by side */
+.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+.split-card { background: var(--card-bg); border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); text-align: center; }
+.split-card h3 { font-size: 16px; margin-bottom: 12px; }
+.split-card .big-number { font-size: 32px; font-weight: 700; color: var(--brand); }
+
+/* Pie + Table layout */
+.theme-layout { display: grid; grid-template-columns: 420px 1fr; gap: 24px; align-items: start; }
+.pie-container { text-align: center; }
+.legend { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 16px; text-align: left; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+/* Key takeaways */
+.takeaway-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 20px; margin-top: 20px; }
+.takeaway-box h4 { color: var(--brand); margin-bottom: 8px; }
+
+/* Playbook */
+.playbook-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 12px; }
+.playbook-col { border-radius: 10px; padding: 20px; }
+.playbook-col.keep { background: #ecfdf5; border-left: 4px solid var(--green); }
+.playbook-col.stop { background: #fef2f2; border-left: 4px solid var(--red); }
+.playbook-col.start { background: #eff6ff; border-left: 4px solid var(--brand); }
+.playbook-col h3 { font-size: 15px; margin-bottom: 10px; }
+.playbook-col.keep h3 { color: #065f46; }
+.playbook-col.stop h3 { color: #991b1b; }
+.playbook-col.start h3 { color: #1e40af; }
+.playbook-col ul { list-style: none; padding: 0; margin: 0; }
+.playbook-col li { font-size: 13px; margin-bottom: 12px; padding-left: 0; }
+.playbook-col li strong { color: var(--text); }
+
+/* Feature matrix cells */
+.matrix-heavy { background: #dcfce7; text-align: center; font-size: 11px; font-weight: 600; color: #166534; }
+.matrix-moderate { background: #dbeafe; text-align: center; font-size: 11px; font-weight: 600; color: #1e40af; }
+.matrix-light { background: #fef9c3; text-align: center; font-size: 11px; font-weight: 600; color: #854d0e; }
+.matrix-silent { background: #fef2f2; text-align: center; font-size: 11px; font-weight: 600; color: #991b1b; }
+
+/* Callouts */
+.callout { background: #fffbeb; border-left: 4px solid var(--amber); border-radius: 6px; padding: 12px 16px; font-size: 14px; margin-bottom: 12px; }
+.callout.red { background: #fef2f2; border-left-color: var(--red); }
+.callout.blue { background: #eff6ff; border-left-color: var(--brand); }
+.callout.green { background: #ecfdf5; border-left-color: var(--green); }
+.callout strong { color: var(--text); }
+
+/* Footer */
+.footer { text-align: center; padding: 32px; font-size: 12px; color: var(--text-light); border-top: 1px solid var(--border); margin-top: 40px; }
+.footer p { margin-bottom: 6px; }
+.footer a { color: var(--brand); }
+
+/* Responsive */
+@media (max-width: 900px) {
+    .sidebar { display: none; }
+    .split, .theme-layout { grid-template-columns: 1fr; }
+}
+@media print {
+    .top-nav, .sidebar { display: none; }
+    .main { padding: 0; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+    <span class="nav-title">Mixmax Closed Lost Analysis</span>
+    <a href="https://heath-gtm.github.io/mixmax-revenue-reports/index.html">Home</a>
+    <a href="https://heath-gtm.github.io/mixmax-revenue-reports/closed-lost/">Closed Lost Archive</a>
+</nav>
+
+<div class="layout">
+<aside class="sidebar">
+    <h4>Navigation</h4>
+    <a href="#exec-summary">Executive Summary</a>
+    <a href="#tldr">If You Read Nothing Else</a>
+    <a href="#reason-summary">Loss Reason Summary</a>
+    <a href="#themes">Thematic Categorization</a>
+    <a href="#competitive">Competitive Intelligence</a>
+    <a href="#by-channel">By Channel</a>
+    <a href="#by-rep">By Rep</a>
+    <a href="#preventability">Preventability Distribution</a>
+    <a href="#deal-dives">Deal Deep Dives</a>
+    <a href="#account-d0" class="toc-account">1. Haymarket Media ($26,576)</a>
+    <a href="#account-d1" class="toc-account">2. Triple Whale ($12,000)</a>
+    <a href="#account-d2" class="toc-account">3. SumUp ($9,825)</a>
+    <a href="#account-d3" class="toc-account">4. BrainsWay ($9,084)</a>
+    <a href="#account-d4" class="toc-account">5. Keychain ($8,000)</a>
+    <a href="#account-d5" class="toc-account">6. Digital Ascension ($7,740)</a>
+    <a href="#account-d6" class="toc-account">7. SpryPoint ($7,500)</a>
+    <a href="#account-d7" class="toc-account">8. Strongmetrics ($7,500)</a>
+    <a href="#account-d8" class="toc-account">9. WellHive ($7,000)</a>
+    <a href="#account-d9" class="toc-account">10. Kombo ($6,700)</a>
+    <a href="#account-d10" class="toc-account">11. Innovamat ($5,000)</a>
+    <a href="#account-d11" class="toc-account">12. Orca AI ($5,000)</a>
+    <a href="#account-d12" class="toc-account">13. Novyx Co ($5,000)</a>
+    <a href="#account-d13" class="toc-account">14. Front ($5,000)</a>
+    <a href="#account-d14" class="toc-account">15. Fourth Capital ($3,700)</a>
+    <a href="#account-d15" class="toc-account">16. BLAZE ($3,000)</a>
+    <a href="#account-d16" class="toc-account">17. Ballast ($3,000)</a>
+    <a href="#account-d17" class="toc-account">18. scalar.io ($1,500)</a>
+    <a href="#cross-cut">Cross-Cut Analysis</a>
+    <a href="#lessons">Lessons Learned</a>
+    <a href="#run-manifest">Run Manifest</a>
+</aside>
+
+<div class="main">
+
+<!-- Executive Summary -->
+<div class="exec-summary" id="exec-summary">
+    <h1>Q1 2026 Closed Lost Analysis</h1>
+    <p class="subtitle">January 1 – March 31, 2026 &nbsp;|&nbsp; Mixmax Direct Sales &nbsp;|&nbsp; Generated April 17, 2026</p>
+    <div class="stat-grid">
+        <div class="stat-box"><div class="stat-value">18</div><div class="stat-label">Deals Lost</div></div>
+        <div class="stat-box"><div class="stat-value">$133,125</div><div class="stat-label">Total ARR Lost</div></div>
+        <div class="stat-box"><div class="stat-value">$7,396</div><div class="stat-label">Avg Deal Size</div></div>
+        <div class="stat-box"><div class="stat-value">55%</div><div class="stat-label">Lost to Competitor</div></div>
+        <div class="stat-box"><div class="stat-value">69%</div><div class="stat-label">Preventable/Possibly</div></div>
+        <div class="stat-box"><div class="stat-value">4</div><div class="stat-label">Deals Lost to HubSpot</div></div>
+    </div>
+    <p>Q1 2026 closed <strong>18 deals lost for $133,125 ARR</strong> (16 Net New, 1 Expansion, 1 Conversion). The dominant theme was <strong>competitive displacement</strong>: 55% of ARR went to named competitors, with HubSpot Sales Hub the #1 competitor by deal count (4 deals, $22,200) and SFDC Inbox the #1 by ARR in a single $26K loss to Haymarket Media. Only 31% of losses were truly outside our control; <strong>69% ($91K) were preventable or possibly preventable</strong> — meaning better qualification, trial activation, or renewal motion could have changed the outcome. The expansion loss (SumUp, $9,825) is the most damning: usage declined 35% from its December peak and no save motion was captured, pointing to a CS blind spot. Scalar.io's $1,500 walk-away is a <strong>packaging failure</strong> — a healthy 23 MAU customer with no right-sized paid tier after the Growth plan was retired.</p>
+</div>
+
+<!-- Cover TL;DR -->
+<div class="cover-tldr" id="tldr">
+    <h2>If You Read Nothing Else — 5 Things</h2>
+    <ol>
+        <li><strong>HubSpot Sales Hub is the #1 loss-to-competitor by deal count</strong> (4 deals / $22,200 ARR): Kombo, Orca AI, Strongmetrics, BLAZE. All 4 lost on stack-consolidation economics ("already pay for HubSpot, can't justify adding Mixmax"). This is a battlecard problem, not a product problem.</li>
+        <li><strong>SumUp's non-renewal ($9,825) was foreshadowed by Amplitude for 60 days</strong> — MAU peaked at 34 in December and dropped to 22 by January (a 35% decline) with zero integration depth (no SF/HubSpot events). No QBR, no save touchpoint was recorded. The canary fired and nobody picked up the phone.</li>
+        <li><strong>Discovery coverage is a gap</strong>: 11 of 18 lost deals (61%) have zero captured Mixmax meeting transcripts. Morgan Wible's inbound motion skews async/email, which hides objections and blocks coaching. The <strong>Innovamat</strong> deal closed lost "self-serve" while Amplitude showed 10 MAU actively ramping — sales never engaged.</li>
+        <li><strong>Keychain + Front are product-gap tells that repeat</strong> — Keychain asked for A/B testing + integrated data (sequence analytics), Front is a structural ICP mismatch (Mixmax is Gmail-native; Front SDRs live inside Front's client). The Keychain signal (A/B sequencing) is the product-gap we should triage with product for Q2.</li>
+        <li><strong>Trial-to-close latency is killing us</strong>. BLAZE's trial only activated 3 days before close. Haymarket had one calendar touch in July and closed lost in January — no trial, no activation, just drift. Every lost deal with a captured meeting but zero Amplitude activity (Haymarket, WellHive, BrainsWay, Keychain) points to the same fix: <strong>trial activation inside 5 business days or the deal is dead</strong>.</li>
+    </ol>
+</div>
+
+<!-- Loss Reason Summary -->
+<div class="card" id="reason-summary">
+    <h2>Loss Reason Summary</h2>
+    <p class="small-text" style="margin-bottom:12px;">Raw Win/Loss Reasons from the AE Forecast tab, sorted by ARR.</p>
+    <table>
+        <thead><tr><th>Loss Reason</th><th>Deals</th><th class="num">Total ARR</th><th class="num">Share</th></tr></thead>
+        <tbody>
+            <tr><td>Selected Competitor – Remained with Incumbent</td><td>5</td><td class="num">$55,601</td><td class="num">41.8%</td></tr>
+            <tr><td>Non-Responsive</td><td>3</td><td class="num">$28,584</td><td class="num">21.5%</td></tr>
+            <tr><td>Self-Serve / Month to Month</td><td>4</td><td class="num">$13,200</td><td class="num">9.9%</td></tr>
+            <tr><td>Product Gaps</td><td>2</td><td class="num">$13,000</td><td class="num">9.8%</td></tr>
+            <tr><td>Selected Competitor – Switched Vendor</td><td>2</td><td class="num">$10,740</td><td class="num">8.1%</td></tr>
+            <tr><td>Selected Competitor – No Incumbent</td><td>1</td><td class="num">$7,000</td><td class="num">5.3%</td></tr>
+            <tr><td>Bad fit / Not ICP</td><td>1</td><td class="num">$5,000</td><td class="num">3.8%</td></tr>
+            <tr class="total-row"><td><strong>Grand Total</strong></td><td><strong>18</strong></td><td class="num"><strong>$133,125</strong></td><td class="num"><strong>100%</strong></td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Thematic Categorization -->
+<div class="card" id="themes">
+    <h2>Thematic Categorization</h2>
+    <div class="theme-layout">
+        <div class="pie-container">
+            <h3 style="font-size:15px;margin-bottom:12px;">Q1 2026 Closed Lost — Share of $133,125 ARR</h3>
+            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="max-width:380px;">
+                <!-- Competitor Won 55.1% -->
+                <path d="M 200 40 A 160 160 0 1 1 149.60 351.86 L 171.65 285.42 A 90 90 0 1 0 200 110 Z" fill="#dc2626" stroke="white" stroke-width="2"/>
+                <!-- Non-Responsive 21.5% -->
+                <path d="M 149.60 351.86 A 160 160 0 0 1 40.82 183.94 L 110.46 190.97 A 90 90 0 0 0 171.65 285.42 Z" fill="#9ca3af" stroke="white" stroke-width="2"/>
+                <!-- Self-Serve 9.9% -->
+                <path d="M 40.82 183.94 A 160 160 0 0 1 79.98 94.19 L 132.49 140.48 A 90 90 0 0 0 110.46 190.97 Z" fill="#06b6d4" stroke="white" stroke-width="2"/>
+                <!-- Product Gaps 9.8% -->
+                <path d="M 79.98 94.19 A 160 160 0 0 1 163.15 44.30 L 179.27 112.42 A 90 90 0 0 0 132.49 140.48 Z" fill="#3b82f6" stroke="white" stroke-width="2"/>
+                <!-- Bad Fit 3.8% -->
+                <path d="M 163.15 44.30 A 160 160 0 0 1 200 40 L 200 110 A 90 90 0 0 0 179.27 112.42 Z" fill="#84cc16" stroke="white" stroke-width="2"/>
+                <text x="200" y="188" text-anchor="middle" font-size="32" font-weight="700" fill="#1e293b">18</text>
+                <text x="200" y="212" text-anchor="middle" font-size="14" fill="#64748b">deals</text>
+                <text x="200" y="230" text-anchor="middle" font-size="12" fill="#64748b">$133,125 ARR</text>
+            </svg>
+            <div class="legend">
+                <div class="legend-item"><span class="legend-dot" style="background:#dc2626"></span>Competitor Won (8, $73,341, 55.1%)</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#9ca3af"></span>Non-Responsive / Went Dark (3, $28,584, 21.5%)</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#06b6d4"></span>Self-Serve / Downgraded (4, $13,200, 9.9%)</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Product Gaps (2, $13,000, 9.8%)</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#84cc16"></span>Bad Fit / Not ICP (1, $5,000, 3.8%)</div>
+            </div>
+        </div>
+        <div>
+            <table>
+                <thead><tr><th>Theme</th><th>Deals</th><th class="num">ARR</th><th>Accounts</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#dc2626;margin-right:8px;vertical-align:middle;"></span>Competitor Won</td>
+                        <td>8</td><td class="num">$73,341</td>
+                        <td class="small-text">Haymarket (SFDC Inbox), SumUp (incumbent), Strongmetrics (HubSpot), Kombo (HubSpot), Orca AI (HubSpot), WellHive (Yesware), Digital Ascension, Ballast</td>
+                    </tr>
+                    <tr>
+                        <td><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#9ca3af;margin-right:8px;vertical-align:middle;"></span>Non-Responsive / Went Dark</td>
+                        <td>3</td><td class="num">$28,584</td>
+                        <td class="small-text">Triple Whale, BrainsWay, SpryPoint</td>
+                    </tr>
+                    <tr>
+                        <td><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#06b6d4;margin-right:8px;vertical-align:middle;"></span>Self-Serve / Downgraded</td>
+                        <td>4</td><td class="num">$13,200</td>
+                        <td class="small-text">Innovamat, Fourth Capital, BLAZE, scalar.io</td>
+                    </tr>
+                    <tr>
+                        <td><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#3b82f6;margin-right:8px;vertical-align:middle;"></span>Product Gaps</td>
+                        <td>2</td><td class="num">$13,000</td>
+                        <td class="small-text">Keychain (A/B testing + integrated data), Front (Gmail-only extension)</td>
+                    </tr>
+                    <tr>
+                        <td><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#84cc16;margin-right:8px;vertical-align:middle;"></span>Bad Fit / Not ICP</td>
+                        <td>1</td><td class="num">$5,000</td>
+                        <td class="small-text">Novyx Co (spam call, referral-gift-card seeker)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="takeaway-box">
+                <h4>Key Takeaway</h4>
+                <p style="font-size:13px;">Competitor displacement drove more than half of lost ARR, and HubSpot Sales Hub alone accounts for 4 of those 8 deals. Pair that with the <strong>31% of ARR that was truly unavoidable</strong> (structural ICP mismatches, product gaps, spam), and the actionable surface is the <strong>~$91K that was preventable or possibly preventable</strong> — concentrated in renewals, non-responsive deals, and self-serve walk-aways.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Competitive Intelligence -->
+<div class="card" id="competitive">
+    <h2>Competitive Intelligence</h2>
+    <p class="small-text" style="margin-bottom:12px;">Named competitors across Q1 2026 lost deals, sorted by ARR lost.</p>
+    <table>
+        <thead><tr><th>Competitor</th><th>Deals Lost</th><th class="num">ARR Lost</th><th>Pattern</th></tr></thead>
+        <tbody>
+            <tr>
+                <td><strong>Salesforce Inbox</strong></td>
+                <td>1</td>
+                <td class="num">$26,576</td>
+                <td class="small-text">Enterprise incumbent — Haymarket stayed with bundled Salesforce productivity rather than adding Mixmax. Battlecard need: "when Mixmax wins against SFDC Inbox" narrative + discounted co-existence play.</td>
+            </tr>
+            <tr>
+                <td><strong>HubSpot Sales Hub</strong></td>
+                <td>4</td>
+                <td class="num">$22,200</td>
+                <td class="small-text">Stack-consolidation losses across Kombo, Orca AI, Strongmetrics, BLAZE. Common objection: "already pay for HubSpot, can't justify adding." Strongmetrics wanted HubSpot's CRM+email bundle; others cited admin install friction on the HubSpot side.</td>
+            </tr>
+            <tr>
+                <td><strong>Incumbent (unspecified)</strong></td>
+                <td>1</td>
+                <td class="num">$9,825</td>
+                <td class="small-text">SumUp expansion non-renewal. No competitor named — usage declined 35% from December peak with no integration depth. CS save motion was absent.</td>
+            </tr>
+            <tr>
+                <td><strong>Unnamed / Switched Vendor</strong></td>
+                <td>2</td>
+                <td class="num">$10,740</td>
+                <td class="small-text">Digital Ascension ("went another direction"), Ballast ("another provider, likely pricing"). Loss reasons were never validated — AE captured no specific competitor in the transcript.</td>
+            </tr>
+            <tr>
+                <td><strong>Yesware</strong></td>
+                <td>1</td>
+                <td class="num">$7,000</td>
+                <td class="small-text">WellHive chose Yesware after a 4-meeting Mixmax cycle with zero product activation. FedRAMP/GovCloud uncertainty was an unresolved blocker. Primary competitive threat: "Gmail-native, Salesforce-friendly" overlap.</td>
+            </tr>
+            <tr>
+                <td><strong>Apollo</strong></td>
+                <td>1</td>
+                <td class="num">$1,500</td>
+                <td class="small-text">Scalar.io's BD team moved to Apollo for heavier sequencing; Mixmax remained for light users on self-serve monthly. Pricing/packaging loss more than competitive displacement.</td>
+            </tr>
+            <tr>
+                <td><strong>No competitor captured</strong></td>
+                <td>8</td>
+                <td class="num">$55,284</td>
+                <td class="small-text">Non-responsive, bad fit, product-gap, or self-serve outcomes with no named competitor in the record. Biggest blind spot: discovery rigor on sub-$10K inbound deals.</td>
+            </tr>
+            <tr class="total-row"><td><strong>Grand Total</strong></td><td><strong>18</strong></td><td class="num"><strong>$133,125</strong></td><td></td></tr>
+        </tbody>
+    </table>
+    <div class="callout red" style="margin-top:16px;">
+        <strong>Competitive battlecard gap:</strong> HubSpot Sales Hub (4 deals) needs a sharper counter than exists today. All 4 losses share the same objection — "we already pay for HubSpot, can't add Mixmax." Proposed response plays: (1) co-existence positioning (Mixmax for sequencing power-users, HubSpot SH for light senders), (2) HubSpot-specific ROI calculator, (3) "when HubSpot SH isn't enough" case study with a named win.
+    </div>
+</div>
+
+<!-- By Channel -->
+<div class="card" id="by-channel">
+    <h2>By Channel</h2>
+    <div class="split" style="margin-top:12px;">
+        <div class="split-card">
+            <h3>Inbound</h3>
+            <div class="big-number">$94,300</div>
+            <div class="small-text">12 deals &middot; 70.8% of ARR lost</div>
+            <div style="text-align:left; margin-top:12px; font-size:12px; color:var(--text-light);">Dominant channel by deal count. Avg $7,858. Loss mix skews to competitor wins and non-responsive. Where discovery capture is weakest.</div>
+        </div>
+        <div class="split-card">
+            <h3>Product (PLG)</h3>
+            <div class="big-number">$22,500</div>
+            <div class="small-text">3 deals &middot; 16.9% of ARR lost</div>
+            <div style="text-align:left; margin-top:12px; font-size:12px; color:var(--text-light);">Triple Whale ($12K non-responsive), Strongmetrics ($7.5K wanted CRM), Ballast ($3K tire-kicker). Conversion + Net New mix. Amplitude data expected here — Strongmetrics + Triple Whale did trial, Ballast did not.</div>
+        </div>
+        <div class="split-card">
+            <h3>Expansion</h3>
+            <div class="big-number">$9,825</div>
+            <div class="small-text">1 deal &middot; 7.4% of ARR lost</div>
+            <div style="text-align:left; margin-top:12px; font-size:12px; color:var(--text-light);">SumUp — non-renewal with 35% Amplitude decline leading in. The only existing customer in this cohort and the most preventable loss on the list.</div>
+        </div>
+        <div class="split-card">
+            <h3>Outbound</h3>
+            <div class="big-number">$6,500</div>
+            <div class="small-text">2 deals &middot; 4.9% of ARR lost</div>
+            <div style="text-align:left; margin-top:12px; font-size:12px; color:var(--text-light);">Front ($5K structural ICP mismatch), scalar.io ($1.5K packaging loss). Both point to qualification issues upstream.</div>
+        </div>
+    </div>
+</div>
+
+<!-- By Rep -->
+<div class="card" id="by-rep">
+    <h2>By Rep</h2>
+    <table>
+        <thead><tr><th>Rep</th><th>Deals Lost</th><th class="num">ARR Lost</th><th class="num">Avg Deal</th><th>Top Loss Reason</th></tr></thead>
+        <tbody>
+            <tr>
+                <td><strong>Morgan Wible</strong></td>
+                <td>12</td>
+                <td class="num">$96,885</td>
+                <td class="num">$8,074</td>
+                <td class="small-text">Competitor Won (5 of 12) — including the SFDC Inbox and Yesware losses. Also carries the non-responsive Jack-era deals (Triple Whale, SpryPoint).</td>
+            </tr>
+            <tr>
+                <td><strong>Karan Jiandani</strong></td>
+                <td>4</td>
+                <td class="num">$26,240</td>
+                <td class="num">$6,560</td>
+                <td class="small-text">Mix of Product Gap (Keychain), Competitor (Strongmetrics HubSpot), and vague switch (Digital Ascension, Ballast). Discovery capture is sparse — no meeting transcripts on 3 of 4 deals.</td>
+            </tr>
+            <tr>
+                <td><strong>Isabelle Tuomi</strong></td>
+                <td>2</td>
+                <td class="num">$10,000</td>
+                <td class="num">$5,000</td>
+                <td class="small-text">Both Bad Fit / Structural — Novyx (spam call) and Front (ICP mismatch). Upstream qualification opportunity.</td>
+            </tr>
+            <tr class="total-row"><td><strong>Grand Total</strong></td><td><strong>18</strong></td><td class="num"><strong>$133,125</strong></td><td class="num"><strong>$7,396</strong></td><td></td></tr>
+        </tbody>
+    </table>
+    <div class="callout blue" style="margin-top:16px;">
+        <strong>Pattern:</strong> Morgan carried the heaviest loss volume, but most of his deals show the same shape — deep engagement at top of funnel, silent product, champion dropout. This is a trial-activation problem and a multi-threading problem, not a selling problem. Karan's 4 deals are where discovery rigor needs tightening. Isabelle's 2 losses are both qualification gates that should have closed upstream.
+    </div>
+</div>
+
+<!-- Preventability Distribution -->
+<div class="card" id="preventability">
+    <h2>Preventability Distribution</h2>
+    <p class="small-text" style="margin-bottom:12px;">Could we have changed the outcome? 69% of ARR was preventable or possibly preventable.</p>
+    <table>
+        <thead><tr><th>Verdict</th><th>Deals</th><th class="num">ARR</th><th class="num">Share</th><th>Accounts</th></tr></thead>
+        <tbody>
+            <tr>
+                <td><span class="badge badge-preventable">Preventable</span></td>
+                <td>4</td><td class="num">$28,325</td><td class="num">21.3%</td>
+                <td class="small-text">Triple Whale (12-week silence, no recovery), SumUp (35% MAU drop, no save motion), Innovamat (ramping usage, no sales engagement), scalar.io (packaging failure on healthy account)</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-possibly">Possibly Preventable</span></td>
+                <td>7</td><td class="num">$63,800</td><td class="num">47.9%</td>
+                <td class="small-text">Haymarket, BrainsWay, Digital Ascension, WellHive, Kombo, Fourth Capital, BLAZE — outcomes that hinged on trial activation, competitive response, or multi-threading</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-not-prev">Not Preventable</span></td>
+                <td>7</td><td class="num">$41,000</td><td class="num">30.8%</td>
+                <td class="small-text">Keychain (product gap), SpryPoint (Jack-era legacy), Strongmetrics (wanted CRM), Orca AI (no budget), Novyx (spam), Front (ICP mismatch), Ballast (PLG tire-kicker)</td>
+            </tr>
+            <tr class="total-row"><td><strong>Total</strong></td><td><strong>18</strong></td><td class="num"><strong>$133,125</strong></td><td class="num"><strong>100%</strong></td><td></td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Deal Deep Dives -->
+<h2 id="deal-dives" style="margin: 40px 0 16px; color: var(--brand);">Per-Deal Deep Dives</h2>
+<p class="small-text" style="margin-bottom: 20px;">18 deals, sorted by ARR descending. Each card: loss reason + details, Amplitude usage read (pre-close 6 months), meeting intelligence, preventability verdict, and the one thing we should fix.</p>
+
+<!-- Deal 1: Haymarket Media -->
+<div class="account-card" id="account-d0">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>1. Haymarket Media Group</h3>
+            <span class="badge badge-amount">$26,576</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-possibly">Possibly Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Morgan Wible</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-01-05</span>
+            <span class="meta-item"><strong>Source:</strong> Inbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> High</span>
+            <span class="meta-item"><strong>Aero Product:</strong> Low</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Selected Competitor – Remained with Incumbent</strong></p>
+            <p class="details">"One of Jack's deals that was between us and SFDC Inbox; unfortunately they made the decision to move forward with Inbox due to budget constraints. Absolutely worth reengaging in early Q4 of '26."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Silent &nbsp;|&nbsp; <strong>Trend:</strong> Never Activated &nbsp;|&nbsp; <strong>MAU Peak:</strong> 0</p>
+            <p class="details">Zero active users across all 7 monthly buckets from 2025-07-05 through 2026-01-05. No product footprint at all under haymarket.com domain — no trial ever stood up.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 1 &nbsp;|&nbsp; <strong>Last touch:</strong> 2025-07-17</p>
+            <p class="details">Single calendar event (Katie Boyle + Morgan Wible — Mixmax Trial). No AI summary captured. Deal went dark post-meeting; 6-month gap between touch and close with zero product usage. Classified lost to Salesforce Inbox.</p>
+        </div>
+        <div class="verdict-box verdict-possibly">
+            <strong>Preventability: Possibly Preventable.</strong> The deal had signal (inbound + July trial meeting) but no trial activation and no follow-up cadence captured. A structured "trial-to-activation in 5 business days or escalate" SLA would have surfaced the blocker before SFDC Inbox closed. What to fix: <strong>mandate trial activation within 5 business days of Mixmax Trial meeting — no activation = escalate or close out.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 2: Triple Whale -->
+<div class="account-card" id="account-d1">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>2. Triple Whale</h3>
+            <span class="badge badge-amount">$12,000</span>
+            <span class="badge badge-conversion">Conversion</span>
+            <span class="badge badge-preventable">Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Morgan Wible</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-01-31</span>
+            <span class="meta-item"><strong>Source:</strong> Product</span>
+            <span class="meta-item"><strong>Aero Account:</strong> Medium</span>
+            <span class="meta-item"><strong>Aero Product:</strong> Low</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Non-Responsive</strong></p>
+            <p class="details">"One of Jack's that unfortunately had gone dark before he left and has remained unresponsive to both Heath and I."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Light &nbsp;|&nbsp; <strong>Trend:</strong> Ramping Up &nbsp;|&nbsp; <strong>MAU Peak:</strong> 8</p>
+            <p class="details">MAU progression Jul–Jan: 1, 1, 2, 7, 8, 8, 7. Clear ramp from Sep into Oct then plateau at 7–8 through close. Real small-team footprint with core send activity.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 2 &nbsp;|&nbsp; <strong>Dates:</strong> 2025-10-30, 2025-11-05</p>
+            <p class="details">Strong October start: intro 10/30 + SE-led deep dive 11/5 with four stakeholders (Akil Sharperson/Dir CS, Melissa Cadd/RevOps, Josie Kritter, Anthony Henkel). Then silence — 12 weeks with no meeting until close. MAU plateaued as conversation stalled. No single champion emerged; no competitive displacement surfaced.</p>
+        </div>
+        <div class="verdict-box verdict-preventable">
+            <strong>Preventability: Preventable.</strong> A 12-week gap between the last meeting and close-lost is a process failure, not a customer failure. Four stakeholders were engaged — at least one should have been converted to a named champion with a next-meeting on calendar. What to fix: <strong>no more than 21 days between active-stage meetings; trigger a "deal at risk of going dark" alert at day 15 with a named recovery play (champion check-in, executive exec-sponsor intro, or close-loss decision).</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 3: SumUp -->
+<div class="account-card" id="account-d2">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>3. SumUp (Expansion Non-Renewal)</h3>
+            <span class="badge badge-amount">$9,825</span>
+            <span class="badge badge-expansion">Expansion</span>
+            <span class="badge badge-preventable">Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Morgan Wible</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-02-03</span>
+            <span class="meta-item"><strong>Source:</strong> Expansion</span>
+            <span class="meta-item"><strong>Aero Account:</strong> High</span>
+            <span class="meta-item"><strong>Aero Product:</strong> High</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Selected Competitor – Remained with Incumbent</strong></p>
+            <p class="details">"Gave notice of non-renewal."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Moderate &nbsp;|&nbsp; <strong>Trend:</strong> Declining ~35% from peak &nbsp;|&nbsp; <strong>MAU Peak:</strong> 34</p>
+            <p class="details">Existing customer: 9, 12, 16, 21, 34, 22, 22 MAU Aug–Feb. Peaked in December and dropped 35% into Jan/Feb. Email-send held stable at 7–10 unique senders/month but <strong>zero integration depth</strong> — no Salesforce, HubSpot, or Calendar events. Thin single-feature deployment vulnerable to non-renewal.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 0</p>
+            <p class="details">No QBR, no renewal conversation, no save motion captured in Mixmax meeting data during the 6-month pre-close window. For a $9.8K existing-customer non-renewal, this absence is itself the red flag.</p>
+        </div>
+        <div class="verdict-box verdict-preventable">
+            <strong>Preventability: Preventable.</strong> This is the most damning loss on the list. Amplitude telegraphed the churn for 60 days (peak-to-decline of 35%) and no one intercepted. No QBR recorded, no save motion, no stakeholder alignment. What to fix: <strong>stand up a CSM canary — any Moderate+ account showing &gt;20% MAU drop MoM triggers a required renewal-save call within 5 business days. Integration-depth scoring should weight heavily (0 integrations = auto-at-risk regardless of MAU).</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 4: BrainsWay -->
+<div class="account-card" id="account-d3">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>4. BrainsWay</h3>
+            <span class="badge badge-amount">$9,084</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-possibly">Possibly Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Morgan Wible</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-01-06</span>
+            <span class="meta-item"><strong>Source:</strong> Inbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> Medium</span>
+            <span class="meta-item"><strong>Aero Product:</strong> Low</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Non-Responsive</strong></p>
+            <p class="details">"Delayed due to internal security approvals and other internal priorities. Eventually stopped responding despite the strong start to the eval."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Silent &nbsp;|&nbsp; <strong>Trend:</strong> Never Activated &nbsp;|&nbsp; <strong>MAU Peak:</strong> 0</p>
+            <p class="details">Zero activity across all 6 months pre-close — no email, calendar, sidebar, HubSpot or Salesforce usage. The "strong start" lived in deck/email form only; never converted to product usage.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 0 captured</p>
+            <p class="details">No recoverable meeting transcripts for BrainsWay across the full 6-month window. Security review stall ended any forward motion before a trial could materialize.</p>
+        </div>
+        <div class="verdict-box verdict-possibly">
+            <strong>Preventability: Possibly Preventable.</strong> Security review is a legitimate stall on larger enterprise deals, but "strong start" without a captured trial or meeting suggests the start was shallower than reported. What to fix: <strong>for any deal citing "security review" as the delay, add a parallel activation workstream — pilot seats in a non-production environment or security team escalation within 14 days. Silence + security-review label = auto-review at 30 days.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 5: Keychain -->
+<div class="account-card" id="account-d4">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>5. Keychain</h3>
+            <span class="badge badge-amount">$8,000</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-not-prev">Not Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Karan Jiandani</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-03-26</span>
+            <span class="meta-item"><strong>Source:</strong> Inbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> High</span>
+            <span class="meta-item"><strong>Aero Product:</strong> Low</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Product Gaps</strong></p>
+            <p class="details">"MixMax does not provide A/B testing or Integrated Data."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Silent &nbsp;|&nbsp; <strong>Trend:</strong> Never Activated &nbsp;|&nbsp; <strong>MAU Peak:</strong> 0</p>
+            <p class="details">Zero activity on keychain.com across the full pre-close window. Promised Morgan-set trial after 2026-01-07 discovery never produced a single active user.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 1 &nbsp;|&nbsp; <strong>Date:</strong> 2026-01-07</p>
+            <p class="details">Morgan &lt;&gt; Jordan Weitz (Co-founder/Revenue Lead) discovery. Keychain wanted A/B-ready sequencing + tight Salesforce+Gmail integration, was comparing 10 vendors, flagged price + starter-package needs. Jordan explicitly said the use case "is not unique." Requested case studies (evaluation signal, not buying signal). Trial never activated; no follow-up meetings captured.</p>
+        </div>
+        <div class="verdict-box verdict-not-prev">
+            <strong>Preventability: Not Preventable</strong> — the product-gap call was correct (A/B testing and integrated sequence analytics are stated requirements Mixmax does not currently satisfy at the depth Keychain expected). What to fix: <strong>log this as a product input for the analytics roadmap. A/B testing of sequence variants keeps surfacing in losses — consider for Q3 roadmap. Also: when a prospect says "comparing 10 vendors" in discovery, disqualify or move to product-qualified self-serve rather than investing sales cycle.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 6: Digital Ascension -->
+<div class="account-card" id="account-d5">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>6. Digital Ascension Group</h3>
+            <span class="badge badge-amount">$7,740</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-possibly">Possibly Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Karan Jiandani</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-03-19</span>
+            <span class="meta-item"><strong>Source:</strong> Inbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> No Score</span>
+            <span class="meta-item"><strong>Aero Product:</strong> No Score</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Selected Competitor – Switched Vendor</strong></p>
+            <p class="details">"Went another direction."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Silent &nbsp;|&nbsp; <strong>Trend:</strong> Never Activated &nbsp;|&nbsp; <strong>MAU Peak:</strong> 0</p>
+            <p class="details">Zero product activity across the full 6-month window — no trial users, no email, no calendar, no CRM integration activity under digitalfamilyoffice.io.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 0 captured</p>
+            <p class="details">No transcript or calendar artifact for this deal in Mixmax. "Went another direction" with no named competitor almost certainly means a competitor won before Mixmax even stood up a trial.</p>
+        </div>
+        <div class="verdict-box verdict-possibly">
+            <strong>Preventability: Possibly Preventable.</strong> No captured discovery + vague loss reason = the deal died in research. What to fix: <strong>Karan's inbound motion needs tighter early qualification — when a prospect is evaluating alternatives, require a "vendors they're also looking at" note in the first-call write-up so we know what we're up against.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 7: SpryPoint -->
+<div class="account-card" id="account-d6">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>7. SpryPoint</h3>
+            <span class="badge badge-amount">$7,500</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-not-prev">Not Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Morgan Wible</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-03-04</span>
+            <span class="meta-item"><strong>Source:</strong> Inbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> High</span>
+            <span class="meta-item"><strong>Aero Product:</strong> Low</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Non-Responsive</strong></p>
+            <p class="details">"One of Jack's that we were trying to bring back around but unfortunately have been unresponsive. Worth reengaging with new stakeholders but CL for now."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Silent &nbsp;|&nbsp; <strong>Trend:</strong> Never Activated &nbsp;|&nbsp; <strong>MAU Peak:</strong> 0</p>
+            <p class="details">Zero MAU every month across the 6-month pre-close window. No product footprint.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 0 captured</p>
+            <p class="details">No summaries or calendar events. Jack-era deal — a stale record never meaningfully engaged by the current AE.</p>
+        </div>
+        <div class="verdict-box verdict-not-prev">
+            <strong>Preventability: Not Preventable</strong> — legacy deal with no active engagement. What to fix: <strong>close out Jack-era zombie opportunities by default at 90 days of inactivity. Re-prospect with a fresh record if there's a reengagement signal. Keeping these in pipeline skews forecast and consumes AE attention.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 8: Strongmetrics -->
+<div class="account-card" id="account-d7">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>8. Strongmetrics</h3>
+            <span class="badge badge-amount">$7,500</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-not-prev">Not Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Karan Jiandani</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-03-30</span>
+            <span class="meta-item"><strong>Source:</strong> Product</span>
+            <span class="meta-item"><strong>Aero Account:</strong> Low</span>
+            <span class="meta-item"><strong>Aero Product:</strong> High</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Selected Competitor – Remained with Incumbent (HubSpot)</strong></p>
+            <p class="details">"HubSpot gave them 300/user/annually. Speaking to them further it seemed like they were looking for a tool that was also a CRM."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Light &nbsp;|&nbsp; <strong>Trend:</strong> Ramping Up &nbsp;|&nbsp; <strong>MAU Peak:</strong> 1</p>
+            <p class="details">One active user in Feb 2026 sustained into March, touching email, calendar, and sidebar — a real PLG trial. No HubSpot or Salesforce activity, consistent with wanting a bundled CRM solution Mixmax doesn't provide.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 0 captured</p>
+            <p class="details">No transcripts — product-led evaluation flowed through self-serve trial rather than AE calls. Usage pattern (solo user, email + calendar + sidebar, no CRM) matches the loss reason.</p>
+        </div>
+        <div class="verdict-box verdict-not-prev">
+            <strong>Preventability: Not Preventable</strong> — Strongmetrics wanted a CRM+email bundle. Mixmax isn't a CRM. What to fix: <strong>strengthen the PLG disqualification gate — a single-user trial with no CRM integration events + a CRM-like ICP (early-stage B2B SaaS, no Salesforce connected) should get a "want a CRM?" follow-up before the sales motion starts.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 9: WellHive -->
+<div class="account-card" id="account-d8">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>9. WellHive</h3>
+            <span class="badge badge-amount">$7,000</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-possibly">Possibly Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Morgan Wible</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-01-05</span>
+            <span class="meta-item"><strong>Source:</strong> Inbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> High</span>
+            <span class="meta-item"><strong>Aero Product:</strong> Low</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Selected Competitor – No Incumbent (Yesware)</strong></p>
+            <p class="details">"Heath and I spoke with them mid Q4 and the decision was made to push out the evaluation to January due to their internal conditions. Unfortunately they have moved forward with Yesware since our last call and have cancelled the call. Absolutely worth reengaging in early Q4 before their renewal."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Silent &nbsp;|&nbsp; <strong>Trend:</strong> Never Activated &nbsp;|&nbsp; <strong>MAU Peak:</strong> 0</p>
+            <p class="details">Zero active users in every month from 2025-07 through 2026-01 despite 4 scheduled meetings. No seats ever lit up.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 4 &nbsp;|&nbsp; <strong>Competitors mentioned:</strong> Yesware, ChiliCal</p>
+            <p class="details">Rich discovery arc (kickoff 9/15 → demo 9/29 → follow-up 10/6 → next steps Nov) anchored on Salesforce integration. <strong>FedRAMP/GovCloud was a surfaced but unresolved blocker</strong> for a federal-health-adjacent buyer. ChiliCal surfaced as a scheduling wedge. Eval got pushed to Q1; Yesware won before the reopener.</p>
+        </div>
+        <div class="verdict-box verdict-possibly">
+            <strong>Preventability: Possibly Preventable.</strong> Four meetings without a single activated user is the core failure. FedRAMP was also a known unresolved — we should not have carried a federal-adjacent deal this far without a compliance path. What to fix: <strong>parallel trial activation from day 2 (not after final demo), and compliance-gate any FedRAMP-adjacent prospect at first call.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 10: Kombo -->
+<div class="account-card" id="account-d9">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>10. Kombo</h3>
+            <span class="badge badge-amount">$6,700</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-possibly">Possibly Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Morgan Wible</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-03-04</span>
+            <span class="meta-item"><strong>Source:</strong> Inbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> No Score</span>
+            <span class="meta-item"><strong>Aero Product:</strong> No Score</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Selected Competitor – Remained with Incumbent (HubSpot SH)</strong></p>
+            <p class="details">"Opted to stick with and build out HubSpot SH rather than add costs."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Silent &nbsp;|&nbsp; <strong>Trend:</strong> Never Activated &nbsp;|&nbsp; <strong>MAU Peak:</strong> 0</p>
+            <p class="details">Zero active users across the entire 6-month pre-close window on kombo.dev. No trial; consistent with an early-funnel loss.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 0 captured</p>
+            <p class="details">No meeting summaries or calendar events. Loss at the stack-consolidation decision before meaningful evaluation.</p>
+        </div>
+        <div class="verdict-box verdict-possibly">
+            <strong>Preventability: Possibly Preventable.</strong> Another HubSpot stack-consolidation loss with no captured discovery. What to fix: <strong>add a HubSpot-specific co-existence pitch (Mixmax for sequencing + power-users; keep HubSpot SH for light senders) + an ROI calculator showing incremental pipeline per dollar of Mixmax on top of HubSpot. Standardize this as the opening move whenever HubSpot is already in the stack.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 11: Innovamat -->
+<div class="account-card" id="account-d10">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>11. Innovamat</h3>
+            <span class="badge badge-amount">$5,000</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-preventable">Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Morgan Wible</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-03-04</span>
+            <span class="meta-item"><strong>Source:</strong> Inbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> Low</span>
+            <span class="meta-item"><strong>Aero Product:</strong> Low</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Self-Serve / Month to Month</strong></p>
+            <p class="details">"Moving forward with 1-2 licenses self serve for now, couldn't generate enough buy in during trial period."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Light &nbsp;|&nbsp; <strong>Trend:</strong> Ramping Up &nbsp;|&nbsp; <strong>MAU Peak:</strong> 10</p>
+            <p class="details">Trial footprint grew from 2–3 early to 9–10 in Jan–Mar, with 3–5 unique email senders emerging Jan onward. <strong>Strongest ramp of the batch</strong> — real adoption momentum into close.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 0 captured</p>
+            <p class="details">No transcripts. Ramping product usage without any sales-captured discovery — buying signal missed.</p>
+        </div>
+        <div class="verdict-box verdict-preventable">
+            <strong>Preventability: Preventable.</strong> Innovamat was actively ramping adoption into close and sales never engaged them at the team-deal level. This is the cleanest "we left money on the table" in the batch. What to fix: <strong>set a PQL trigger at 5+ weekly active users or 3+ email senders in a 14-day window → auto-generate an AE touchpoint task. Every ramping self-serve trial becomes a team-plan conversation before close.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 12: Orca AI -->
+<div class="account-card" id="account-d11">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>12. Orca AI</h3>
+            <span class="badge badge-amount">$5,000</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-not-prev">Not Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Morgan Wible</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-03-04</span>
+            <span class="meta-item"><strong>Source:</strong> Inbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> Medium</span>
+            <span class="meta-item"><strong>Aero Product:</strong> Low</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Selected Competitor – Remained with Incumbent (HubSpot SH)</strong></p>
+            <p class="details">"Remaining with HubSpot SH and building out more fully there, couldn't receive approval for additional budget."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Silent &nbsp;|&nbsp; <strong>Trend:</strong> Never Activated &nbsp;|&nbsp; <strong>MAU Peak:</strong> 2 (trace)</p>
+            <p class="details">Trace signal only — 0–2 MAU across the window, 0 emails sent. One or two users touched the product briefly in Nov-Dec and disengaged.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 0 captured</p>
+            <p class="details">No meeting summaries. "No budget" + "HubSpot SH" loss reasons point to a deal that never cleared qualification — evaluation stalled before hands-on use.</p>
+        </div>
+        <div class="verdict-box verdict-not-prev">
+            <strong>Preventability: Not Preventable</strong> — explicit budget objection + incumbent HubSpot. What to fix: <strong>budget confirmation as an upfront qualifier. "Is there budget approved or pending?" at first call prevents 3 months of cycle on a no-budget prospect.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 13: Novyx -->
+<div class="account-card" id="account-d12">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>13. Novyx Co</h3>
+            <span class="badge badge-amount">$5,000</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-not-prev">Not Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Isabelle Tuomi</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-03-27</span>
+            <span class="meta-item"><strong>Source:</strong> Inbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> No Score</span>
+            <span class="meta-item"><strong>Aero Product:</strong> No Score</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Bad fit / Not ICP</strong></p>
+            <p class="details">"Spam call, looking for us to send them a $500 referral gift card."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Silent &nbsp;|&nbsp; <strong>Trend:</strong> Never Activated &nbsp;|&nbsp; <strong>MAU Peak:</strong> 0</p>
+            <p class="details">Zero activity on novyx.nl across all 6 months. No account ever signed in.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 0</p>
+            <p class="details">No logged meetings with any novyx.nl attendee. Spam/gift-card intent should have been caught at SDR intake.</p>
+        </div>
+        <div class="verdict-box verdict-not-prev">
+            <strong>Preventability: Not Preventable</strong> at the AE stage, but <strong>process-preventable upstream</strong>. What to fix: <strong>SDR qualification checklist should include a "gift-card / referral-bounty" flag. Any inbound meeting request referencing gift cards or referrals gets a 5-minute pre-call screen before the AE's calendar opens.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 14: Front -->
+<div class="account-card" id="account-d13">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>14. Front</h3>
+            <span class="badge badge-amount">$5,000</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-not-prev">Not Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Isabelle Tuomi</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-03-27</span>
+            <span class="meta-item"><strong>Source:</strong> Outbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> Medium</span>
+            <span class="meta-item"><strong>Aero Product:</strong> Low</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Product Gaps</strong></p>
+            <p class="details">"We can't integrate into Front's email for their SDR team to use Mixmax."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Silent &nbsp;|&nbsp; <strong>Trend:</strong> Never Activated &nbsp;|&nbsp; <strong>MAU Peak:</strong> 0</p>
+            <p class="details">Zero activity on front.com. Unsurprising — Front's SDR team lives inside Front's own shared-inbox client, which Mixmax extension doesn't operate within.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 0 captured</p>
+            <p class="details">No meeting summaries. ICP mismatch is structural: Mixmax is a Gmail-native Chrome extension; Front SDRs use Front's own inbox.</p>
+        </div>
+        <div class="verdict-box verdict-not-prev">
+            <strong>Preventability: Not Preventable</strong> — structural ICP mismatch. What to fix: <strong>add "primary email client = Gmail" to outbound ICP filters. Front, Superhuman, Spike, and any other non-Gmail-native client should be on a do-not-prospect list for outbound.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 15: Fourth Capital -->
+<div class="account-card" id="account-d14">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>15. Fourth Capital</h3>
+            <span class="badge badge-amount">$3,700</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-possibly">Possibly Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Morgan Wible</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-03-17</span>
+            <span class="meta-item"><strong>Source:</strong> Inbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> No Score</span>
+            <span class="meta-item"><strong>Aero Product:</strong> No Score</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Self-Serve / Month to Month</strong></p>
+            <p class="details">"Moving forward with one license SS for now, couldn't secure budget for the team."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Light &nbsp;|&nbsp; <strong>Trend:</strong> Ramping Up &nbsp;|&nbsp; <strong>MAU Peak:</strong> 2</p>
+            <p class="details">Near-zero until the final month — 1–2 MAU appeared weeks of 2026-02-16 through 2026-03-02, driven by email-feature use with no CRM/calendar adoption. Small self-serve trial that never scaled.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 0 captured</p>
+            <p class="details">No transcripts. 1–2 users touched the product — consistent with self-serve 1-license outcome. No multi-threaded buying committee visible.</p>
+        </div>
+        <div class="verdict-box verdict-possibly">
+            <strong>Preventability: Possibly Preventable.</strong> Small team, budget-sensitive, no captured discovery. What to fix: <strong>for sub-$5K deals in budget-constrained ICPs, move to a self-serve-first motion with a clear trial-to-team-plan upgrade path rather than investing AE cycles on a contract push.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 16: BLAZE -->
+<div class="account-card" id="account-d15">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>16. BLAZE</h3>
+            <span class="badge badge-amount">$3,000</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-possibly">Possibly Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Morgan Wible</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-01-28</span>
+            <span class="meta-item"><strong>Source:</strong> Inbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> Medium</span>
+            <span class="meta-item"><strong>Aero Product:</strong> Low</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Self-Serve / Month to Month</strong></p>
+            <p class="details">"Due to budget constraints, they opted to go self serve monthly on the inbox copilot."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Light &nbsp;|&nbsp; <strong>Trend:</strong> Ramping Up &nbsp;|&nbsp; <strong>MAU Peak:</strong> 7</p>
+            <p class="details">0, 0, 0, 0, 1, 1, 7 MAU — flat until final 30-day bucket when trial finally activated. Classic late-stage ignition after Jan 9 trial kickoff.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 2 &nbsp;|&nbsp; <strong>Dates:</strong> 2026-01-06, 2026-01-09 &nbsp;|&nbsp; <strong>Competitors:</strong> HubSpot, LinkedIn Sales Nav</p>
+            <p class="details">Intro 1/6 + trial kickoff 1/9. HubSpot admin gating + LinkedIn Sales Nav workflow overlap killed momentum. Trial spiked to 7 MAU just before close — only ~19 days of real usage against a budget objection. Went self-serve.</p>
+        </div>
+        <div class="verdict-box verdict-possibly">
+            <strong>Preventability: Possibly Preventable.</strong> Trial activated too late to build a champion. HubSpot admin friction was a known blocker that went unsolved. What to fix: <strong>trial activation inside 5 business days of demo. If IT/admin friction is flagged, escalate early to a shorter-path pilot (sandbox, solo-user trial) rather than letting it stall.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 17: Ballast -->
+<div class="account-card" id="account-d16">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>17. Ballast Enterprises</h3>
+            <span class="badge badge-amount">$3,000</span>
+            <span class="badge badge-netnew">Net New</span>
+            <span class="badge badge-not-prev">Not Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Karan Jiandani</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-03-30</span>
+            <span class="meta-item"><strong>Source:</strong> Product</span>
+            <span class="meta-item"><strong>Aero Account:</strong> Low</span>
+            <span class="meta-item"><strong>Aero Product:</strong> Low</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Selected Competitor – Switched Vendor</strong></p>
+            <p class="details">"Went with another provider - didn't specify. Likely due to pricing."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Silent &nbsp;|&nbsp; <strong>Trend:</strong> Never Activated &nbsp;|&nbsp; <strong>MAU Peak:</strong> 1 (pings only)</p>
+            <p class="details">One MAU ping Sep 2025 and again Mar 2026, but zero activity in email, calendar, HubSpot, Salesforce or sidebar. Classic tire-kicker signup with no feature engagement.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 0 captured</p>
+            <p class="details">No meetings. Low-ARR PLG signup that never activated. "Another provider, likely pricing" is unverifiable.</p>
+        </div>
+        <div class="verdict-box verdict-not-prev">
+            <strong>Preventability: Not Preventable</strong> — tire-kicker on a $3K PLG signup. What to fix: <strong>PLG deal qualification floor — sub-$5K deals with zero feature activation shouldn't be in the AE pipeline. Auto-downgrade to self-serve monthly.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Deal 18: scalar.io -->
+<div class="account-card" id="account-d17">
+    <div class="card-header">
+        <div class="card-title-row">
+            <h3>18. scalar.io</h3>
+            <span class="badge badge-amount">$1,500</span>
+            <span class="badge badge-netnew">Net New (WinBack)</span>
+            <span class="badge badge-preventable">Preventable</span>
+        </div>
+        <div class="meta-bar">
+            <span class="meta-item"><strong>Owner:</strong> Morgan Wible</span>
+            <span class="meta-item"><strong>Close:</strong> 2026-01-08</span>
+            <span class="meta-item"><strong>Source:</strong> Outbound</span>
+            <span class="meta-item"><strong>Aero Account:</strong> High</span>
+            <span class="meta-item"><strong>Aero Product:</strong> High</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="subsection">
+            <h4>Loss Reason &amp; Details</h4>
+            <p><strong>Self-Serve / Month to Month</strong></p>
+            <p class="details">"Instead of going with another contract they opted to just have 3 users on monthly plans self serve."</p>
+        </div>
+        <div class="subsection">
+            <h4>Amplitude Usage Read</h4>
+            <p class="usage-summary"><strong>Classification:</strong> Moderate &nbsp;|&nbsp; <strong>Trend:</strong> Stable &nbsp;|&nbsp; <strong>MAU Peak:</strong> 23</p>
+            <p class="details">18–23 active users per 30-day bucket across the full 6-month pre-close window. Healthy, stable usage — <strong>this was an active paying account, not a ghost</strong>.</p>
+        </div>
+        <div class="subsection">
+            <h4>Meeting Intelligence</h4>
+            <p class="usage-summary"><strong>Meetings:</strong> 1 &nbsp;|&nbsp; <strong>Date:</strong> 2026-01-05 &nbsp;|&nbsp; <strong>Competitor:</strong> Apollo</p>
+            <p class="details">Reconnect call 2026-01-05 confirmed contract expiry + bifurcated future: BD team moving to Apollo for heavier sequencing; light users dropping to self-serve Mixmax. Root cause: <strong>deprecated Growth plan left no right-sized paid tier</strong>. Only 5 of ~20 users needed paid-tier sequencing features.</p>
+        </div>
+        <div class="verdict-box verdict-preventable">
+            <strong>Preventability: Preventable.</strong> Packaging failure on a healthy account. When the Growth plan was retired, customers like scalar.io had nowhere good to go. What to fix: <strong>product/pricing work — design a mid-tier "power user pack" for accounts with a small heavy-user cohort inside a larger light-sender team, so we don't force an all-or-nothing upgrade. This also protects against Apollo displacement on BD-heavy accounts.</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Cross-Cut Analysis -->
+<div class="card" id="cross-cut">
+    <h2>Cross-Cut Analysis</h2>
+
+    <h3 style="font-size:14px; color:var(--brand); margin-top:16px; margin-bottom:8px;">Loss Rate by Aero Fit</h3>
+    <table class="trend-table">
+        <thead><tr><th>Aero Account Fit</th><th>Deals</th><th class="num">ARR</th><th>Notable</th></tr></thead>
+        <tbody>
+            <tr><td>High Fit</td><td>6</td><td class="num">$68,401</td><td class="small-text">Haymarket, SumUp, Keychain, SpryPoint, WellHive, scalar.io — paradox: 4 of 6 were Silent/Never Activated. High Aero score did not predict activation.</td></tr>
+            <tr><td>Medium Fit</td><td>5</td><td class="num">$31,168</td><td class="small-text">Triple Whale, BrainsWay, Orca AI, Front, BLAZE — mixed outcomes; 3 had some trial activity.</td></tr>
+            <tr><td>Low Fit</td><td>3</td><td class="num">$15,500</td><td class="small-text">Strongmetrics, Innovamat, Ballast — low ARR, mostly product-led. Outcomes consistent with Low score.</td></tr>
+            <tr><td>No Score</td><td>4</td><td class="num">$18,056</td><td class="small-text">Digital Ascension, Kombo, Novyx, Fourth Capital — includes both spam (Novyx) and real-but-unscored deals. Score coverage gap.</td></tr>
+        </tbody>
+    </table>
+    <div class="callout">Aero Account Fit does not currently predict trial activation. The 6 High-Fit deals collectively represent 51% of lost ARR, and 4 of the 6 never activated a single user. Recommendation: add a trial-activation metric alongside Aero fit when forecasting deal health.</div>
+
+    <h3 style="font-size:14px; color:var(--brand); margin-top:20px; margin-bottom:8px;">Loss Rate by Deal Size</h3>
+    <table class="trend-table">
+        <thead><tr><th>Deal Size</th><th>Deals</th><th class="num">ARR</th><th>Loss Mix</th></tr></thead>
+        <tbody>
+            <tr><td>Large (&gt;$10K)</td><td>2</td><td class="num">$38,576</td><td class="small-text">Haymarket ($26.5K, SFDC Inbox) + Triple Whale ($12K, non-responsive). Lost to qualification and process issues, not product.</td></tr>
+            <tr><td>Mid ($5K–$10K)</td><td>10</td><td class="num">$77,949</td><td class="small-text">The meat of the list. Competitor wins + non-responsive dominate. HubSpot loss pattern concentrated here.</td></tr>
+            <tr><td>Small (&lt;$5K)</td><td>6</td><td class="num">$16,600</td><td class="small-text">Self-serve outcomes + bad-fit. Should move to PLG-first motion earlier.</td></tr>
+        </tbody>
+    </table>
+
+    <h3 style="font-size:14px; color:var(--brand); margin-top:20px; margin-bottom:8px;">Loss Rate by Product-Usage Classification</h3>
+    <table class="trend-table">
+        <thead><tr><th>Classification</th><th>Deals</th><th class="num">ARR</th><th>Read</th></tr></thead>
+        <tbody>
+            <tr><td><span class="matrix-silent" style="padding:2px 8px; border-radius:4px;">Silent</span></td><td>12</td><td class="num">$87,800</td><td class="small-text">Never activated a single user. The classic "talked, never tried" pattern. 66% of lost ARR.</td></tr>
+            <tr><td><span class="matrix-light" style="padding:2px 8px; border-radius:4px;">Light</span></td><td>4</td><td class="num">$23,700</td><td class="small-text">Trial activity, mostly small (1–10 MAU). Innovamat was the standout ramping signal.</td></tr>
+            <tr><td><span class="matrix-moderate" style="padding:2px 8px; border-radius:4px;">Moderate</span></td><td>2</td><td class="num">$11,325</td><td class="small-text">SumUp (expansion non-renewal) and scalar.io (packaging-driven walk). Healthy usage wasn't enough.</td></tr>
+        </tbody>
+    </table>
+    <div class="callout blue">The single biggest intervention opportunity: move ~$87K of "Silent" ARR toward "Light" by making trial activation mandatory and measurable at every stage of the sales cycle.</div>
+</div>
+
+<!-- Lessons Learned -->
+<div class="card" id="lessons">
+    <h2>Lessons Learned — Keep / Stop / Start</h2>
+    <p class="small-text" style="margin-bottom:12px;">Actionable patterns from Q1 2026 losses. Focus is on what we control.</p>
+    <div class="playbook-grid">
+        <div class="playbook-col keep">
+            <h3>Keep</h3>
+            <ul>
+                <li><strong>Rich inbound discovery.</strong> When deals did capture meetings (WellHive 4, Triple Whale 2, BLAZE 2, Keychain 1), the transcripts were high-signal — we know exactly what the objections were.</li>
+                <li><strong>Product-led signal.</strong> PLG sourcing (Triple Whale, Strongmetrics, Ballast) surfaces real intent and usable usage data. Keep mining Amplitude for PQL triggers.</li>
+                <li><strong>Honest loss labeling.</strong> The AE write-ups in Win/Loss Details are candid (Jack-era flags, unresponsive admissions, "should have disqualified"). Don't lose that rigor.</li>
+            </ul>
+        </div>
+        <div class="playbook-col stop">
+            <h3>Stop</h3>
+            <ul>
+                <li><strong>Stop carrying deals without activation.</strong> 12 of 18 lost deals had zero MAU. A trial that hasn't activated within 5 business days is a lost cause; close it out or escalate.</li>
+                <li><strong>Stop ignoring expansion canaries.</strong> SumUp declined 35% MoM for 60 days with no save motion. Never again — any Moderate+ account with &gt;20% MAU drop triggers a required save call.</li>
+                <li><strong>Stop keeping Jack-era legacy deals.</strong> SpryPoint, Triple Whale, and Haymarket all carried pre-transition baggage. Zero-activity opportunities &gt;90 days should auto-close.</li>
+                <li><strong>Stop prospecting non-Gmail clients.</strong> Front is a structural no. Add to outbound do-not-prospect list.</li>
+            </ul>
+        </div>
+        <div class="playbook-col start">
+            <h3>Start</h3>
+            <ul>
+                <li><strong>Start a HubSpot co-existence battlecard.</strong> 4 losses to HubSpot SH ($22K). Build the pitch, ROI calculator, and named-win case study.</li>
+                <li><strong>Start a CSM canary dashboard.</strong> MAU decline + 0-integration-depth accounts must surface in the CS book at least 90 days before renewal.</li>
+                <li><strong>Start a PQL-to-AE handoff for ramping self-serve.</strong> Innovamat was 10 MAU ramping and we never engaged. Any self-serve trial hitting 5 weekly actives or 3 email senders gets an AE touchpoint.</li>
+                <li><strong>Start an "activation clock."</strong> Every Mixmax Trial meeting = trial must stand up within 5 business days or the deal is escalated / closed out. No more 6-month zombie pipelines (Haymarket).</li>
+                <li><strong>Start a product roadmap input for A/B sequence testing.</strong> Keychain's product-gap callout (A/B testing + integrated data) keeps surfacing. Prioritize discovery on this gap for Q3.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Run Manifest -->
+<div class="card" id="run-manifest">
+    <h2>Run Manifest</h2>
+    <table class="trend-table">
+        <tbody>
+            <tr><td><strong>Task ID</strong></td><td>mixmax-closed-lost-analysis-report</td></tr>
+            <tr><td><strong>Report Period</strong></td><td>Q1 2026 (January 1 – March 31, 2026)</td></tr>
+            <tr><td><strong>Generated</strong></td><td>April 17, 2026</td></tr>
+            <tr><td><strong>Spec Version</strong></td><td>closed_lost_spec.md v0.1.0</td></tr>
+            <tr><td><strong>Data Sources</strong></td><td>Gen 1 Sheet (Rev Ops AE Forecast – This Year tab, live pull) · Amplitude Project 130895 (Mixmax App Prod) · Mixmax Meetings MCP</td></tr>
+            <tr><td><strong>Deal Scope</strong></td><td>23 raw Closed Lost deals in Q1 2026 → 18 after dropping 5 zero-ARR Jack-era records (recodemand, Aloha, SPAN, Indeed APAC, Privy)</td></tr>
+            <tr><td><strong>Amplitude Window</strong></td><td>6 months ending at each deal's close date</td></tr>
+            <tr><td><strong>Deep-Dive Checkpoints</strong></td><td>4 interactive gates — deal list, usage/meeting coverage, theme mapping, pre-publish review</td></tr>
+            <tr><td><strong>Theme Mapping</strong></td><td>5 themes (Competitor Won / Non-Responsive / Self-Serve / Product Gaps / Bad Fit) — consolidated from 8-theme spec default</td></tr>
+        </tbody>
+    </table>
+</div>
+
+</div> <!-- /main -->
+</div> <!-- /layout -->
+
+<div class="footer">
+    <p>Mixmax Closed Lost Analysis · Q1 2026 · Generated April 17, 2026</p>
+    <p>Source: <a href="https://docs.google.com/spreadsheets/d/1ikq0APBWkPcaaDUKx4nbdy0QNYVK30Tvb3_reeChpCY">Weekly RevOps Report Gen 1</a> · AE Forecast tab · Amplitude Project 130895 · Mixmax Meetings MCP</p>
+    <p>Published to <a href="https://heath-gtm.github.io/mixmax-revenue-reports/closed-lost/Q1_2026_Closed_Lost_Analysis.html">heath-gtm.github.io/mixmax-revenue-reports/closed-lost/Q1_2026_Closed_Lost_Analysis.html</a></p>
+</div>
+
+</body>
+</html>
