@@ -3,790 +3,1217 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Q1 2026 Closed Won Analysis | Mixmax</title>
+<title>Q1 2026 Closed Won Analysis — Mixmax</title>
 <style>
-  :root {
-    --mx-blue: #2563eb;
-    --mx-blue-light: #dbeafe;
-    --mx-blue-dark: #1d4ed8;
-    --amber: #f59e0b;
-    --purple: #8b5cf6;
-    --green: #22c55e;
-    --blue: #3b82f6;
-    --red: #ef4444;
-    --yellow: #eab308;
-    --gray-50: #f9fafb;
-    --gray-100: #f3f4f6;
-    --gray-200: #e5e7eb;
-    --gray-300: #d1d5db;
-    --gray-500: #6b7280;
-    --gray-600: #4b5563;
-    --gray-700: #374151;
-    --gray-800: #1f2937;
-    --gray-900: #111827;
-    --sidebar-w: 260px;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: var(--gray-800); background: var(--gray-50); line-height: 1.6; }
+:root {
+    --brand: #2563eb;
+    --brand-light: #dbeafe;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --red: #dc2626;
+    --amber: #d97706;
+    --green: #059669;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
 
-  /* Top Nav */
-  .top-nav { position: sticky; top: 0; z-index: 100; background: var(--mx-blue); color: #fff; padding: 0 24px; height: 52px; display: flex; align-items: center; gap: 24px; font-size: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
-  .top-nav a { color: #fff; text-decoration: none; opacity: .85; transition: opacity .15s; }
-  .top-nav a:hover { opacity: 1; }
-  .top-nav .brand { font-weight: 700; font-size: 16px; opacity: 1; letter-spacing: -.3px; }
-  .top-nav .sep { opacity: .4; }
-  .hamburger { display: none; background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 4px 8px; }
+/* Sticky Nav */
+.top-nav { position: sticky; top: 0; z-index: 100; background: var(--brand); color: white; padding: 12px 24px; display: flex; align-items: center; gap: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.top-nav a { color: white; text-decoration: none; font-size: 14px; opacity: 0.85; }
+.top-nav a:hover { opacity: 1; }
+.top-nav .nav-title { font-weight: 700; font-size: 16px; opacity: 1; }
 
-  /* Sidebar */
-  .sidebar { position: fixed; top: 52px; left: 0; bottom: 0; width: var(--sidebar-w); background: #fff; border-right: 1px solid var(--gray-200); overflow-y: auto; padding: 20px 0; z-index: 90; transition: transform .25s; }
-  .sidebar.hidden { transform: translateX(-100%); }
-  .sidebar h4 { padding: 0 20px; font-size: 11px; text-transform: uppercase; letter-spacing: .8px; color: var(--gray-500); margin-bottom: 8px; }
-  .sidebar a { display: block; padding: 6px 20px; font-size: 13px; color: var(--gray-700); text-decoration: none; border-left: 3px solid transparent; transition: all .12s; }
-  .sidebar a:hover, .sidebar a.active { background: var(--mx-blue-light); color: var(--mx-blue); border-left-color: var(--mx-blue); }
+/* Layout */
+.layout { display: flex; min-height: 100vh; }
+.sidebar { width: 280px; background: var(--card-bg); border-right: 1px solid var(--border); padding: 20px 16px; position: sticky; top: 48px; height: calc(100vh - 48px); overflow-y: auto; flex-shrink: 0; }
+.sidebar h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-light); margin: 16px 0 8px; }
+.sidebar a { display: block; padding: 4px 8px; font-size: 13px; color: var(--text); text-decoration: none; border-radius: 4px; }
+.sidebar a:hover { background: var(--brand-light); }
+.toc-account { font-size: 12px !important; color: var(--text-light) !important; padding-left: 16px !important; }
+.main { flex: 1; padding: 32px; max-width: 1100px; }
 
-  /* Main */
-  .main { margin-left: var(--sidebar-w); padding: 32px 40px 80px; max-width: 1040px; }
+/* Cards */
+.card { background: var(--card-bg); border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.card h2 { font-size: 20px; margin-bottom: 16px; color: var(--brand); }
 
-  /* Sections */
-  section { margin-bottom: 48px; }
-  h1 { font-size: 28px; font-weight: 800; color: var(--gray-900); margin-bottom: 4px; }
-  .subtitle { font-size: 15px; color: var(--gray-500); margin-bottom: 24px; }
-  h2 { font-size: 20px; font-weight: 700; color: var(--gray-900); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--mx-blue); display: inline-block; }
-  h3 { font-size: 16px; font-weight: 600; color: var(--gray-800); margin-bottom: 8px; }
+/* Executive Summary */
+.exec-summary { background: linear-gradient(135deg, #1e40af, #2563eb); color: white; border-radius: 12px; padding: 32px; margin-bottom: 24px; }
+.exec-summary h1 { font-size: 28px; margin-bottom: 8px; }
+.exec-summary .subtitle { opacity: 0.8; margin-bottom: 20px; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 20px 0; }
+.stat-box { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 16px; text-align: center; }
+.stat-box .stat-value { font-size: 28px; font-weight: 700; }
+.stat-box .stat-label { font-size: 12px; opacity: 0.8; }
 
-  /* KPI Row */
-  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 32px; }
-  .kpi { background: #fff; border-radius: 10px; padding: 20px; border: 1px solid var(--gray-200); text-align: center; }
-  .kpi .val { font-size: 28px; font-weight: 800; color: var(--mx-blue); }
-  .kpi .label { font-size: 12px; color: var(--gray-500); text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { background: #f1f5f9; text-align: left; padding: 10px 12px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; }
+td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.total-row td { background: #f1f5f9; font-weight: 600; }
+.small-text { font-size: 12px; color: var(--text-light); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.trend-table { margin: 12px 0; }
+.trend-table th, .trend-table td { padding: 6px 10px; font-size: 13px; }
 
-  /* Cards */
-  .card { background: #fff; border-radius: 10px; border: 1px solid var(--gray-200); padding: 24px; margin-bottom: 20px; transition: box-shadow .15s; }
-  .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.06); }
-  .card-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
-  .card-header h3 { margin-bottom: 0; font-size: 17px; }
-  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 99px; }
-  .badge-nn { background: var(--mx-blue-light); color: var(--mx-blue); }
-  .badge-exp { background: #f0fdf4; color: #15803d; }
-  .badge-arr { background: var(--gray-100); color: var(--gray-800); font-weight: 700; font-size: 13px; }
-  .badge-health-green { background: #dcfce7; color: #166534; }
-  .badge-health-yellow { background: #fef9c3; color: #854d0e; }
-  .badge-health-red { background: #fee2e2; color: #991b1b; }
-  .badge-theme { font-size: 10px; padding: 2px 8px; border-radius: 99px; color: #fff; }
-  .card-meta { font-size: 13px; color: var(--gray-500); margin-bottom: 10px; }
-  .card-body p { font-size: 14px; margin-bottom: 8px; }
-  .card-body .detail-label { font-weight: 600; color: var(--gray-700); }
+/* Account Cards */
+.account-card { background: var(--card-bg); border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; }
+.card-header { padding: 20px 24px; background: #f8fafc; }
+.card-title-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.card-title-row h3 { font-size: 18px; }
+.meta-bar { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; font-size: 13px; }
+.meta-item { color: var(--text-light); }
+.card-body { padding: 20px 24px; }
+.subsection { margin-bottom: 20px; }
+.subsection h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--brand); }
+.details { font-size: 13px; color: var(--text-light); margin-top: 4px; }
+.no-data { color: var(--text-light); font-style: italic; }
+.usage-summary { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; margin-bottom: 12px; }
 
-  /* Tables */
-  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 16px; }
-  th { text-align: left; font-weight: 600; color: var(--gray-600); border-bottom: 2px solid var(--gray-200); padding: 10px 12px; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
-  td { padding: 10px 12px; border-bottom: 1px solid var(--gray-100); }
-  tr:hover td { background: var(--gray-50); }
-  .num { text-align: right; font-variant-numeric: tabular-nums; }
+/* Badges */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; color: white; }
 
-  /* Chart container */
-  .chart-container { display: flex; flex-direction: column; align-items: center; background: #fff; border-radius: 10px; border: 1px solid var(--gray-200); padding: 28px; margin-bottom: 24px; }
-  .chart-container h3 { text-align: center; margin-bottom: 16px; font-size: 15px; color: var(--gray-700); }
-  .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 32px; margin-top: 16px; }
-  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-  .legend-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+/* Verdict boxes (health / "What Worked") */
+.verdict-box { border-radius: 8px; padding: 16px; }
+.verdict-healthy { background: #ecfdf5; border-left: 4px solid var(--green); }
+.verdict-watchlist { background: #fffbeb; border-left: 4px solid var(--amber); }
+.verdict-at-risk { background: #fef2f2; border-left: 4px solid var(--red); }
 
-  /* Playbook */
-  .playbook-section { margin-bottom: 20px; }
-  .playbook-section h3 { font-size: 15px; padding: 8px 14px; border-radius: 6px; margin-bottom: 10px; }
-  .playbook-section.keep h3 { background: #dcfce7; color: #166534; }
-  .playbook-section.stop h3 { background: #fee2e2; color: #991b1b; }
-  .playbook-section.start h3 { background: #dbeafe; color: #1e40af; }
-  .playbook-section ul { margin-left: 20px; }
-  .playbook-section li { font-size: 14px; margin-bottom: 8px; }
+/* Side by side */
+.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+.split-card { background: var(--card-bg); border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); text-align: center; }
+.split-card h3 { font-size: 16px; margin-bottom: 12px; }
+.split-card .big-number { font-size: 32px; font-weight: 700; color: var(--brand); }
 
-  /* Callout */
-  .callout { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 16px 20px; font-size: 14px; margin-bottom: 20px; }
-  .callout strong { color: #92400e; }
-  .callout-blue { background: var(--mx-blue-light); border-color: #93c5fd; }
-  .callout-blue strong { color: var(--mx-blue-dark); }
+/* Pie + Table layout */
+.theme-layout { display: grid; grid-template-columns: 380px 1fr; gap: 24px; align-items: start; }
+.pie-container { text-align: center; }
+.legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
 
-  /* Footer */
-  .report-footer { border-top: 1px solid var(--gray-200); padding-top: 24px; font-size: 12px; color: var(--gray-500); }
-  .report-footer dt { font-weight: 600; display: inline; }
-  .report-footer dd { display: inline; margin-left: 0; margin-right: 16px; }
+/* Key takeaways */
+.takeaway-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 20px; margin-top: 20px; }
+.takeaway-box h4 { color: var(--brand); margin-bottom: 8px; }
 
-  /* Responsive */
-  @media (max-width: 860px) {
-    .sidebar { transform: translateX(-100%); }
-    .sidebar.open { transform: translateX(0); }
-    .main { margin-left: 0; padding: 24px 16px 60px; }
-    .hamburger { display: block; }
-    .kpi-row { grid-template-columns: repeat(2, 1fr); }
-  }
+/* Playbook */
+.playbook-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 12px; }
+.playbook-col { border-radius: 10px; padding: 20px; }
+.playbook-col.keep { background: #ecfdf5; border-left: 4px solid var(--green); }
+.playbook-col.stop { background: #fef2f2; border-left: 4px solid var(--red); }
+.playbook-col.start { background: #eff6ff; border-left: 4px solid var(--brand); }
+.playbook-col h3 { font-size: 15px; margin-bottom: 10px; }
+.playbook-col.keep h3 { color: #065f46; }
+.playbook-col.stop h3 { color: #991b1b; }
+.playbook-col.start h3 { color: #1e40af; }
+.playbook-col ul { list-style: none; padding: 0; margin: 0; }
+.playbook-col li { font-size: 13px; margin-bottom: 10px; padding-left: 0; }
+.playbook-col li strong { color: var(--text); }
+
+/* Feature matrix cells */
+.matrix-heavy { background: #dcfce7; text-align: center; font-size: 11px; font-weight: 600; color: #166534; }
+.matrix-light { background: #fef9c3; text-align: center; font-size: 11px; font-weight: 600; color: #854d0e; }
+.matrix-none { background: #fef2f2; text-align: center; font-size: 11px; font-weight: 600; color: #991b1b; }
+
+/* Callouts */
+.callout { background: #fffbeb; border-left: 4px solid var(--amber); border-radius: 6px; padding: 12px 16px; font-size: 14px; margin-bottom: 12px; }
+.callout.red { background: #fef2f2; border-left-color: var(--red); }
+.callout.blue { background: #eff6ff; border-left-color: var(--brand); }
+.callout.green { background: #ecfdf5; border-left-color: var(--green); }
+
+/* Footer */
+.footer { text-align: center; padding: 32px; font-size: 12px; color: var(--text-light); border-top: 1px solid var(--border); margin-top: 40px; }
+.footer p { margin-bottom: 6px; }
+.footer a { color: var(--brand); }
+
+/* Responsive */
+@media (max-width: 900px) {
+    .sidebar { display: none; }
+    .split, .theme-layout { grid-template-columns: 1fr; }
+}
+@media print {
+    .top-nav, .sidebar { display: none; }
+    .main { padding: 0; max-width: 100%; }
+}
 </style>
 </head>
 <body>
 
-<!-- Top Nav -->
 <nav class="top-nav">
-  <button class="hamburger" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
-  <a class="brand" href="https://heath-gtm.github.io/mixmax-revenue-reports/">Mixmax Revenue Reports</a>
-  <span class="sep">|</span>
-  <a href="https://heath-gtm.github.io/mixmax-revenue-reports/">Home</a>
-  <a href="https://heath-gtm.github.io/mixmax-revenue-reports/">Back to Archive</a>
+    <span class="nav-title">Mixmax Closed Won Analysis</span>
+    <a href="https://heath-gtm.github.io/mixmax-revenue-reports/index.html">Home</a>
+    <a href="https://heath-gtm.github.io/mixmax-revenue-reports/closed-won/">Closed Won Archive</a>
 </nav>
 
-<!-- Sidebar TOC -->
+<div class="layout">
 <aside class="sidebar">
-  <h4>Contents</h4>
-  <a href="#executive-summary">Executive Summary</a>
-  <a href="#kpi-snapshot">KPI Snapshot</a>
-  <a href="#thematic-chart">Thematic Breakdown</a>
-  <a href="#deal-deep-dives">Deal Deep Dives</a>
-  <a href="#winning-patterns">Winning Patterns</a>
-  <a href="#aero-fit">Aero Fit Scores</a>
-  <a href="#icp-fit">ICP Fit Assessment</a>
-  <a href="#adoption-health">Post-Close Adoption</a>
-  <a href="#cross-cut">Cross-Cut Analysis</a>
-  <a href="#csm-expansion">CSM Expansion Opps</a>
-  <a href="#playbook">Winning Playbook</a>
-  <a href="#run-manifest">Run Manifest</a>
+    <h4>Navigation</h4>
+    <a href="#exec-summary">Executive Summary</a>
+    <a href="#reason-summary">Winning Patterns Summary</a>
+    <a href="#themes">Thematic Categorization</a>
+    <a href="#split">Channel / Segment / Rep</a>
+    <a href="#deal-dives">Deal Deep Dives</a>
+    <a href="#account-d0" class="toc-account">1. Chicory ($16,020)</a>
+    <a href="#account-d1" class="toc-account">2. Get Covered ($15,000)</a>
+    <a href="#account-d2" class="toc-account">3. CivilGrid ($8,716)</a>
+    <a href="#account-d3" class="toc-account">4. Agile Cloud ($8,352)</a>
+    <a href="#account-d4" class="toc-account">5. Great Point Partners ($6,968)</a>
+    <a href="#account-d5" class="toc-account">6. Landmark Global ($6,966)</a>
+    <a href="#account-d6" class="toc-account">7. WeWork India ($5,940)</a>
+    <a href="#account-d7" class="toc-account">8. SAFE ($5,136)</a>
+    <a href="#account-d8" class="toc-account">9. Small Batch Standard ($4,728)</a>
+    <a href="#account-d9" class="toc-account">10. Enformion ($4,344)</a>
+    <a href="#account-d10" class="toc-account">11. MagicLinks ($3,564)</a>
+    <a href="#account-d11" class="toc-account">12. nirvanatech.com ($783)</a>
+    <a href="#aero-icp">Aero &amp; ICP Fit</a>
+    <a href="#adoption">Post-Close Adoption Health</a>
+    <a href="#cross-cut">Cross-Cut Analysis</a>
+    <a href="#csm-expansion">CSM Expansion Opportunities</a>
+    <a href="#playbook">Winning Playbook</a>
+    <a href="#run-manifest">Run Manifest</a>
 </aside>
 
-<!-- Main Content -->
 <div class="main">
 
-  <!-- Title -->
-  <section id="executive-summary">
+<!-- Executive Summary -->
+<div class="exec-summary" id="exec-summary">
     <h1>Q1 2026 Closed Won Analysis</h1>
-    <p class="subtitle">January 1 &ndash; March 31, 2026 &nbsp;&bull;&nbsp; Mixmax Direct Sales</p>
-
-    <div class="callout">
-      <strong>Executive Summary:</strong> 12 deals closed for <strong>$86,517 ARR</strong> in Q1 2026. Boomerang (returning) customers drove 41% of ARR. Inbound was the dominant channel at 62%. However, 49% of closed ARR ($42K) shows at-risk adoption signals post-close, primarily from accounts that scored Low/Low on Aero fit. Morgan Wible closed 9 of 12 deals (63% of ARR). The two largest deals &mdash; Chicory ($16K) and Get Covered ($15K) &mdash; have both gone silent in Amplitude.
+    <p class="subtitle">January 1 – March 31, 2026 &nbsp;|&nbsp; Mixmax Direct Sales &nbsp;|&nbsp; Generated April 17, 2026</p>
+    <div class="stat-grid">
+        <div class="stat-box"><div class="stat-value">12</div><div class="stat-label">Deals Won</div></div>
+        <div class="stat-box"><div class="stat-value">$86,517</div><div class="stat-label">Total ARR</div></div>
+        <div class="stat-box"><div class="stat-value">$7,210</div><div class="stat-label">Avg Deal Size</div></div>
+        <div class="stat-box"><div class="stat-value">61.7%</div><div class="stat-label">Inbound ARR</div></div>
+        <div class="stat-box"><div class="stat-value">41.2%</div><div class="stat-label">Boomerang ARR</div></div>
+        <div class="stat-box"><div class="stat-value">49%</div><div class="stat-label">At-Risk Post-Close</div></div>
     </div>
+    <p>Q1 2026 saw 12 deals close for <strong>$86,517 ARR</strong> (11 Net New + 1 Expansion). The dominant theme was <strong>Boomerang (returning) customers</strong> at 41.2% of ARR, with Inbound driving 62% of channel mix. However, a critical counter-signal: <strong>49% of closed ARR ($42K) is showing at-risk adoption signals post-close</strong>, primarily from accounts that scored Low/Low on Aero fit. The two largest deals — Chicory ($16K) and Get Covered ($15K) — have both gone silent in Amplitude. Morgan Wible closed 9 of 12 deals (63% of ARR), demonstrating consistent execution across channels. The report&apos;s central finding: <strong>winning on "Ease of Use / Previous Customer" does not guarantee adoption</strong> — boomerang muscle memory closes deals but does not reliably produce post-close engagement without structured onboarding.</p>
+</div>
 
-    <p style="font-size:14px;color:var(--gray-600);margin-bottom:8px;"><strong>Data source:</strong> Gen 1 Sheet &mdash; AE Forecast - This Year tab (live read, no snapshot available)</p>
-    <p style="font-size:14px;color:var(--gray-600);"><strong>Segments:</strong> 11 Net New ($85,734) &bull; 1 Expansion ($783)</p>
-  </section>
-
-  <!-- KPI Snapshot -->
-  <section id="kpi-snapshot">
-    <h2>KPI Snapshot</h2>
-    <div class="kpi-row">
-      <div class="kpi"><div class="val">12</div><div class="label">Total Deals</div></div>
-      <div class="kpi"><div class="val">$86,517</div><div class="label">Total ARR</div></div>
-      <div class="kpi"><div class="val">$7,210</div><div class="label">Avg Deal Size</div></div>
-      <div class="kpi"><div class="val">61.7%</div><div class="label">Inbound ARR</div></div>
-      <div class="kpi"><div class="val">41.2%</div><div class="label">Boomerang ARR</div></div>
-      <div class="kpi"><div class="val">49%</div><div class="label">At-Risk Post-Close</div></div>
-    </div>
-
-    <!-- Source Breakdown -->
-    <h3>By Source</h3>
+<!-- Winning Patterns Summary -->
+<div class="card" id="reason-summary">
+    <h2>Winning Patterns Summary</h2>
+    <p class="small-text" style="margin-bottom:12px;">Raw Win/Loss Reasons from the AE Forecast tab, sorted by ARR.</p>
     <table>
-      <thead><tr><th>Channel</th><th>Deals</th><th class="num">ARR</th><th class="num">% of Total</th></tr></thead>
-      <tbody>
-        <tr><td>Inbound</td><td>6</td><td class="num">$53,404</td><td class="num">61.7%</td></tr>
-        <tr><td>Outbound</td><td>4</td><td class="num">$25,604</td><td class="num">29.6%</td></tr>
-        <tr><td>Product</td><td>1</td><td class="num">$6,966</td><td class="num">8.1%</td></tr>
-        <tr><td>Expansion</td><td>1</td><td class="num">$783</td><td class="num">0.9%</td></tr>
-      </tbody>
+        <thead><tr><th>Win Reason</th><th>Deals</th><th class="num">Total ARR</th></tr></thead>
+        <tbody>
+            <tr><td>Ease of Use / Previous Mixmax Customer</td><td>4</td><td class="num">$35,682</td></tr>
+            <tr><td>Price / Value</td><td>3</td><td class="num">$22,751</td></tr>
+            <tr><td>Time to Value / Fast Implementation</td><td>3</td><td class="num">$14,232</td></tr>
+            <tr><td>Ease of Use / Successful Trial</td><td>1</td><td class="num">$5,136</td></tr>
+            <tr><td>(blank)</td><td>1</td><td class="num">$8,716</td></tr>
+            <tr class="total-row"><td><strong>Grand Total</strong></td><td><strong>12</strong></td><td class="num"><strong>$86,517</strong></td></tr>
+        </tbody>
     </table>
+</div>
 
-    <!-- Rep Breakdown -->
-    <h3>By Rep</h3>
-    <table>
-      <thead><tr><th>Rep</th><th>Deals</th><th class="num">ARR</th><th class="num">% of Total</th></tr></thead>
-      <tbody>
-        <tr><td>Morgan Wible</td><td>9</td><td class="num">$54,714</td><td class="num">63.2%</td></tr>
-        <tr><td>Isabelle Tuomi</td><td>1</td><td class="num">$16,020</td><td class="num">18.5%</td></tr>
-        <tr><td>Karan Jiandani</td><td>1</td><td class="num">$15,000</td><td class="num">17.3%</td></tr>
-        <tr><td>Edwin Chun</td><td>1</td><td class="num">$783</td><td class="num">0.9%</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- Thematic Chart -->
-  <section id="thematic-chart">
+<!-- Thematic Categorization -->
+<div class="card" id="themes">
     <h2>Thematic Categorization</h2>
-    <div class="chart-container">
-      <h3>Q1 2026 Closed Won &mdash; Share of $86,517 ARR</h3>
-      <svg viewBox="0 0 420 420" width="340" height="340" xmlns="http://www.w3.org/2000/svg">
-        <!-- Boomerang 41.2%: 0 to 148.3 deg -->
-        <path d="M210,210 L370.00,210.00 A160,160 0 0,1 73.84,294.03 Z" fill="#f59e0b"/>
-        <!-- Speed to Value 26.5%: 148.3 to 243.7 deg -->
-        <path d="M210,210 L73.84,294.03 A160,160 0 0,1 139.16,66.54 Z" fill="#8b5cf6"/>
-        <!-- Price/Value 26.3%: 243.7 to 338.4 deg -->
-        <path d="M210,210 L139.16,66.54 A160,160 0 0,1 358.76,151.10 Z" fill="#22c55e"/>
-        <!-- Product Fit 5.9%: 338.4 to 359.6 deg -->
-        <path d="M210,210 L358.76,151.10 A160,160 0 0,1 370.00,208.99 Z" fill="#3b82f6"/>
-        <!-- Center donut -->
-        <circle cx="210" cy="210" r="52" fill="#fff"/>
-        <text x="210" y="206" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2937">12</text>
-        <text x="210" y="222" text-anchor="middle" font-size="11" fill="#6b7280">Deals</text>
-      </svg>
-      <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b;"></div>Boomerang &mdash; 41.2% ($35,682)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6;"></div>Speed to Value &mdash; 26.5% ($22,948)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#22c55e;"></div>Price/Value &mdash; 26.3% ($22,751)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6;"></div>Product Fit &mdash; 5.9% ($5,136)</div>
-      </div>
+    <div class="theme-layout">
+        <div class="pie-container">
+            <h3 style="font-size:15px;margin-bottom:12px;">Q1 2026 Closed Won — Share of $86,517 ARR</h3>
+            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="max-width:380px;">
+                <!-- Boomerang 41.2%: 0 to 148.47 deg -->
+                <path d="M 200 40 A 160 160 0 0 1 283.6 336.4 L 247.0 276.7 A 90 90 0 0 0 200 110 Z" fill="#f59e0b" stroke="white" stroke-width="2"/>
+                <!-- Speed to Value 26.5%: 148.47 to 243.95 deg -->
+                <path d="M 283.6 336.4 A 160 160 0 0 1 56.2 270.2 L 119.1 239.5 A 90 90 0 0 0 247.0 276.7 Z" fill="#8b5cf6" stroke="white" stroke-width="2"/>
+                <!-- Price/Value 26.3%: 243.95 to 338.61 deg -->
+                <path d="M 56.2 270.2 A 160 160 0 0 1 141.6 51.0 L 167.2 116.2 A 90 90 0 0 0 119.1 239.5 Z" fill="#22c55e" stroke="white" stroke-width="2"/>
+                <!-- Product Fit 5.9%: 338.61 to 360 deg -->
+                <path d="M 141.6 51.0 A 160 160 0 0 1 200 40 L 200 110 A 90 90 0 0 0 167.2 116.2 Z" fill="#3b82f6" stroke="white" stroke-width="2"/>
+                <text x="200" y="188" text-anchor="middle" font-size="32" font-weight="700" fill="#1e293b">12</text>
+                <text x="200" y="212" text-anchor="middle" font-size="14" fill="#64748b">deals</text>
+                <text x="200" y="230" text-anchor="middle" font-size="12" fill="#64748b">$86,517 ARR</text>
+            </svg>
+            <div class="legend">
+                <div class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span>Boomerang (4, $35,682, 41%)</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span>Speed to Value (4, $22,948, 27%)</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#22c55e"></span>Price / Value (3, $22,751, 26%)</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Product Fit (1, $5,136, 6%)</div>
+            </div>
+        </div>
+        <div>
+            <table>
+                <thead><tr><th>Theme</th><th>Deals</th><th>ARR</th><th>Share</th><th>Accounts</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#f59e0b;margin-right:8px;vertical-align:middle;"></span>Boomerang</td>
+                        <td>4</td><td>$35,682</td><td>41.2%</td>
+                        <td class="small-text">Chicory, Agile Cloud, Landmark Global, Enformion</td>
+                    </tr>
+                    <tr>
+                        <td><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#8b5cf6;margin-right:8px;vertical-align:middle;"></span>Speed to Value</td>
+                        <td>4</td><td>$22,948</td><td>26.5%</td>
+                        <td class="small-text">CivilGrid, WeWork India, Small Batch Standard, MagicLinks</td>
+                    </tr>
+                    <tr>
+                        <td><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#22c55e;margin-right:8px;vertical-align:middle;"></span>Price / Value</td>
+                        <td>3</td><td>$22,751</td><td>26.3%</td>
+                        <td class="small-text">Get Covered, Great Point Partners, nirvanatech.com</td>
+                    </tr>
+                    <tr>
+                        <td><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:#3b82f6;margin-right:8px;vertical-align:middle;"></span>Product Fit</td>
+                        <td>1</td><td>$5,136</td><td>5.9%</td>
+                        <td class="small-text">SAFE</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+    <div class="takeaway-box">
+        <h4>Key Takeaways</h4>
+        <p><strong>Boomerang dominates at 41.2% of ARR</strong> — four returning customers (Chicory, Agile Cloud, Landmark Global, Enformion) drove $35.7K. The product&apos;s &quot;muscle memory&quot; in former customer orgs is a real acquisition lever, but it doesn&apos;t guarantee adoption: Chicory and Enformion are both declining post-close.</p>
+        <p style="margin-top:8px;"><strong>Speed to Value (27%) delivered the healthiest cohort</strong> — 2-day closes (MagicLinks, Small Batch) and fast 19-day closes (CivilGrid) correlate with Stable/Ramping post-close adoption. Urgency at close-time seems to translate into urgency to adopt.</p>
+        <p style="margin-top:8px;"><strong>Price/Value (26%) is the riskiest theme</strong> — all 3 Price/Value wins (Get Covered, Great Point Partners, nirvanatech) have weak-to-no ICP fit. Two of three are already declining in Amplitude. Winning on price without fit is not winning.</p>
+        <p style="margin-top:8px;"><strong>Product Fit is tiny (6%) and represents a nonprofit outlier</strong> — SAFE is not a commercial GTM win; it&apos;s a mission-driven org that ran a 5-month trial. This theme&apos;s absence in Q1 is notable.</p>
+    </div>
+</div>
 
-    <table>
-      <thead><tr><th>Theme</th><th>Deals</th><th class="num">ARR</th><th class="num">%</th><th>Accounts</th></tr></thead>
-      <tbody>
-        <tr><td><span class="badge badge-theme" style="background:#f59e0b;">Boomerang</span></td><td>4</td><td class="num">$35,682</td><td class="num">41.2%</td><td>Chicory, Agile Cloud, Landmark Global, Enformion</td></tr>
-        <tr><td><span class="badge badge-theme" style="background:#8b5cf6;">Speed to Value</span></td><td>4</td><td class="num">$22,948</td><td class="num">26.5%</td><td>CivilGrid, WeWork India, Small Batch Standard, MagicLinks</td></tr>
-        <tr><td><span class="badge badge-theme" style="background:#22c55e;">Price / Value</span></td><td>3</td><td class="num">$22,751</td><td class="num">26.3%</td><td>Get Covered, Great Point Partners, nirvanatech</td></tr>
-        <tr><td><span class="badge badge-theme" style="background:#3b82f6;">Product Fit</span></td><td>1</td><td class="num">$5,136</td><td class="num">5.9%</td><td>SAFE</td></tr>
-      </tbody>
-    </table>
-  </section>
+<!-- Channel / Segment / Rep Split -->
+<div id="split" style="margin-bottom:24px;">
+    <h2 style="font-size:20px;color:var(--brand);margin-bottom:16px;">Channel, Segment &amp; Rep Breakdown</h2>
+    <div class="split">
+        <div class="split-card">
+            <h3>By Channel</h3>
+            <table style="margin-top:8px;">
+                <thead><tr><th>Channel</th><th>Deals</th><th class="num">ARR</th></tr></thead>
+                <tbody>
+                    <tr><td>Inbound</td><td>6</td><td class="num">$53,404</td></tr>
+                    <tr><td>Outbound</td><td>4</td><td class="num">$25,604</td></tr>
+                    <tr><td>Product</td><td>1</td><td class="num">$6,966</td></tr>
+                    <tr><td>Expansion</td><td>1</td><td class="num">$783</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="split-card">
+            <h3>By Segment</h3>
+            <table style="margin-top:8px;">
+                <thead><tr><th>Type</th><th>Deals</th><th class="num">ARR</th></tr></thead>
+                <tbody>
+                    <tr><td>Net New</td><td>11</td><td class="num">$85,734</td></tr>
+                    <tr><td>Expansion</td><td>1</td><td class="num">$783</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="split-card">
+            <h3>By Rep</h3>
+            <table style="margin-top:8px;">
+                <thead><tr><th>Rep</th><th>Deals</th><th class="num">ARR</th></tr></thead>
+                <tbody>
+                    <tr><td>Morgan Wible</td><td>9</td><td class="num">$54,714</td></tr>
+                    <tr><td>Isabelle Tuomi</td><td>1</td><td class="num">$16,020</td></tr>
+                    <tr><td>Karan Jiandani</td><td>1</td><td class="num">$15,000</td></tr>
+                    <tr><td>Edwin Chun</td><td>1</td><td class="num">$783</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-  <!-- Deal Deep Dives -->
-  <section id="deal-deep-dives">
-    <h2>Deal Deep Dives</h2>
+<!-- Deal Deep Dives -->
+<div id="deal-dives">
+    <h2 style="font-size:20px;color:var(--brand);margin-bottom:16px;">Deal Deep Dives (12 deals, $86,517 ARR)</h2>
 
     <!-- 1. Chicory -->
-    <div class="card">
-      <div class="card-header">
-        <h3>1. Chicory</h3>
-        <span class="badge badge-arr">$16,020</span>
-        <span class="badge badge-nn">Net New</span>
-        <span class="badge badge-theme" style="background:#f59e0b;">Boomerang</span>
-        <span class="badge badge-health-red">DECLINING</span>
-      </div>
-      <div class="card-meta">Isabelle Tuomi &bull; Closed 3/31/2026 &bull; Inbound &bull; Aero: High/High &bull; ICP: Moderate Fit</div>
-      <div class="card-body">
-        <p><span class="detail-label">Win Reason:</span> Ease of Use / Previous Customer</p>
-        <p><span class="detail-label">Context:</span> Ad-tech platform with AEs + CRO. Used Mixmax with HubSpot, switched to SF Engage, had challenges, came back. Possible Amazon WorkMail (not Gmail).</p>
-        <p><span class="detail-label">Amplitude:</span> Peak 10 MAU in April, then dropped to 0 from May. DECLINING.</p>
-        <p><span class="detail-label">Meetings:</span> 1 found (3/27 &mdash; pricing/next steps). Isabelle ran late-stage negotiation with 3 Chicory stakeholders. Discount deadline 3/31.</p>
-      </div>
+    <div class="account-card" id="account-d0">
+        <div class="card-header" style="border-left: 4px solid #f59e0b">
+            <div class="card-title-row">
+                <h3>1. Chicory</h3>
+                <span class="badge" style="background:#64748b">Net New</span>
+                <span class="badge" style="background:#f59e0b">Boomerang</span>
+                <span class="badge" style="background:#dc2626">At-Risk: Declining</span>
+            </div>
+            <div class="meta-bar">
+                <span class="meta-item"><strong>Rep:</strong> Isabelle Tuomi</span>
+                <span class="meta-item"><strong>ARR:</strong> $16,020</span>
+                <span class="meta-item"><strong>Close:</strong> 3/31/2026</span>
+                <span class="meta-item"><strong>Source:</strong> Inbound</span>
+                <span class="meta-item"><strong>Aero:</strong> High / High</span>
+                <span class="meta-item"><strong>ICP:</strong> Moderate</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="subsection">
+                <h4>Win Reason</h4>
+                <p><strong>Ease of Use / Previous Customer</strong></p>
+                <p class="details">Ad-tech platform with AEs + CRO. Previously used Mixmax with HubSpot, switched to SF Engage, had challenges, came back. Possible Amazon WorkMail (not Gmail).</p>
+            </div>
+            <div class="subsection">
+                <h4>Amplitude Usage Read (Post-Close Validation)</h4>
+                <div class="usage-summary">
+                    <span><strong>Usage:</strong> Declining</span>
+                    <span><strong>Trend:</strong> Peak 10 MAU in April then dropped to 0 from May</span>
+                    <span><strong>Features Detected:</strong> Email, Tracking, Sequences (light), Copilot (active)</span>
+                </div>
+                <p class="details">Amplitude shows 8 unique email senders in April with activity across 5+ features, then sharp decline. May be reporting lag or re-engagement worth validating with CSM.</p>
+            </div>
+            <div class="subsection">
+                <h4>Meeting Transcript Intelligence (1 meeting found)</h4>
+                <p>Mar 27, 2026 — late-stage pricing &amp; next-steps with Isabelle + 3 Chicory stakeholders. Discount deadline 3/31 drove close.</p>
+            </div>
+            <div class="subsection">
+                <h4>What Worked</h4>
+                <p><strong>Winning Channel:</strong> Inbound, rep-led discount close &nbsp;•&nbsp; <strong>Winning Play:</strong> Deadline-driven negotiation with returning customer familiarity &nbsp;•&nbsp; <strong>Replicable Pattern:</strong> Yes — boomerang + clear discount window accelerates close.</p>
+            </div>
+            <div class="subsection verdict-box verdict-at-risk">
+                <h4>Post-Close Health: At Risk</h4>
+                <p>$16K ARR is the single biggest prize in this cohort and the single biggest risk. Amplitude trend is Declining (10 → 0 MAU). Requires immediate CSM intervention: validate the April 8-user activity spike, confirm activation status, and deploy a structured onboarding program. Without intervention, this account is the largest churn candidate for Q3/Q4 2026.</p>
+            </div>
+        </div>
     </div>
 
     <!-- 2. Get Covered -->
-    <div class="card">
-      <div class="card-header">
-        <h3>2. Get Covered</h3>
-        <span class="badge badge-arr">$15,000</span>
-        <span class="badge badge-nn">Net New</span>
-        <span class="badge badge-theme" style="background:#22c55e;">Price/Value</span>
-        <span class="badge badge-health-red">DECLINING</span>
-      </div>
-      <div class="card-meta">Karan Jiandani &bull; Closed 2/26/2026 &bull; Inbound &bull; Aero: Low/Low &bull; ICP: Weak Fit</div>
-      <div class="card-body">
-        <p><span class="detail-label">Win Reason:</span> Price / Value</p>
-        <p><span class="detail-label">Context:</span> InsurTech SaaS, ~50-87 employees. Partner-driven sales, no outbound BDR evidence.</p>
-        <p><span class="detail-label">Amplitude:</span> Ramped to 14 MAU Mar-Apr, then dropped to 0 from May. DECLINING.</p>
-        <p><span class="detail-label">Meetings:</span> 0 found. Closed via email/phone outside Mixmax Copilot.</p>
-      </div>
+    <div class="account-card" id="account-d1">
+        <div class="card-header" style="border-left: 4px solid #22c55e">
+            <div class="card-title-row">
+                <h3>2. Get Covered</h3>
+                <span class="badge" style="background:#64748b">Net New</span>
+                <span class="badge" style="background:#22c55e">Price / Value</span>
+                <span class="badge" style="background:#dc2626">At-Risk: Declining</span>
+            </div>
+            <div class="meta-bar">
+                <span class="meta-item"><strong>Rep:</strong> Karan Jiandani</span>
+                <span class="meta-item"><strong>ARR:</strong> $15,000</span>
+                <span class="meta-item"><strong>Close:</strong> 2/26/2026</span>
+                <span class="meta-item"><strong>Source:</strong> Inbound</span>
+                <span class="meta-item"><strong>Aero:</strong> Low / Low</span>
+                <span class="meta-item"><strong>ICP:</strong> Weak</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="subsection">
+                <h4>Win Reason</h4>
+                <p><strong>Price / Value</strong></p>
+                <p class="details">InsurTech SaaS, ~50–87 employees. Partner-driven sales model, no outbound BDR evidence. Low Aero fit across both axes.</p>
+            </div>
+            <div class="subsection">
+                <h4>Amplitude Usage Read (Post-Close Validation)</h4>
+                <div class="usage-summary">
+                    <span><strong>Usage:</strong> Declining</span>
+                    <span><strong>Trend:</strong> Ramped to 14 MAU Mar–Apr, then dropped to 0 from May</span>
+                    <span><strong>Features Detected:</strong> Limited — initial usage burst, no deep feature adoption</span>
+                </div>
+            </div>
+            <div class="subsection">
+                <h4>Meeting Transcript Intelligence</h4>
+                <p class="no-data">No recorded meetings found. Closed via email/phone outside Mixmax Copilot.</p>
+            </div>
+            <div class="subsection">
+                <h4>What Worked</h4>
+                <p><strong>Winning Channel:</strong> Inbound &nbsp;•&nbsp; <strong>Winning Play:</strong> Price-led closing (won on price, not fit) &nbsp;•&nbsp; <strong>Replicable Pattern:</strong> No — a Low/Low Aero fit closing on price is a warning sign, not a replicable play.</p>
+            </div>
+            <div class="subsection verdict-box verdict-at-risk">
+                <h4>Post-Close Health: At Risk</h4>
+                <p>$15K ARR with zero recorded sales meetings and a clear adoption cliff (14 → 0 MAU). Classic &quot;closed but not sold.&quot; Needs CSM-owned re-kickoff, champion identification, and mandatory use-case anchoring. If usage doesn&apos;t recover by mid-Q2, this is a probable Q4 churn.</p>
+            </div>
+        </div>
     </div>
 
     <!-- 3. CivilGrid -->
-    <div class="card">
-      <div class="card-header">
-        <h3>3. CivilGrid</h3>
-        <span class="badge badge-arr">$8,716</span>
-        <span class="badge badge-nn">Net New</span>
-        <span class="badge badge-theme" style="background:#8b5cf6;">Speed to Value</span>
-        <span class="badge badge-health-green">RAMPING UP</span>
-      </div>
-      <div class="card-meta">Morgan Wible &bull; Closed 2/11/2026 &bull; Inbound &bull; Aero: Low/Low &bull; ICP: Moderate Fit</div>
-      <div class="card-body">
-        <p><span class="detail-label">Win Reason:</span> (blank)</p>
-        <p><span class="detail-label">Context:</span> B2B SaaS (Sequoia-backed, 26 employees). Hiring RevOps + Demand Gen &mdash; job posts mention Salesforce. Aero underscores this one.</p>
-        <p><span class="detail-label">Amplitude:</span> 9 &rarr; 11 &rarr; 16 MAU, ramping. Emails surged 5x in March (1,639). Sequences starting. RAMPING UP.</p>
-        <p><span class="detail-label">Meetings:</span> 1 found (1/23 intro). Morgan + Karan demo'd to SVP Utility Sales. Fast 19-day close.</p>
-      </div>
+    <div class="account-card" id="account-d2">
+        <div class="card-header" style="border-left: 4px solid #8b5cf6">
+            <div class="card-title-row">
+                <h3>3. CivilGrid</h3>
+                <span class="badge" style="background:#64748b">Net New</span>
+                <span class="badge" style="background:#8b5cf6">Speed to Value</span>
+                <span class="badge" style="background:#059669">Healthy: Ramping</span>
+            </div>
+            <div class="meta-bar">
+                <span class="meta-item"><strong>Rep:</strong> Morgan Wible</span>
+                <span class="meta-item"><strong>ARR:</strong> $8,716</span>
+                <span class="meta-item"><strong>Close:</strong> 2/11/2026</span>
+                <span class="meta-item"><strong>Source:</strong> Inbound</span>
+                <span class="meta-item"><strong>Aero:</strong> Low / Low</span>
+                <span class="meta-item"><strong>ICP:</strong> Moderate</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="subsection">
+                <h4>Win Reason</h4>
+                <p><strong>(blank — inferred Speed to Value)</strong></p>
+                <p class="details">B2B SaaS (Sequoia-backed, 26 employees). Hiring RevOps + Demand Gen — job posts mention Salesforce. Aero underscores this as a worthwhile fit despite Low/Low score.</p>
+            </div>
+            <div class="subsection">
+                <h4>Amplitude Usage Read (Post-Close Validation)</h4>
+                <div class="usage-summary">
+                    <span><strong>Usage:</strong> Ramping</span>
+                    <span><strong>Trend:</strong> 9 → 11 → 16 MAU</span>
+                    <span><strong>Email volume:</strong> surged 5x in March (1,639 emails)</span>
+                    <span><strong>Features:</strong> Sequences starting, 7 of 8 feature areas touched</span>
+                </div>
+            </div>
+            <div class="subsection">
+                <h4>Meeting Transcript Intelligence (1 meeting found)</h4>
+                <p>Jan 23, 2026 — intro/demo. Morgan + Karan demo&apos;d to SVP Utility Sales. Fast 19-day close.</p>
+            </div>
+            <div class="subsection">
+                <h4>What Worked</h4>
+                <p><strong>Winning Channel:</strong> Inbound &nbsp;•&nbsp; <strong>Winning Play:</strong> Fast 19-day close via senior demo team &nbsp;•&nbsp; <strong>Replicable Pattern:</strong> Yes — pair the AE with a domain expert on the intro demo when selling to a domain-specific buyer (Utility Sales SVP).</p>
+            </div>
+            <div class="subsection verdict-box verdict-healthy">
+                <h4>Post-Close Health: Healthy</h4>
+                <p>Strong ramp (9→16 MAU), broad feature exploration (7 of 8 areas), and a 5x email volume surge post-close. This is the model Q1 deal — fast close plus fast adoption. CSM expansion lever: Salesforce integration is the clear gap to fill.</p>
+            </div>
+        </div>
     </div>
 
-    <!-- 4. Agile Cloud Consulting -->
-    <div class="card">
-      <div class="card-header">
-        <h3>4. Agile Cloud Consulting</h3>
-        <span class="badge badge-arr">$8,352</span>
-        <span class="badge badge-nn">Net New</span>
-        <span class="badge badge-theme" style="background:#f59e0b;">Boomerang</span>
-        <span class="badge badge-health-green">RAMPING UP</span>
-      </div>
-      <div class="card-meta">Morgan Wible &bull; Closed 3/13/2026 &bull; Outbound &bull; Aero: High/High &bull; ICP: Moderate Fit</div>
-      <div class="card-body">
-        <p><span class="detail-label">Win Reason:</span> Ease of Use / Previous Customer</p>
-        <p><span class="detail-label">Context:</span> Salesforce Summit Partner, 60+ employees, growing sales team. Returned after not renewing Q4'25.</p>
-        <p><span class="detail-label">Amplitude:</span> 8 &rarr; 13 WAU, ramping. Sequence usage just started in April. RAMPING UP.</p>
-        <p><span class="detail-label">Meetings:</span> 1 found (3/4 demo). Deliverability concern was main blocker; 3 stakeholders engaged.</p>
-      </div>
+    <!-- 4. Agile Cloud -->
+    <div class="account-card" id="account-d3">
+        <div class="card-header" style="border-left: 4px solid #f59e0b">
+            <div class="card-title-row">
+                <h3>4. Agile Cloud Consulting</h3>
+                <span class="badge" style="background:#64748b">Net New</span>
+                <span class="badge" style="background:#f59e0b">Boomerang</span>
+                <span class="badge" style="background:#059669">Healthy: Ramping</span>
+            </div>
+            <div class="meta-bar">
+                <span class="meta-item"><strong>Rep:</strong> Morgan Wible</span>
+                <span class="meta-item"><strong>ARR:</strong> $8,352</span>
+                <span class="meta-item"><strong>Close:</strong> 3/13/2026</span>
+                <span class="meta-item"><strong>Source:</strong> Outbound</span>
+                <span class="meta-item"><strong>Aero:</strong> High / High</span>
+                <span class="meta-item"><strong>ICP:</strong> Moderate</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="subsection">
+                <h4>Win Reason</h4>
+                <p><strong>Ease of Use / Previous Customer</strong></p>
+                <p class="details">Salesforce Summit Partner, 60+ employees, growing sales team. Returned after not renewing in Q4&apos;25.</p>
+            </div>
+            <div class="subsection">
+                <h4>Amplitude Usage Read (Post-Close Validation)</h4>
+                <div class="usage-summary">
+                    <span><strong>Usage:</strong> Ramping</span>
+                    <span><strong>Trend:</strong> 8 → 13 WAU</span>
+                    <span><strong>Features:</strong> Sequence usage started in April; Email light, Copilot light</span>
+                </div>
+            </div>
+            <div class="subsection">
+                <h4>Meeting Transcript Intelligence (1 meeting found)</h4>
+                <p>Mar 4, 2026 — demo. Deliverability concern was main blocker; 3 stakeholders engaged.</p>
+            </div>
+            <div class="subsection">
+                <h4>What Worked</h4>
+                <p><strong>Winning Channel:</strong> Outbound &nbsp;•&nbsp; <strong>Winning Play:</strong> Boomerang re-engagement with prior-customer familiarity + multi-threaded demo &nbsp;•&nbsp; <strong>Replicable Pattern:</strong> Yes — systematically outbound to churned accounts 1–2 quarters post-churn.</p>
+            </div>
+            <div class="subsection verdict-box verdict-healthy">
+                <h4>Post-Close Health: Healthy</h4>
+                <p>Ramping user count, sequence activity starting. Only using 4 of 9 features — big expansion runway. They&apos;re a Salesforce consultancy yet have zero SF integration activity; that&apos;s the #1 CSM expansion lever.</p>
+            </div>
+        </div>
     </div>
 
     <!-- 5. Great Point Partners -->
-    <div class="card">
-      <div class="card-header">
-        <h3>5. Great Point Partners</h3>
-        <span class="badge badge-arr">$6,968</span>
-        <span class="badge badge-nn">Net New</span>
-        <span class="badge badge-theme" style="background:#22c55e;">Price/Value</span>
-        <span class="badge badge-health-red">DECLINING</span>
-      </div>
-      <div class="card-meta">Morgan Wible &bull; Closed 1/19/2026 &bull; Outbound &bull; Aero: Low/Low &bull; ICP: Poor Fit</div>
-      <div class="card-body">
-        <p><span class="detail-label">Win Reason:</span> Price / Value</p>
-        <p><span class="detail-label">Context:</span> Healthcare PE firm, ~30 professionals. Relationship-driven deal sourcing, not outbound. Likely Microsoft/Outlook.</p>
-        <p><span class="detail-label">Amplitude:</span> Peaked at 7 MAU in March, dropped to 0 from May. DECLINING.</p>
-        <p><span class="detail-label">Meetings:</span> 0 found.</p>
-      </div>
+    <div class="account-card" id="account-d4">
+        <div class="card-header" style="border-left: 4px solid #22c55e">
+            <div class="card-title-row">
+                <h3>5. Great Point Partners</h3>
+                <span class="badge" style="background:#64748b">Net New</span>
+                <span class="badge" style="background:#22c55e">Price / Value</span>
+                <span class="badge" style="background:#dc2626">At-Risk: Declining</span>
+            </div>
+            <div class="meta-bar">
+                <span class="meta-item"><strong>Rep:</strong> Morgan Wible</span>
+                <span class="meta-item"><strong>ARR:</strong> $6,968</span>
+                <span class="meta-item"><strong>Close:</strong> 1/19/2026</span>
+                <span class="meta-item"><strong>Source:</strong> Outbound</span>
+                <span class="meta-item"><strong>Aero:</strong> Low / Low</span>
+                <span class="meta-item"><strong>ICP:</strong> Poor</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="subsection">
+                <h4>Win Reason</h4>
+                <p><strong>Price / Value</strong></p>
+                <p class="details">Healthcare PE firm, ~30 professionals. Relationship-driven deal sourcing, not outbound. Likely Microsoft/Outlook stack.</p>
+            </div>
+            <div class="subsection">
+                <h4>Amplitude Usage Read (Post-Close Validation)</h4>
+                <div class="usage-summary">
+                    <span><strong>Usage:</strong> Declining</span>
+                    <span><strong>Trend:</strong> Peaked at 7 MAU in March, dropped to 0 from May</span>
+                    <span><strong>Features:</strong> Minimal — initial testing only</span>
+                </div>
+            </div>
+            <div class="subsection">
+                <h4>Meeting Transcript Intelligence</h4>
+                <p class="no-data">No recorded meetings found.</p>
+            </div>
+            <div class="subsection">
+                <h4>What Worked</h4>
+                <p><strong>Winning Channel:</strong> Outbound &nbsp;•&nbsp; <strong>Winning Play:</strong> Price-led close to a Low/Low Aero account &nbsp;•&nbsp; <strong>Replicable Pattern:</strong> No — PE firms sourcing deals via relationships, not outbound prospecting, are not the ICP.</p>
+            </div>
+            <div class="subsection verdict-box verdict-at-risk">
+                <h4>Post-Close Health: At Risk</h4>
+                <p>Zero meetings, declining usage, Low/Low Aero, Poor ICP. This is a textbook &quot;should not have won&quot; deal. Early CSM intervention may help but the structural mismatch is significant.</p>
+            </div>
+        </div>
     </div>
 
     <!-- 6. Landmark Global -->
-    <div class="card">
-      <div class="card-header">
-        <h3>6. Landmark Global</h3>
-        <span class="badge badge-arr">$6,966</span>
-        <span class="badge badge-nn">Net New</span>
-        <span class="badge badge-theme" style="background:#f59e0b;">Boomerang</span>
-        <span class="badge badge-health-green">RAMPING UP</span>
-      </div>
-      <div class="card-meta">Morgan Wible &bull; Closed 2/27/2026 &bull; Product &bull; Aero: Med/Low &bull; ICP: Poor Fit</div>
-      <div class="card-body">
-        <p><span class="detail-label">Win Reason:</span> Ease of Use / Previous Customer</p>
-        <p><span class="detail-label">Context:</span> Cross-border logistics (bpost subsidiary). European parent, likely Microsoft stack.</p>
-        <p><span class="detail-label">Amplitude:</span> 3 &rarr; 7 MAU, ramping. Champion + budget holder both active. RAMPING UP.</p>
-        <p><span class="detail-label">Meetings:</span> 2 found (2/9 CS planning, 2/18 technical setup). Vincent Murphy is former Mixmax user.</p>
-      </div>
+    <div class="account-card" id="account-d5">
+        <div class="card-header" style="border-left: 4px solid #f59e0b">
+            <div class="card-title-row">
+                <h3>6. Landmark Global</h3>
+                <span class="badge" style="background:#64748b">Net New</span>
+                <span class="badge" style="background:#f59e0b">Boomerang</span>
+                <span class="badge" style="background:#059669">Healthy: Ramping</span>
+            </div>
+            <div class="meta-bar">
+                <span class="meta-item"><strong>Rep:</strong> Morgan Wible</span>
+                <span class="meta-item"><strong>ARR:</strong> $6,966</span>
+                <span class="meta-item"><strong>Close:</strong> 2/27/2026</span>
+                <span class="meta-item"><strong>Source:</strong> Product</span>
+                <span class="meta-item"><strong>Aero:</strong> Med / Low</span>
+                <span class="meta-item"><strong>ICP:</strong> Poor</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="subsection">
+                <h4>Win Reason</h4>
+                <p><strong>Ease of Use / Previous Customer</strong></p>
+                <p class="details">Cross-border logistics (bpost subsidiary). European parent, likely Microsoft stack.</p>
+            </div>
+            <div class="subsection">
+                <h4>Amplitude Usage Read (Post-Close Validation)</h4>
+                <div class="usage-summary">
+                    <span><strong>Usage:</strong> Ramping</span>
+                    <span><strong>Trend:</strong> 3 → 7 MAU, champion + budget holder both active</span>
+                    <span><strong>Features:</strong> Email, Sequences, Templates, Calendar, Tracking, Rules, strong Copilot (20 recordings, 30 summaries)</span>
+                </div>
+            </div>
+            <div class="subsection">
+                <h4>Meeting Transcript Intelligence (2 meetings found)</h4>
+                <p>Feb 9, 2026 — CS planning. Feb 18, 2026 — technical setup. Vincent Murphy is a former Mixmax user.</p>
+            </div>
+            <div class="subsection">
+                <h4>What Worked</h4>
+                <p><strong>Winning Channel:</strong> Product-led / former-user referral &nbsp;•&nbsp; <strong>Winning Play:</strong> Ex-user champion drives new deployment &nbsp;•&nbsp; <strong>Replicable Pattern:</strong> Yes — track Mixmax power users into their next company and trigger a referral play.</p>
+            </div>
+            <div class="subsection verdict-box verdict-healthy">
+                <h4>Post-Close Health: Healthy</h4>
+                <p>Most well-rounded adopter in the cohort. Using 7 of 9 feature areas including strongest Copilot adoption of any Q1 win. Poster child for full-platform adoption. Expansion: Salesforce integration + Dialer.</p>
+            </div>
+        </div>
     </div>
 
     <!-- 7. WeWork India -->
-    <div class="card">
-      <div class="card-header">
-        <h3>7. WeWork India</h3>
-        <span class="badge badge-arr">$5,940</span>
-        <span class="badge badge-nn">Net New</span>
-        <span class="badge badge-theme" style="background:#8b5cf6;">Speed to Value</span>
-        <span class="badge badge-health-red">SILENT</span>
-      </div>
-      <div class="card-meta">Morgan Wible &bull; Closed 2/5/2026 &bull; Outbound &bull; Aero: Med/Low &bull; ICP: Weak Fit</div>
-      <div class="card-body">
-        <p><span class="detail-label">Win Reason:</span> Time to Value / Fast Implementation</p>
-        <p><span class="detail-label">Context:</span> Flexible workspace, ~560 employees. Real estate, India market.</p>
-        <p><span class="detail-label">Amplitude:</span> 0 MAU across all months. SILENT.</p>
-        <p><span class="detail-label">Meetings:</span> 1 found (1/13 reconnect/demo). Reps manage 150 leads each, manual follow-up pain.</p>
-      </div>
+    <div class="account-card" id="account-d6">
+        <div class="card-header" style="border-left: 4px solid #8b5cf6">
+            <div class="card-title-row">
+                <h3>7. WeWork India</h3>
+                <span class="badge" style="background:#64748b">Net New</span>
+                <span class="badge" style="background:#8b5cf6">Speed to Value</span>
+                <span class="badge" style="background:#dc2626">At-Risk: Silent</span>
+            </div>
+            <div class="meta-bar">
+                <span class="meta-item"><strong>Rep:</strong> Morgan Wible</span>
+                <span class="meta-item"><strong>ARR:</strong> $5,940</span>
+                <span class="meta-item"><strong>Close:</strong> 2/5/2026</span>
+                <span class="meta-item"><strong>Source:</strong> Outbound</span>
+                <span class="meta-item"><strong>Aero:</strong> Med / Low</span>
+                <span class="meta-item"><strong>ICP:</strong> Weak</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="subsection">
+                <h4>Win Reason</h4>
+                <p><strong>Time to Value / Fast Implementation</strong></p>
+                <p class="details">Flexible workspace, ~560 employees. Real estate, India market.</p>
+            </div>
+            <div class="subsection">
+                <h4>Amplitude Usage Read (Post-Close Validation)</h4>
+                <div class="usage-summary">
+                    <span><strong>Usage:</strong> Silent</span>
+                    <span><strong>Trend:</strong> 0 MAU across all months</span>
+                    <span><strong>Features:</strong> None detected</span>
+                </div>
+            </div>
+            <div class="subsection">
+                <h4>Meeting Transcript Intelligence (1 meeting found)</h4>
+                <p>Jan 13, 2026 — reconnect/demo. Reps manage 150 leads each, manual follow-up pain.</p>
+            </div>
+            <div class="subsection">
+                <h4>What Worked (and Didn&apos;t)</h4>
+                <p><strong>Winning Channel:</strong> Outbound reconnect &nbsp;•&nbsp; <strong>Winning Play:</strong> Speed-to-value pitch on manual pain &nbsp;•&nbsp; <strong>Replicable Pattern:</strong> Won the sale but not the usage. Real-estate / India-market buyer closed but never deployed — possible Gmail tenancy mismatch.</p>
+            </div>
+            <div class="subsection verdict-box verdict-at-risk">
+                <h4>Post-Close Health: At Risk (Silent)</h4>
+                <p>$5.9K ARR with zero recorded usage across all 6 months. This is the cleanest &quot;closed but never launched&quot; case in the cohort. Root cause likely a tech-stack mismatch (not Gmail). Action: CSM should verify activation status immediately; if blocked on tenancy, refund-or-replace with MSFT integration timeline.</p>
+            </div>
+        </div>
     </div>
 
     <!-- 8. SAFE -->
-    <div class="card">
-      <div class="card-header">
-        <h3>8. SAFE</h3>
-        <span class="badge badge-arr">$5,136</span>
-        <span class="badge badge-nn">Net New</span>
-        <span class="badge badge-theme" style="background:#3b82f6;">Product Fit</span>
-        <span class="badge badge-health-yellow">LIGHT</span>
-      </div>
-      <div class="card-meta">Morgan Wible &bull; Closed 3/13/2026 &bull; Inbound &bull; Aero: Low/High &bull; ICP: Poor Fit</div>
-      <div class="card-body">
-        <p><span class="detail-label">Win Reason:</span> Ease of Use / Successful Trial</p>
-        <p><span class="detail-label">Context:</span> Nonprofit policy org, 51-200 employees. No commercial sales function.</p>
-        <p><span class="detail-label">Amplitude:</span> 1-5 WAU, sporadic. Erratic usage, no upward trend. LIGHT.</p>
-        <p><span class="detail-label">Meetings:</span> 2 found (10/27 demo, 2/20 training). 5-month sales cycle. Enablement issues flagged.</p>
-      </div>
+    <div class="account-card" id="account-d7">
+        <div class="card-header" style="border-left: 4px solid #3b82f6">
+            <div class="card-title-row">
+                <h3>8. SAFE</h3>
+                <span class="badge" style="background:#64748b">Net New</span>
+                <span class="badge" style="background:#3b82f6">Product Fit</span>
+                <span class="badge" style="background:#d97706">Watchlist: Light</span>
+            </div>
+            <div class="meta-bar">
+                <span class="meta-item"><strong>Rep:</strong> Morgan Wible</span>
+                <span class="meta-item"><strong>ARR:</strong> $5,136</span>
+                <span class="meta-item"><strong>Close:</strong> 3/13/2026</span>
+                <span class="meta-item"><strong>Source:</strong> Inbound</span>
+                <span class="meta-item"><strong>Aero:</strong> Low / High</span>
+                <span class="meta-item"><strong>ICP:</strong> Poor</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="subsection">
+                <h4>Win Reason</h4>
+                <p><strong>Ease of Use / Successful Trial</strong></p>
+                <p class="details">Nonprofit policy org, 51–200 employees. No commercial sales function.</p>
+            </div>
+            <div class="subsection">
+                <h4>Amplitude Usage Read (Post-Close Validation)</h4>
+                <div class="usage-summary">
+                    <span><strong>Usage:</strong> Light</span>
+                    <span><strong>Trend:</strong> 1–5 WAU, sporadic</span>
+                    <span><strong>Features:</strong> Erratic usage, no upward trend</span>
+                </div>
+            </div>
+            <div class="subsection">
+                <h4>Meeting Transcript Intelligence (2 meetings found)</h4>
+                <p>Oct 27, 2025 — demo. Feb 20, 2026 — training. 5-month sales cycle. Enablement issues flagged.</p>
+            </div>
+            <div class="subsection">
+                <h4>What Worked</h4>
+                <p><strong>Winning Channel:</strong> Inbound trial &nbsp;•&nbsp; <strong>Winning Play:</strong> Successful trial → conversion after long evaluation &nbsp;•&nbsp; <strong>Replicable Pattern:</strong> Low — nonprofits with no commercial sales function are a tiny TAM outside ICP.</p>
+            </div>
+            <div class="subsection verdict-box verdict-watchlist">
+                <h4>Post-Close Health: Watchlist</h4>
+                <p>5-month sales cycle suggests high-effort-to-close-ratio is not worth replicating. Light, erratic usage with no upward trend is a yellow flag. Enablement issues already flagged in training meeting — CSM should reinforce training or consider early downgrade to self-serve tier.</p>
+            </div>
+        </div>
     </div>
 
     <!-- 9. Small Batch Standard -->
-    <div class="card">
-      <div class="card-header">
-        <h3>9. Small Batch Standard</h3>
-        <span class="badge badge-arr">$4,728</span>
-        <span class="badge badge-nn">Net New</span>
-        <span class="badge badge-theme" style="background:#8b5cf6;">Speed to Value</span>
-        <span class="badge badge-health-yellow">STABLE</span>
-      </div>
-      <div class="card-meta">Morgan Wible &bull; Closed 2/4/2026 &bull; Inbound &bull; Aero: Low/Low &bull; ICP: Poor Fit</div>
-      <div class="card-body">
-        <p><span class="detail-label">Win Reason:</span> Time to Value / Fast Implementation</p>
-        <p><span class="detail-label">Context:</span> Brewery consulting firm, ~26 employees. No outbound sales motion.</p>
-        <p><span class="detail-label">Amplitude:</span> 4 MAU stable, BUT 357 sequence activations in March + 1,182 emails. Heavy feature usage. STABLE.</p>
-        <p><span class="detail-label">Meetings:</span> 1 found (2/2 intro). CEO on call, 2-day close.</p>
-      </div>
+    <div class="account-card" id="account-d8">
+        <div class="card-header" style="border-left: 4px solid #8b5cf6">
+            <div class="card-title-row">
+                <h3>9. Small Batch Standard</h3>
+                <span class="badge" style="background:#64748b">Net New</span>
+                <span class="badge" style="background:#8b5cf6">Speed to Value</span>
+                <span class="badge" style="background:#d97706">Watchlist: Stable</span>
+            </div>
+            <div class="meta-bar">
+                <span class="meta-item"><strong>Rep:</strong> Morgan Wible</span>
+                <span class="meta-item"><strong>ARR:</strong> $4,728</span>
+                <span class="meta-item"><strong>Close:</strong> 2/4/2026</span>
+                <span class="meta-item"><strong>Source:</strong> Inbound</span>
+                <span class="meta-item"><strong>Aero:</strong> Low / Low</span>
+                <span class="meta-item"><strong>ICP:</strong> Poor</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="subsection">
+                <h4>Win Reason</h4>
+                <p><strong>Time to Value / Fast Implementation</strong></p>
+                <p class="details">Brewery consulting firm, ~26 employees. No outbound sales motion.</p>
+            </div>
+            <div class="subsection">
+                <h4>Amplitude Usage Read (Post-Close Validation)</h4>
+                <div class="usage-summary">
+                    <span><strong>Usage:</strong> Stable (heavy sequences)</span>
+                    <span><strong>Trend:</strong> 4 MAU stable</span>
+                    <span><strong>Features:</strong> 357 sequence activations in March + 1,182 emails; strong Rules adoption</span>
+                </div>
+            </div>
+            <div class="subsection">
+                <h4>Meeting Transcript Intelligence (1 meeting found)</h4>
+                <p>Feb 2, 2026 — intro. CEO on the call, 2-day close.</p>
+            </div>
+            <div class="subsection">
+                <h4>What Worked</h4>
+                <p><strong>Winning Channel:</strong> Inbound CEO-led &nbsp;•&nbsp; <strong>Winning Play:</strong> 2-day close when decision-maker is on the intro call &nbsp;•&nbsp; <strong>Replicable Pattern:</strong> Yes — when the CEO/owner joins the first meeting in an SMB, push hard for same-week close.</p>
+            </div>
+            <div class="subsection verdict-box verdict-watchlist">
+                <h4>Post-Close Health: Watchlist</h4>
+                <p>Power sequence user (315 interactions) with strong Rules adoption, BUT only 64 tracking views on 2,400 emails — massive awareness gap. User count stuck at 2–3 despite volume. Expansion: Tracking enablement + seat growth + Salesforce integration.</p>
+            </div>
+        </div>
     </div>
 
     <!-- 10. Enformion -->
-    <div class="card">
-      <div class="card-header">
-        <h3>10. Enformion</h3>
-        <span class="badge badge-arr">$4,344</span>
-        <span class="badge badge-nn">Net New</span>
-        <span class="badge badge-theme" style="background:#f59e0b;">Boomerang</span>
-        <span class="badge badge-health-red">LIGHT</span>
-      </div>
-      <div class="card-meta">Morgan Wible &bull; Closed 2/28/2026 &bull; Outbound &bull; Aero: Low/Low &bull; ICP: Weak Fit</div>
-      <div class="card-body">
-        <p><span class="detail-label">Win Reason:</span> Ease of Use / Previous Customer</p>
-        <p><span class="detail-label">Context:</span> DaaS/identity verification, ~80 employees. Has BDR roles but likely HubSpot, not Salesforce.</p>
-        <p><span class="detail-label">Amplitude:</span> 1 MAU only (the champion Timothy). No team onboarded. LIGHT.</p>
-        <p><span class="detail-label">Meetings:</span> 2 found (1/7 discovery, 1/28 technical). Single-threaded deal.</p>
-      </div>
+    <div class="account-card" id="account-d9">
+        <div class="card-header" style="border-left: 4px solid #f59e0b">
+            <div class="card-title-row">
+                <h3>10. Enformion</h3>
+                <span class="badge" style="background:#64748b">Net New</span>
+                <span class="badge" style="background:#f59e0b">Boomerang</span>
+                <span class="badge" style="background:#dc2626">At-Risk: Light</span>
+            </div>
+            <div class="meta-bar">
+                <span class="meta-item"><strong>Rep:</strong> Morgan Wible</span>
+                <span class="meta-item"><strong>ARR:</strong> $4,344</span>
+                <span class="meta-item"><strong>Close:</strong> 2/28/2026</span>
+                <span class="meta-item"><strong>Source:</strong> Outbound</span>
+                <span class="meta-item"><strong>Aero:</strong> Low / Low</span>
+                <span class="meta-item"><strong>ICP:</strong> Weak</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="subsection">
+                <h4>Win Reason</h4>
+                <p><strong>Ease of Use / Previous Customer</strong></p>
+                <p class="details">DaaS / identity verification, ~80 employees. Has BDR roles but likely HubSpot, not Salesforce.</p>
+            </div>
+            <div class="subsection">
+                <h4>Amplitude Usage Read (Post-Close Validation)</h4>
+                <div class="usage-summary">
+                    <span><strong>Usage:</strong> Light (single-user)</span>
+                    <span><strong>Trend:</strong> 1 MAU only (the champion Timothy)</span>
+                    <span><strong>Features:</strong> No team onboarded</span>
+                </div>
+            </div>
+            <div class="subsection">
+                <h4>Meeting Transcript Intelligence (2 meetings found)</h4>
+                <p>Jan 7, 2026 — discovery. Jan 28, 2026 — technical. Single-threaded deal.</p>
+            </div>
+            <div class="subsection">
+                <h4>What Worked (and What to Fix)</h4>
+                <p><strong>Winning Channel:</strong> Outbound to boomerang &nbsp;•&nbsp; <strong>Winning Play:</strong> Former-user champion closes &nbsp;•&nbsp; <strong>Anti-pattern:</strong> Single-threaded through one champion. Never saw team deployment.</p>
+            </div>
+            <div class="subsection verdict-box verdict-at-risk">
+                <h4>Post-Close Health: At Risk</h4>
+                <p>Single-user deal with no team onboarded. This is the most preventable loss profile — closing with only one user activated creates renewal fragility. CSM should run a team-expansion kickoff or flag for early renewal conversation.</p>
+            </div>
+        </div>
     </div>
 
     <!-- 11. MagicLinks -->
-    <div class="card">
-      <div class="card-header">
-        <h3>11. MagicLinks</h3>
-        <span class="badge badge-arr">$3,564</span>
-        <span class="badge badge-nn">Net New</span>
-        <span class="badge badge-theme" style="background:#8b5cf6;">Speed to Value</span>
-        <span class="badge badge-health-green">STABLE</span>
-      </div>
-      <div class="card-meta">Morgan Wible &bull; Closed 2/27/2026 &bull; Inbound &bull; Aero: High/Low &bull; ICP: Weak Fit</div>
-      <div class="card-body">
-        <p><span class="detail-label">Win Reason:</span> Time to Value / Fast Implementation</p>
-        <p><span class="detail-label">Context:</span> Influencer marketing platform, ~50-70 employees. Small sales team.</p>
-        <p><span class="detail-label">Amplitude:</span> 10-13 MAU, near-full seat utilization (11 seats). STABLE.</p>
-        <p><span class="detail-label">Meetings:</span> 1 found (2/25 intro). HubSpot expiring urgently &mdash; 2-day close.</p>
-      </div>
+    <div class="account-card" id="account-d10">
+        <div class="card-header" style="border-left: 4px solid #8b5cf6">
+            <div class="card-title-row">
+                <h3>11. MagicLinks</h3>
+                <span class="badge" style="background:#64748b">Net New</span>
+                <span class="badge" style="background:#8b5cf6">Speed to Value</span>
+                <span class="badge" style="background:#059669">Healthy: Stable</span>
+            </div>
+            <div class="meta-bar">
+                <span class="meta-item"><strong>Rep:</strong> Morgan Wible</span>
+                <span class="meta-item"><strong>ARR:</strong> $3,564</span>
+                <span class="meta-item"><strong>Close:</strong> 2/27/2026</span>
+                <span class="meta-item"><strong>Source:</strong> Inbound</span>
+                <span class="meta-item"><strong>Aero:</strong> High / Low</span>
+                <span class="meta-item"><strong>ICP:</strong> Weak</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="subsection">
+                <h4>Win Reason</h4>
+                <p><strong>Time to Value / Fast Implementation</strong></p>
+                <p class="details">Influencer marketing platform, ~50–70 employees. Small sales team.</p>
+            </div>
+            <div class="subsection">
+                <h4>Amplitude Usage Read (Post-Close Validation)</h4>
+                <div class="usage-summary">
+                    <span><strong>Usage:</strong> Stable (near-full seat utilization)</span>
+                    <span><strong>Trend:</strong> 10–13 MAU on 11 seats</span>
+                    <span><strong>Features:</strong> Heavy Email + Templates + Tracking (4,537 emails, 1,297 template interactions) but zero sequences</span>
+                </div>
+            </div>
+            <div class="subsection">
+                <h4>Meeting Transcript Intelligence (1 meeting found)</h4>
+                <p>Feb 25, 2026 — intro. HubSpot expiring urgently — 2-day close.</p>
+            </div>
+            <div class="subsection">
+                <h4>What Worked</h4>
+                <p><strong>Winning Channel:</strong> Inbound &nbsp;•&nbsp; <strong>Winning Play:</strong> Competitor contract expiration urgency &nbsp;•&nbsp; <strong>Replicable Pattern:</strong> Yes — when an inbound lead mentions a competitor contract ending, push for a same-week close on the urgency.</p>
+            </div>
+            <div class="subsection verdict-box verdict-healthy">
+                <h4>Post-Close Health: Healthy</h4>
+                <p>Near-full seat utilization (10–13 of 11 seats), heavy tracking. BUT zero sequence usage despite thousands of emails — the #1 expansion lever. They&apos;re sending thousands of emails manually that could be automated.</p>
+            </div>
+        </div>
     </div>
 
     <!-- 12. nirvanatech.com -->
-    <div class="card">
-      <div class="card-header">
-        <h3>12. nirvanatech.com</h3>
-        <span class="badge badge-arr">$783</span>
-        <span class="badge badge-exp">Expansion</span>
-        <span class="badge badge-theme" style="background:#22c55e;">Price/Value</span>
-        <span class="badge badge-health-green">STABLE</span>
-      </div>
-      <div class="card-meta">Edwin Chun &bull; Closed 3/24/2026 &bull; Expansion &bull; Aero: Low/Low &bull; ICP: Poor Fit</div>
-      <div class="card-body">
-        <p><span class="detail-label">Win Reason:</span> Price / Value</p>
-        <p><span class="detail-label">Context:</span> Insurtech unicorn ($1.5B valuation). Broker-channel GTM.</p>
-        <p><span class="detail-label">Amplitude:</span> 90+ WAU, heavy usage. Deep multi-feature adoption. STABLE.</p>
-        <p><span class="detail-label">Meetings:</span> 2 found (3/4 pricing, 3/11 negotiation). Quick expansion for existing heavy user.</p>
-      </div>
+    <div class="account-card" id="account-d11">
+        <div class="card-header" style="border-left: 4px solid #22c55e">
+            <div class="card-title-row">
+                <h3>12. nirvanatech.com</h3>
+                <span class="badge" style="background:#059669">Expansion</span>
+                <span class="badge" style="background:#22c55e">Price / Value</span>
+                <span class="badge" style="background:#059669">Healthy: Heavy</span>
+            </div>
+            <div class="meta-bar">
+                <span class="meta-item"><strong>Rep:</strong> Edwin Chun</span>
+                <span class="meta-item"><strong>ARR:</strong> $783</span>
+                <span class="meta-item"><strong>Close:</strong> 3/24/2026</span>
+                <span class="meta-item"><strong>Source:</strong> Expansion</span>
+                <span class="meta-item"><strong>Aero:</strong> Low / Low</span>
+                <span class="meta-item"><strong>ICP:</strong> Poor</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="subsection">
+                <h4>Win Reason</h4>
+                <p><strong>Price / Value</strong></p>
+                <p class="details">Insurtech unicorn ($1.5B valuation). Broker-channel GTM.</p>
+            </div>
+            <div class="subsection">
+                <h4>Amplitude Usage Read (Post-Close Validation)</h4>
+                <div class="usage-summary">
+                    <span><strong>Usage:</strong> Heavy</span>
+                    <span><strong>Trend:</strong> 90+ WAU, deep multi-feature adoption</span>
+                    <span><strong>Features:</strong> 49K emails, 42K tracking views, 7K template interactions — Heavy on 6 of 9 features</span>
+                </div>
+            </div>
+            <div class="subsection">
+                <h4>Meeting Transcript Intelligence (2 meetings found)</h4>
+                <p>Mar 4, 2026 — pricing. Mar 11, 2026 — negotiation. Quick expansion for existing heavy user.</p>
+            </div>
+            <div class="subsection">
+                <h4>What Worked</h4>
+                <p><strong>Winning Channel:</strong> Expansion (CSM-led) &nbsp;•&nbsp; <strong>Winning Play:</strong> Ride-the-adoption-curve expansion &nbsp;•&nbsp; <strong>Replicable Pattern:</strong> Yes — when an account hits 90+ WAU and heavy multi-feature adoption, it&apos;s already earned expansion. Build a trigger-based CSM playbook.</p>
+            </div>
+            <div class="subsection verdict-box verdict-healthy">
+                <h4>Post-Close Health: Healthy (Power User)</h4>
+                <p>Power account — 49K emails, 42K tracking views, 7K template interactions. Using 6 of 9 features. The $783 expansion is small but the upsell runway is huge: (1) Salesforce integration to auto-log 49K+ emails, (2) Meeting Copilot for their 150+ meetings/quarter, (3) Dialer for multi-channel outreach.</p>
+            </div>
+        </div>
     </div>
-  </section>
-
-  <!-- Winning Patterns -->
-  <section id="winning-patterns">
-    <h2>Winning Patterns (Raw Win Reasons)</h2>
-    <table>
-      <thead><tr><th>Win Reason</th><th>Deals</th><th class="num">ARR</th></tr></thead>
-      <tbody>
-        <tr><td>Ease of Use / Previous Mixmax Customer</td><td>4</td><td class="num">$35,682</td></tr>
-        <tr><td>Price / Value</td><td>3</td><td class="num">$22,751</td></tr>
-        <tr><td>Time to Value / Fast Implementation</td><td>3</td><td class="num">$14,232</td></tr>
-        <tr><td>Ease of Use / Successful Trial</td><td>1</td><td class="num">$5,136</td></tr>
-        <tr><td>(blank)</td><td>1</td><td class="num">$8,716</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- Aero Fit -->
-  <section id="aero-fit">
-    <h2>Aero Fit Score Breakdown</h2>
-    <table>
-      <thead><tr><th>Tier</th><th>Deals</th><th class="num">ARR</th><th class="num">%</th></tr></thead>
-      <tbody>
-        <tr><td>High / High</td><td>2</td><td class="num">$24,372</td><td class="num">28.2%</td></tr>
-        <tr><td>High / Low</td><td>1</td><td class="num">$3,564</td><td class="num">4.1%</td></tr>
-        <tr><td>Low / High</td><td>1</td><td class="num">$5,136</td><td class="num">5.9%</td></tr>
-        <tr><td>Medium / Low</td><td>2</td><td class="num">$12,906</td><td class="num">14.9%</td></tr>
-        <tr><td>Low / Low</td><td>6</td><td class="num">$40,539</td><td class="num">46.9%</td></tr>
-      </tbody>
-    </table>
-    <div class="callout">
-      <strong>Key Insight:</strong> 47% of Q1 ARR came from Low/Low Aero accounts. Only 28% from High/High. The predictive model is either miscalibrated or the team is over-indexing on off-ICP opportunities.
-    </div>
-  </section>
-
-  <!-- ICP Fit -->
-  <section id="icp-fit">
-    <h2>ICP Fit Assessment</h2>
-    <table>
-      <thead><tr><th>Rating</th><th>Deals</th><th class="num">ARR</th><th class="num">%</th></tr></thead>
-      <tbody>
-        <tr><td>Moderate Fit</td><td>3</td><td class="num">$33,088</td><td class="num">38%</td></tr>
-        <tr><td>Weak Fit</td><td>4</td><td class="num">$29,848</td><td class="num">35%</td></tr>
-        <tr><td>Poor Fit</td><td>5</td><td class="num">$23,581</td><td class="num">27%</td></tr>
-      </tbody>
-    </table>
-
-    <h3 style="margin-top:20px;">Per-Deal ICP Notes</h3>
-    <table>
-      <thead><tr><th>Account</th><th>ICP Rating</th><th>Rationale</th></tr></thead>
-      <tbody>
-        <tr><td>Chicory</td><td>Moderate</td><td>Ad-tech with AEs + CRO + outbound. Amazon WorkMail concern.</td></tr>
-        <tr><td>Get Covered</td><td>Weak</td><td>B2B SaaS but partner-driven, no SF/Gmail signals.</td></tr>
-        <tr><td>CivilGrid</td><td>Moderate</td><td>B2B SaaS, Sequoia-backed, RevOps hiring mentions SF. Aero underscores.</td></tr>
-        <tr><td>Agile Cloud</td><td>Moderate</td><td>SF Summit Partner, growing sales team, B2B services.</td></tr>
-        <tr><td>Great Point Partners</td><td>Poor</td><td>PE firm, relationship deals, Microsoft/Outlook.</td></tr>
-        <tr><td>Landmark Global</td><td>Poor</td><td>Logistics subsidiary, European parent, Microsoft stack.</td></tr>
-        <tr><td>WeWork India</td><td>Weak</td><td>Real estate, India market, not Gmail-native.</td></tr>
-        <tr><td>SAFE</td><td>Poor</td><td>Nonprofit, no commercial sales, donor dev only.</td></tr>
-        <tr><td>Small Batch Standard</td><td>Poor</td><td>Brewery consulting, no outbound, no CRM signals.</td></tr>
-        <tr><td>Enformion</td><td>Weak</td><td>Has BDRs, but HubSpot not SF, wrong vertical.</td></tr>
-        <tr><td>MagicLinks</td><td>Weak</td><td>Has AEs, but too small, no SF signals.</td></tr>
-        <tr><td>nirvanatech.com</td><td>Poor</td><td>Insurtech unicorn, broker-channel, no outbound, no Gmail/SF.</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- Adoption Health -->
-  <section id="adoption-health">
-    <h2>Post-Close Adoption Health</h2>
-    <table>
-      <thead><tr><th>Health</th><th>Deals</th><th class="num">ARR</th><th class="num">%</th></tr></thead>
-      <tbody>
-        <tr><td><span class="badge badge-health-green">Healthy</span></td><td>5</td><td class="num">$34,564</td><td class="num">40%</td></tr>
-        <tr><td><span class="badge badge-health-yellow">Watchlist</span></td><td>2</td><td class="num">$9,864</td><td class="num">11%</td></tr>
-        <tr><td><span class="badge badge-health-red">At Risk</span></td><td>5</td><td class="num">$42,089</td><td class="num">49%</td></tr>
-      </tbody>
-    </table>
-
-    <div class="callout" style="background:#fee2e2;border-color:#fca5a5;">
-      <strong>At-Risk Accounts ($42,089 ARR):</strong><br>
-      Chicory ($16,020) &mdash; Declined to 0 MAU &bull;
-      Get Covered ($15,000) &mdash; Declined to 0 MAU &bull;
-      Great Point Partners ($6,968) &mdash; Declined to 0 MAU &bull;
-      WeWork India ($5,940) &mdash; Silent (0 MAU all months) &bull;
-      Enformion ($4,344) &mdash; Single user only
-    </div>
-  </section>
-
-  <!-- Cross-Cut Analysis -->
-  <section id="cross-cut">
-    <h2>Cross-Cut Analysis</h2>
-
-    <h3>By Channel</h3>
-    <table>
-      <thead><tr><th>Channel</th><th>Deals</th><th class="num">ARR</th><th class="num">%</th></tr></thead>
-      <tbody>
-        <tr><td>Inbound</td><td>6</td><td class="num">$53,404</td><td class="num">61.7%</td></tr>
-        <tr><td>Outbound</td><td>4</td><td class="num">$25,604</td><td class="num">29.6%</td></tr>
-        <tr><td>Product</td><td>1</td><td class="num">$6,966</td><td class="num">8.1%</td></tr>
-        <tr><td>Expansion</td><td>1</td><td class="num">$783</td><td class="num">0.9%</td></tr>
-      </tbody>
-    </table>
-
-    <h3>By Aero Fit</h3>
-    <table>
-      <thead><tr><th>Tier</th><th>Deals</th><th class="num">Avg ARR</th><th>Notes</th></tr></thead>
-      <tbody>
-        <tr><td>High/High</td><td>2</td><td class="num">$12,186</td><td>Both have adoption concerns (Chicory silent, Agile Cloud ramping)</td></tr>
-        <tr><td>Low/Low</td><td>6</td><td class="num">$6,757</td><td>47% of ARR from "misfit" accounts</td></tr>
-      </tbody>
-    </table>
-
-    <h3>Deal Size</h3>
-    <table>
-      <thead><tr><th>Metric</th><th class="num">Value</th></tr></thead>
-      <tbody>
-        <tr><td>Average Deal Size</td><td class="num">$7,210</td></tr>
-        <tr><td>Largest (Chicory)</td><td class="num">$16,020</td></tr>
-        <tr><td>Smallest (nirvanatech, expansion)</td><td class="num">$783</td></tr>
-        <tr><td>Net New Average</td><td class="num">$7,794</td></tr>
-      </tbody>
-    </table>
-
-    <h3>Sales Cycle (First Meeting to Close)</h3>
-    <table>
-      <thead><tr><th>Account</th><th class="num">Days</th><th>Notes</th></tr></thead>
-      <tbody>
-        <tr><td>MagicLinks</td><td class="num">2</td><td>HubSpot expiring urgently</td></tr>
-        <tr><td>Small Batch Standard</td><td class="num">2</td><td>CEO on call, immediate decision</td></tr>
-        <tr><td>CivilGrid</td><td class="num">19</td><td>Fast inbound</td></tr>
-        <tr><td>WeWork India</td><td class="num">23</td><td>Outbound reconnect</td></tr>
-        <tr><td>nirvanatech.com</td><td class="num">~21</td><td>Quick expansion</td></tr>
-        <tr><td>SAFE</td><td class="num">~150</td><td>Longest &mdash; 5-month cycle</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- CSM Expansion Opportunities -->
-  <section id="csm-expansion">
-    <h2>CSM Expansion Opportunities</h2>
-    <p>Product-feature Amplitude analysis across 7 active accounts reveals <strong>Salesforce integration is universally absent</strong> (0 of 7 accounts) and <strong>Dialer is nearly untouched</strong> (only 2 accounts with any calls). These represent the top cross-account expansion levers.</p>
-
-    <h3>Feature Adoption Matrix</h3>
-    <div style="overflow-x:auto;">
-    <table>
-      <thead>
-        <tr><th>Account</th><th>Email</th><th>Sequences</th><th>Templates</th><th>Calendar</th><th>Tracking</th><th>Dialer</th><th>Salesforce</th><th>Rules</th><th>Copilot</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>nirvanatech.com</td><td style="background:#dcfce7">HEAVY</td><td style="background:#dcfce7">ACTIVE</td><td style="background:#dcfce7">HEAVY</td><td style="background:#dcfce7">MOD</td><td style="background:#dcfce7">HEAVY</td><td style="background:#fef2f2">NONE</td><td style="background:#fef2f2">NONE</td><td style="background:#dcfce7">MOD</td><td style="background:#fef2f2">NONE</td></tr>
-        <tr><td>Agile Cloud</td><td style="background:#fef9c3">LIGHT</td><td style="background:#fef2f2">NONE</td><td style="background:#fef2f2">NONE</td><td style="background:#fef9c3">LIGHT</td><td style="background:#fef9c3">LIGHT</td><td style="background:#fef2f2">NONE</td><td style="background:#fef2f2">NONE</td><td style="background:#fef2f2">NONE</td><td style="background:#fef9c3">LIGHT</td></tr>
-        <tr><td>MagicLinks</td><td style="background:#dcfce7">SOLID</td><td style="background:#fef2f2">NONE</td><td style="background:#dcfce7">HEAVY</td><td style="background:#fef9c3">LIGHT</td><td style="background:#dcfce7">HEAVY</td><td style="background:#fef2f2">NONE</td><td style="background:#fef2f2">NONE</td><td style="background:#fef2f2">NONE</td><td style="background:#fef9c3">MIN</td></tr>
-        <tr><td>Landmark Global</td><td style="background:#dcfce7">MOD</td><td style="background:#dcfce7">ACTIVE</td><td style="background:#dcfce7">MOD</td><td style="background:#dcfce7">SOLID</td><td style="background:#dcfce7">HEAVY</td><td style="background:#fef2f2">NONE</td><td style="background:#fef2f2">NONE</td><td style="background:#dcfce7">MOD</td><td style="background:#dcfce7">STRONG</td></tr>
-        <tr><td>CivilGrid</td><td style="background:#dcfce7">MOD</td><td style="background:#dcfce7">ACTIVE</td><td style="background:#fef9c3">LIGHT</td><td style="background:#dcfce7">MOD</td><td style="background:#dcfce7">HEAVY</td><td style="background:#fef9c3">MIN</td><td style="background:#fef2f2">NONE</td><td style="background:#fef9c3">MIN</td><td style="background:#dcfce7">ACTIVE</td></tr>
-        <tr><td>Small Batch Std</td><td style="background:#dcfce7">SOLID</td><td style="background:#dcfce7">HEAVY</td><td style="background:#dcfce7">MOD</td><td style="background:#fef9c3">LIGHT</td><td style="background:#fef9c3">MIN</td><td style="background:#fef9c3">MIN</td><td style="background:#fef2f2">NONE</td><td style="background:#dcfce7">SOLID</td><td style="background:#fef9c3">LIGHT</td></tr>
-        <tr><td>Chicory</td><td style="background:#dcfce7">MOD</td><td style="background:#dcfce7">MOD</td><td style="background:#fef9c3">LIGHT</td><td style="background:#dcfce7">MOD</td><td style="background:#dcfce7">STRONG</td><td style="background:#fef2f2">NONE</td><td style="background:#fef2f2">NONE</td><td style="background:#fef9c3">MIN</td><td style="background:#dcfce7">ACTIVE</td></tr>
-      </tbody>
-    </table>
-    </div>
-    <p style="font-size:0.85rem;color:#6b7280;margin-top:0.5rem;">Green = active adoption &nbsp;|&nbsp; Yellow = minimal/light &nbsp;|&nbsp; Red = not detected</p>
-
-    <h3>Top Cross-Account Findings</h3>
-    <div class="callout callout-red">
-      <strong>1. Salesforce Integration is universally absent</strong> &mdash; 0 of 7 accounts have any SF activity. This is the single biggest expansion theme. Every CSM conversation should include SF integration.
-    </div>
-    <div class="callout callout-yellow">
-      <strong>2. Dialer is nearly untouched</strong> &mdash; Only CivilGrid (1 call) and Small Batch (3 calls) have any Dialer usage. 5 of 7 accounts have zero calls placed.
-    </div>
-    <div class="callout callout-yellow">
-      <strong>3. Email Tracking usage is uneven</strong> &mdash; nirvanatech (42K views) and Landmark Global (4.6K) are power trackers, while Small Batch Standard has only 64 tracking views despite sending 2,400 emails.
-    </div>
-    <div class="callout callout-blue">
-      <strong>4. Meeting Copilot shows promising traction</strong> &mdash; 5 of 7 accounts have Copilot activity. Landmark Global (20 recordings, 30 summaries) is the standout. This feature has upsell potential.
-    </div>
-    <div class="callout callout-blue">
-      <strong>5. Sequences vary widely</strong> &mdash; Small Batch Standard (315 interactions) is a power user, nirvanatech is active (422), but MagicLinks and Agile Cloud have zero sequence activation despite thousands of emails sent.
-    </div>
-
-    <h3>Per-Account CSM Recommendations</h3>
-
-    <div class="deal-card">
-      <div class="deal-header" style="background:#f59e0b;">
-        <span class="deal-name">nirvanatech.com</span>
-        <span class="amount-badge">$783</span>
-      </div>
-      <div class="deal-body">
-        <p><strong>Power account</strong> &mdash; 49K emails, heavy tracking (42K views), strong templates (7K interactions). Using 6 of 9 features.</p>
-        <p><strong>Expand on:</strong> (1) <strong>Salesforce integration</strong> to auto-log 49K+ emails into CRM, (2) <strong>Meeting Copilot</strong> for their 150+ meetings/quarter, (3) <strong>Dialer</strong> for multi-channel outreach.</p>
-      </div>
-    </div>
-
-    <div class="deal-card">
-      <div class="deal-header" style="background:#f59e0b;">
-        <span class="deal-name">Agile Cloud Consulting</span>
-        <span class="amount-badge">$8,352</span>
-      </div>
-      <div class="deal-body">
-        <p><strong>Ramping fast</strong> (1&rarr;7 users in 3 months) but using only 4 of 9 features. Exploring sequences but not launching.</p>
-        <p><strong>Expand on:</strong> (1) <strong>Sequences enablement</strong> &mdash; they are browsing but not activating, (2) <strong>Templates</strong> to improve efficiency across growing user base, (3) <strong>Salesforce integration</strong> (they are a SF consultancy!).</p>
-      </div>
-    </div>
-
-    <div class="deal-card">
-      <div class="deal-header" style="background:#8b5cf6;">
-        <span class="deal-name">MagicLinks</span>
-        <span class="amount-badge">$3,564</span>
-      </div>
-      <div class="deal-body">
-        <p><strong>Strong email + templates + tracking user</strong> &mdash; 4,537 emails, 1,297 template interactions. Zero sequences despite volume.</p>
-        <p><strong>Expand on:</strong> (1) <strong>Sequences</strong> is the #1 lever &mdash; they are sending thousands of emails manually that could be automated, (2) <strong>Rules/automation</strong> and <strong>Salesforce integration</strong>.</p>
-      </div>
-    </div>
-
-    <div class="deal-card">
-      <div class="deal-header" style="background:#f59e0b;">
-        <span class="deal-name">Landmark Global</span>
-        <span class="amount-badge">$6,966</span>
-      </div>
-      <div class="deal-body">
-        <p><strong>Most well-rounded adopter</strong> &mdash; using 7 of 9 feature areas including strongest Copilot adoption (20 recordings, 30 summaries). Poster child for full-platform adoption.</p>
-        <p><strong>Expand on:</strong> (1) <strong>Salesforce integration</strong> as the highest-value gap, (2) <strong>Dialer</strong> to complete multi-channel toolkit.</p>
-      </div>
-    </div>
-
-    <div class="deal-card">
-      <div class="deal-header" style="background:#8b5cf6;">
-        <span class="deal-name">CivilGrid</span>
-        <span class="amount-badge">$8,716</span>
-      </div>
-      <div class="deal-body">
-        <p><strong>Broadest feature exploration</strong> &mdash; touching 7 of 8 areas, ramping 9&rarr;16 MAU. Only missing SF integration. Active Copilot (12 recordings) and light Dialer (1 call).</p>
-        <p><strong>Expand on:</strong> (1) <strong>Salesforce integration</strong> is clear #1 priority, (2) Deepen <strong>Rules/automation</strong> and <strong>Templates</strong> usage.</p>
-      </div>
-    </div>
-
-    <div class="deal-card">
-      <div class="deal-header" style="background:#8b5cf6;">
-        <span class="deal-name">Small Batch Standard</span>
-        <span class="amount-badge">$4,728</span>
-      </div>
-      <div class="deal-body">
-        <p><strong>Sequences power user</strong> (315 interactions) with strong Rules adoption. Sending 2,400 emails but only 64 tracking views &mdash; massive awareness gap.</p>
-        <p><strong>Expand on:</strong> (1) <strong>Salesforce integration</strong> to capture all sequence activity in CRM, (2) <strong>Email Tracking enablement</strong> &mdash; they are missing engagement insights, (3) Expand user count beyond 2-3.</p>
-      </div>
-    </div>
-
-    <div class="deal-card">
-      <div class="deal-header" style="background:#f59e0b;">
-        <span class="deal-name">Chicory</span>
-        <span class="amount-badge">$16,020</span>
-      </div>
-      <div class="deal-body">
-        <p><strong>Largest expansion value.</strong> Despite being flagged as "now 0 MAU," Amplitude shows 8 unique email senders in April with activity across 5+ features. May be reporting lag or re-engagement.</p>
-        <p><strong>Expand on:</strong> (1) <strong>Confirm current activation status</strong> (validate April 8-user spike), (2) <strong>Salesforce integration</strong> as highest-value play, (3) <strong>Rules/automation</strong> to complement sequences and email workflow. The $16K expansion is the biggest prize in this cohort.</p>
-      </div>
-    </div>
-
-  </section>
-
-  <!-- Winning Playbook -->
-  <section id="playbook">
-    <h2>Winning Playbook &mdash; Keep / Stop / Start</h2>
-
-    <div class="playbook-section keep">
-      <h3>KEEP</h3>
-      <ul>
-        <li><strong>Boomerang motion is the #1 win engine</strong> &mdash; 41% of ARR came from returning customers. The product loyalty/muscle memory is real. Keep nurturing former customer relationships.</li>
-        <li><strong>Inbound is dominant</strong> &mdash; 62% of ARR from Inbound. The brand/product reputation is generating pipeline.</li>
-        <li><strong>Speed to Value plays</strong> &mdash; 2-day closes (MagicLinks, Small Batch) show that urgent need + fast onboarding = signed deals.</li>
-        <li><strong>Morgan Wible's volume</strong> &mdash; 9 of 12 deals (63% of ARR). Consistent execution across channels.</li>
-      </ul>
-    </div>
-
-    <div class="playbook-section stop">
-      <h3>STOP</h3>
-      <ul>
-        <li><strong>Closing non-ICP accounts without adoption plans</strong> &mdash; 5 of 12 deals (49% of ARR) are at risk post-close. Need qualification criteria or mandatory onboarding programs.</li>
-        <li><strong>Single-threading deals</strong> &mdash; Enformion (1 user active) was single-threaded with the champion only.</li>
-      </ul>
-    </div>
-
-    <div class="playbook-section start">
-      <h3>START</h3>
-      <ul>
-        <li><strong>Mandatory onboarding for deals &gt;$5K</strong> &mdash; WeWork India ($5.9K, zero usage), Get Covered ($15K, went silent), Chicory ($16K, went silent). These needed structured onboarding.</li>
-        <li><strong>Post-close health checks at 30/60/90 days</strong> &mdash; Early intervention could save the $42K at-risk ARR.</li>
-        <li><strong>ICP scoring integration</strong> &mdash; Aero Low/Low accounted for 47% of ARR. Either recalibrate Aero or use it to trigger mandatory onboarding for off-ICP wins.</li>
-        <li><strong>Expand Isabelle + Karan</strong> &mdash; Both closed the largest deals ($16K, $15K). Give them more at-bats.</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- Run Manifest / Footer -->
-  <section id="run-manifest">
-    <h2>Run Manifest</h2>
-    <div class="report-footer">
-      <dl>
-        <dt>Run ID:</dt><dd>closed-won-analysis_2026-04-16</dd>
-        <dt>Task ID:</dt><dd>mixmax-closed-won-analysis-report</dd>
-        <dt>Cadence:</dt><dd>Quarterly (Strategic depth)</dd>
-        <dt>Period:</dt><dd>Q1 2026</dd><br>
-        <dt>Data Source:</dt><dd>Gen 1 Sheet (live read &mdash; AE Forecast - This Year tab, gid 1450719288)</dd>
-        <dt>Snapshot:</dt><dd>Fallback to live (no quarterly snapshot detected)</dd><br>
-        <dt>Amplitude:</dt><dd>Project 130895, 12 accounts queried, post-close 6-month lookback</dd>
-        <dt>Meetings:</dt><dd>14 meetings found across 10 accounts</dd><br>
-        <dt>Specs:</dt><dd>closed_won_spec.md v0.1.0, master_narrative_flow.md v1.0.0, cadence_variants.md v1.0.0</dd>
-        <dt>Published URL:</dt><dd>(will be filled after publish)</dd>
-      </dl>
-      <p style="margin-top:20px;font-size:11px;color:var(--gray-500);">Generated 2026-04-16 &bull; Mixmax Revenue Operations</p>
-    </div>
-  </section>
-
 </div>
 
-<script>
-  // Highlight active sidebar link on scroll
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.sidebar a');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 100) current = s.id;
-    });
-    navLinks.forEach(a => {
-      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
-    });
-  });
-</script>
+<!-- Aero & ICP Fit -->
+<div class="card" id="aero-icp">
+    <h2>Aero Fit &amp; ICP Assessment</h2>
+
+    <div class="subsection">
+        <h4 style="font-size:16px;">Aero Fit Score Breakdown</h4>
+        <table>
+            <thead><tr><th>Tier</th><th>Deals</th><th class="num">ARR</th><th class="num">%</th></tr></thead>
+            <tbody>
+                <tr><td>High / High</td><td>2</td><td class="num">$24,372</td><td class="num">28.2%</td></tr>
+                <tr><td>High / Low</td><td>1</td><td class="num">$3,564</td><td class="num">4.1%</td></tr>
+                <tr><td>Low / High</td><td>1</td><td class="num">$5,136</td><td class="num">5.9%</td></tr>
+                <tr><td>Medium / Low</td><td>2</td><td class="num">$12,906</td><td class="num">14.9%</td></tr>
+                <tr><td>Low / Low</td><td>6</td><td class="num">$40,539</td><td class="num">46.9%</td></tr>
+            </tbody>
+        </table>
+        <div class="callout red" style="margin-top:12px;">
+            <strong>47% of Q1 ARR came from Low/Low Aero accounts.</strong> Only 28% from High/High. Either the predictive model is miscalibrated or the team is over-indexing on off-ICP opportunities. Pair this with the post-close adoption data: Low/Low wins are disproportionately in the At-Risk cohort.
+        </div>
+    </div>
+
+    <div class="subsection" style="margin-top:24px;">
+        <h4 style="font-size:16px;">ICP Fit Distribution</h4>
+        <table>
+            <thead><tr><th>Rating</th><th>Deals</th><th class="num">ARR</th><th class="num">%</th></tr></thead>
+            <tbody>
+                <tr><td>Moderate Fit</td><td>3</td><td class="num">$33,088</td><td class="num">38%</td></tr>
+                <tr><td>Weak Fit</td><td>4</td><td class="num">$29,848</td><td class="num">35%</td></tr>
+                <tr><td>Poor Fit</td><td>5</td><td class="num">$23,581</td><td class="num">27%</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="subsection" style="margin-top:24px;">
+        <h4 style="font-size:16px;">Per-Deal ICP Notes</h4>
+        <table>
+            <thead><tr><th>Account</th><th>ICP</th><th>Rationale</th></tr></thead>
+            <tbody>
+                <tr><td>Chicory</td><td>Moderate</td><td>Ad-tech with AEs + CRO + outbound. Amazon WorkMail concern.</td></tr>
+                <tr><td>Get Covered</td><td>Weak</td><td>B2B SaaS but partner-driven, no SF/Gmail signals.</td></tr>
+                <tr><td>CivilGrid</td><td>Moderate</td><td>B2B SaaS, Sequoia-backed, RevOps hiring mentions SF. Aero underscores.</td></tr>
+                <tr><td>Agile Cloud</td><td>Moderate</td><td>SF Summit Partner, growing sales team, B2B services.</td></tr>
+                <tr><td>Great Point Partners</td><td>Poor</td><td>PE firm, relationship deals, Microsoft/Outlook.</td></tr>
+                <tr><td>Landmark Global</td><td>Poor</td><td>Logistics subsidiary, European parent, Microsoft stack.</td></tr>
+                <tr><td>WeWork India</td><td>Weak</td><td>Real estate, India market, not Gmail-native.</td></tr>
+                <tr><td>SAFE</td><td>Poor</td><td>Nonprofit, no commercial sales, donor dev only.</td></tr>
+                <tr><td>Small Batch Standard</td><td>Poor</td><td>Brewery consulting, no outbound, no CRM signals.</td></tr>
+                <tr><td>Enformion</td><td>Weak</td><td>Has BDRs, but HubSpot not SF, wrong vertical.</td></tr>
+                <tr><td>MagicLinks</td><td>Weak</td><td>Has AEs, but too small, no SF signals.</td></tr>
+                <tr><td>nirvanatech.com</td><td>Poor</td><td>Insurtech unicorn, broker-channel, no outbound, no Gmail/SF.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Post-Close Adoption Health -->
+<div class="card" id="adoption">
+    <h2>Post-Close Adoption Health</h2>
+    <p class="small-text" style="margin-bottom:12px;">Based on 6-month Amplitude lookback starting at close date for each account.</p>
+    <table>
+        <thead><tr><th>Health</th><th>Deals</th><th class="num">ARR</th><th class="num">%</th><th>Accounts</th></tr></thead>
+        <tbody>
+            <tr><td><span class="badge" style="background:#059669">Healthy</span></td><td>5</td><td class="num">$34,564</td><td class="num">40%</td><td class="small-text">CivilGrid, Agile Cloud, Landmark Global, MagicLinks, nirvanatech</td></tr>
+            <tr><td><span class="badge" style="background:#d97706">Watchlist</span></td><td>2</td><td class="num">$9,864</td><td class="num">11%</td><td class="small-text">SAFE, Small Batch Standard</td></tr>
+            <tr><td><span class="badge" style="background:#dc2626">At Risk</span></td><td>5</td><td class="num">$42,089</td><td class="num">49%</td><td class="small-text">Chicory, Get Covered, Great Point Partners, WeWork India, Enformion</td></tr>
+        </tbody>
+    </table>
+
+    <div class="callout red" style="margin-top:16px;">
+        <strong>At-Risk ARR ($42,089 = 49% of Q1 wins):</strong>
+        Chicory ($16,020, Declining) • Get Covered ($15,000, Declining) • Great Point Partners ($6,968, Declining) • WeWork India ($5,940, Silent) • Enformion ($4,344, Single user only). These five accounts require immediate CSM intervention to prevent Q4 2026 churn.
+    </div>
+</div>
+
+<!-- Cross-Cut Analysis -->
+<div class="card" id="cross-cut">
+    <h2>Cross-Cut Analysis</h2>
+
+    <div class="subsection">
+        <h4 style="font-size:16px;">By Aero Fit — Deal Size vs Adoption</h4>
+        <table>
+            <thead><tr><th>Tier</th><th>Deals</th><th class="num">Avg ARR</th><th>Adoption Notes</th></tr></thead>
+            <tbody>
+                <tr><td>High / High</td><td>2</td><td class="num">$12,186</td><td>Split: Chicory declining, Agile Cloud ramping</td></tr>
+                <tr><td>Low / Low</td><td>6</td><td class="num">$6,757</td><td>47% of ARR from &quot;misfit&quot; accounts — disproportionately At Risk</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="subsection" style="margin-top:24px;">
+        <h4 style="font-size:16px;">Deal Size Distribution</h4>
+        <table>
+            <thead><tr><th>Metric</th><th class="num">Value</th></tr></thead>
+            <tbody>
+                <tr><td>Average Deal Size</td><td class="num">$7,210</td></tr>
+                <tr><td>Largest (Chicory, Net New)</td><td class="num">$16,020</td></tr>
+                <tr><td>Smallest (nirvanatech, Expansion)</td><td class="num">$783</td></tr>
+                <tr><td>Net New Average</td><td class="num">$7,794</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="subsection" style="margin-top:24px;">
+        <h4 style="font-size:16px;">Sales Cycle (First Meeting to Close)</h4>
+        <table>
+            <thead><tr><th>Account</th><th class="num">Days</th><th>Notes</th></tr></thead>
+            <tbody>
+                <tr><td>MagicLinks</td><td class="num">2</td><td>HubSpot expiring urgently</td></tr>
+                <tr><td>Small Batch Standard</td><td class="num">2</td><td>CEO on call, immediate decision</td></tr>
+                <tr><td>CivilGrid</td><td class="num">19</td><td>Fast inbound</td></tr>
+                <tr><td>WeWork India</td><td class="num">23</td><td>Outbound reconnect</td></tr>
+                <tr><td>nirvanatech.com</td><td class="num">~21</td><td>Quick expansion</td></tr>
+                <tr><td>SAFE</td><td class="num">~150</td><td>Longest — 5-month cycle</td></tr>
+            </tbody>
+        </table>
+        <p class="small-text" style="margin-top:8px;">Fast closes (&lt;30 days) correlate with healthier post-close adoption. Long cycles (SAFE, 150 days) correlate with light/watchlist adoption.</p>
+    </div>
+</div>
+
+<!-- CSM Expansion Opportunities -->
+<div class="card" id="csm-expansion">
+    <h2>CSM Expansion Opportunities</h2>
+    <p>Product-feature Amplitude analysis across 7 active Q1-won accounts reveals <strong>Salesforce integration is universally absent</strong> (0 of 7 accounts) and <strong>Dialer is nearly untouched</strong>. These are the top cross-account expansion levers.</p>
+
+    <div class="subsection" style="margin-top:20px;">
+        <h4 style="font-size:16px;">Feature Adoption Matrix</h4>
+        <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr><th>Account</th><th>Email</th><th>Sequences</th><th>Templates</th><th>Calendar</th><th>Tracking</th><th>Dialer</th><th>Salesforce</th><th>Rules</th><th>Copilot</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>nirvanatech.com</td><td class="matrix-heavy">HEAVY</td><td class="matrix-heavy">ACTIVE</td><td class="matrix-heavy">HEAVY</td><td class="matrix-heavy">MOD</td><td class="matrix-heavy">HEAVY</td><td class="matrix-none">NONE</td><td class="matrix-none">NONE</td><td class="matrix-heavy">MOD</td><td class="matrix-none">NONE</td></tr>
+                <tr><td>Agile Cloud</td><td class="matrix-light">LIGHT</td><td class="matrix-none">NONE</td><td class="matrix-none">NONE</td><td class="matrix-light">LIGHT</td><td class="matrix-light">LIGHT</td><td class="matrix-none">NONE</td><td class="matrix-none">NONE</td><td class="matrix-none">NONE</td><td class="matrix-light">LIGHT</td></tr>
+                <tr><td>MagicLinks</td><td class="matrix-heavy">SOLID</td><td class="matrix-none">NONE</td><td class="matrix-heavy">HEAVY</td><td class="matrix-light">LIGHT</td><td class="matrix-heavy">HEAVY</td><td class="matrix-none">NONE</td><td class="matrix-none">NONE</td><td class="matrix-none">NONE</td><td class="matrix-light">MIN</td></tr>
+                <tr><td>Landmark Global</td><td class="matrix-heavy">MOD</td><td class="matrix-heavy">ACTIVE</td><td class="matrix-heavy">MOD</td><td class="matrix-heavy">SOLID</td><td class="matrix-heavy">HEAVY</td><td class="matrix-none">NONE</td><td class="matrix-none">NONE</td><td class="matrix-heavy">MOD</td><td class="matrix-heavy">STRONG</td></tr>
+                <tr><td>CivilGrid</td><td class="matrix-heavy">MOD</td><td class="matrix-heavy">ACTIVE</td><td class="matrix-light">LIGHT</td><td class="matrix-heavy">MOD</td><td class="matrix-heavy">HEAVY</td><td class="matrix-light">MIN</td><td class="matrix-none">NONE</td><td class="matrix-light">MIN</td><td class="matrix-heavy">ACTIVE</td></tr>
+                <tr><td>Small Batch Std</td><td class="matrix-heavy">SOLID</td><td class="matrix-heavy">HEAVY</td><td class="matrix-heavy">MOD</td><td class="matrix-light">LIGHT</td><td class="matrix-light">MIN</td><td class="matrix-light">MIN</td><td class="matrix-none">NONE</td><td class="matrix-heavy">SOLID</td><td class="matrix-light">LIGHT</td></tr>
+                <tr><td>Chicory</td><td class="matrix-heavy">MOD</td><td class="matrix-heavy">MOD</td><td class="matrix-light">LIGHT</td><td class="matrix-heavy">MOD</td><td class="matrix-heavy">STRONG</td><td class="matrix-none">NONE</td><td class="matrix-none">NONE</td><td class="matrix-light">MIN</td><td class="matrix-heavy">ACTIVE</td></tr>
+            </tbody>
+        </table>
+        </div>
+        <p class="small-text" style="margin-top:8px;">Green = active adoption &nbsp;|&nbsp; Yellow = minimal/light &nbsp;|&nbsp; Red = not detected</p>
+    </div>
+
+    <div class="subsection" style="margin-top:20px;">
+        <h4 style="font-size:16px;">Top Cross-Account Findings</h4>
+        <div class="callout red">
+            <strong>1. Salesforce Integration is universally absent</strong> — 0 of 7 accounts have any SF activity. This is the single biggest expansion theme. Every CSM conversation should include SF integration.
+        </div>
+        <div class="callout">
+            <strong>2. Dialer is nearly untouched</strong> — Only CivilGrid (1 call) and Small Batch (3 calls) have any Dialer usage. 5 of 7 accounts have zero calls placed.
+        </div>
+        <div class="callout">
+            <strong>3. Email Tracking usage is uneven</strong> — nirvanatech (42K views) and Landmark Global (4.6K) are power trackers; Small Batch Standard has only 64 tracking views despite sending 2,400 emails.
+        </div>
+        <div class="callout blue">
+            <strong>4. Meeting Copilot shows promising traction</strong> — 5 of 7 accounts have Copilot activity. Landmark Global (20 recordings, 30 summaries) is the standout. Upsell potential.
+        </div>
+        <div class="callout blue">
+            <strong>5. Sequences vary widely</strong> — Small Batch (315 interactions) is a power user; nirvanatech active (422); but MagicLinks and Agile Cloud have zero sequence activation despite thousands of emails sent.
+        </div>
+    </div>
+
+    <div class="subsection" style="margin-top:20px;">
+        <h4 style="font-size:16px;">Per-Account CSM Recommendations</h4>
+
+        <div class="account-card">
+            <div class="card-header" style="border-left: 4px solid #f59e0b">
+                <div class="card-title-row">
+                    <h3>nirvanatech.com</h3>
+                    <span class="badge" style="background:#059669">Power Account</span>
+                    <span class="meta-item" style="margin-left:auto;"><strong>ARR:</strong> $783</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <p>Using 6 of 9 features — 49K emails, heavy tracking (42K views), strong templates (7K interactions).</p>
+                <p style="margin-top:8px;"><strong>Expand on:</strong> (1) Salesforce integration to auto-log 49K+ emails into CRM, (2) Meeting Copilot for their 150+ meetings/quarter, (3) Dialer for multi-channel outreach.</p>
+            </div>
+        </div>
+
+        <div class="account-card">
+            <div class="card-header" style="border-left: 4px solid #f59e0b">
+                <div class="card-title-row">
+                    <h3>Agile Cloud Consulting</h3>
+                    <span class="badge" style="background:#059669">Ramping Fast</span>
+                    <span class="meta-item" style="margin-left:auto;"><strong>ARR:</strong> $8,352</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <p>Ramping fast (1 → 7 users in 3 months) but only using 4 of 9 features. Exploring sequences but not launching.</p>
+                <p style="margin-top:8px;"><strong>Expand on:</strong> (1) Sequences enablement — they browse but don&apos;t activate, (2) Templates for efficiency across growing users, (3) Salesforce integration (they&apos;re a SF consultancy).</p>
+            </div>
+        </div>
+
+        <div class="account-card">
+            <div class="card-header" style="border-left: 4px solid #8b5cf6">
+                <div class="card-title-row">
+                    <h3>MagicLinks</h3>
+                    <span class="badge" style="background:#059669">Heavy Email User</span>
+                    <span class="meta-item" style="margin-left:auto;"><strong>ARR:</strong> $3,564</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <p>Strong email + templates + tracking user — 4,537 emails, 1,297 template interactions. Zero sequences despite volume.</p>
+                <p style="margin-top:8px;"><strong>Expand on:</strong> (1) Sequences is the #1 lever — thousands of manual emails could be automated, (2) Rules/automation, (3) Salesforce integration.</p>
+            </div>
+        </div>
+
+        <div class="account-card">
+            <div class="card-header" style="border-left: 4px solid #f59e0b">
+                <div class="card-title-row">
+                    <h3>Landmark Global</h3>
+                    <span class="badge" style="background:#059669">Well-Rounded</span>
+                    <span class="meta-item" style="margin-left:auto;"><strong>ARR:</strong> $6,966</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <p>Most well-rounded adopter — using 7 of 9 feature areas including strongest Copilot adoption (20 recordings, 30 summaries). Poster child for full-platform adoption.</p>
+                <p style="margin-top:8px;"><strong>Expand on:</strong> (1) Salesforce integration as highest-value gap, (2) Dialer to complete multi-channel toolkit.</p>
+            </div>
+        </div>
+
+        <div class="account-card">
+            <div class="card-header" style="border-left: 4px solid #8b5cf6">
+                <div class="card-title-row">
+                    <h3>CivilGrid</h3>
+                    <span class="badge" style="background:#059669">Broadest Explorer</span>
+                    <span class="meta-item" style="margin-left:auto;"><strong>ARR:</strong> $8,716</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <p>Broadest feature exploration — touching 7 of 8 areas, ramping 9 → 16 MAU. Only missing SF integration. Active Copilot (12 recordings) and light Dialer (1 call).</p>
+                <p style="margin-top:8px;"><strong>Expand on:</strong> (1) Salesforce integration is clear #1 priority, (2) Deepen Rules/automation and Templates usage.</p>
+            </div>
+        </div>
+
+        <div class="account-card">
+            <div class="card-header" style="border-left: 4px solid #8b5cf6">
+                <div class="card-title-row">
+                    <h3>Small Batch Standard</h3>
+                    <span class="badge" style="background:#059669">Sequences Power User</span>
+                    <span class="meta-item" style="margin-left:auto;"><strong>ARR:</strong> $4,728</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <p>Sequences power user (315 interactions) with strong Rules adoption. Sending 2,400 emails but only 64 tracking views — massive awareness gap.</p>
+                <p style="margin-top:8px;"><strong>Expand on:</strong> (1) Salesforce integration to capture all sequence activity in CRM, (2) Email Tracking enablement — missing engagement insights, (3) Expand user count beyond 2–3.</p>
+            </div>
+        </div>
+
+        <div class="account-card">
+            <div class="card-header" style="border-left: 4px solid #f59e0b">
+                <div class="card-title-row">
+                    <h3>Chicory</h3>
+                    <span class="badge" style="background:#dc2626">Largest Expansion Prize</span>
+                    <span class="meta-item" style="margin-left:auto;"><strong>ARR:</strong> $16,020</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <p>Largest expansion value in the cohort. Despite &quot;now 0 MAU&quot; flag, Amplitude shows 8 unique email senders in April across 5+ features. May be reporting lag or re-engagement.</p>
+                <p style="margin-top:8px;"><strong>Expand on:</strong> (1) Confirm current activation status (validate April 8-user spike), (2) Salesforce integration as highest-value play, (3) Rules/automation to complement sequences. The $16K is the biggest prize in this cohort.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Winning Playbook -->
+<div class="card" id="playbook">
+    <h2>Winning Playbook — Keep / Stop / Start</h2>
+    <div class="playbook-grid">
+        <div class="playbook-col keep">
+            <h3>KEEP</h3>
+            <ul>
+                <li><strong>Boomerang motion is the #1 win engine.</strong> 41% of ARR came from returning customers. Product loyalty and muscle memory are real — keep nurturing former customer relationships.</li>
+                <li><strong>Inbound is dominant.</strong> 62% of ARR from Inbound. The brand and product reputation are generating pipeline.</li>
+                <li><strong>Speed to Value plays.</strong> 2-day closes (MagicLinks, Small Batch) show that urgent need + fast onboarding = signed deals.</li>
+                <li><strong>Morgan Wible&apos;s volume.</strong> 9 of 12 deals (63% of ARR). Consistent execution across channels.</li>
+            </ul>
+        </div>
+        <div class="playbook-col stop">
+            <h3>STOP</h3>
+            <ul>
+                <li><strong>Closing non-ICP accounts without adoption plans.</strong> 5 of 12 deals (49% of ARR) are at risk post-close. Need qualification criteria or mandatory onboarding programs.</li>
+                <li><strong>Single-threading deals.</strong> Enformion (1 user active) was single-threaded with the champion only — no team deployment ever happened.</li>
+                <li><strong>Closing without recording meetings.</strong> Get Covered ($15K) and Great Point Partners ($7K) both closed with zero meetings logged. No intelligence for CSM, no relationship map for renewal.</li>
+            </ul>
+        </div>
+        <div class="playbook-col start">
+            <h3>START</h3>
+            <ul>
+                <li><strong>Mandatory onboarding for deals &gt; $5K.</strong> WeWork India ($5.9K, zero usage), Get Covered ($15K, went silent), Chicory ($16K, went silent) all needed structured onboarding.</li>
+                <li><strong>Post-close health checks at 30/60/90 days.</strong> Early intervention could save the $42K at-risk ARR.</li>
+                <li><strong>ICP scoring integration.</strong> Aero Low/Low accounted for 47% of ARR. Either recalibrate Aero or use it to trigger mandatory onboarding for off-ICP wins.</li>
+                <li><strong>Expand Isabelle + Karan.</strong> Both closed the largest deals ($16K, $15K). Give them more at-bats.</li>
+                <li><strong>Boomerang outreach program.</strong> Systematically re-engage churned accounts 1–2 quarters after churn. Agile Cloud &amp; Landmark Global prove the play.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Run Manifest -->
+<div class="card" id="run-manifest">
+    <h2>Run Manifest</h2>
+    <table>
+        <tbody>
+            <tr><td><strong>Run ID</strong></td><td>closed-won-analysis_2026-04-17-newlayout</td></tr>
+            <tr><td><strong>Task ID</strong></td><td>mixmax-closed-won-analysis-report</td></tr>
+            <tr><td><strong>Cadence</strong></td><td>Quarterly (Strategic depth)</td></tr>
+            <tr><td><strong>Period</strong></td><td>Q1 2026 (Jan 1 – Mar 31, 2026)</td></tr>
+            <tr><td><strong>Data Source</strong></td><td>Gen 1 Sheet — AE Forecast - This Year tab (gid 1450719288)</td></tr>
+            <tr><td><strong>Snapshot</strong></td><td>Underlying data carried forward from the Apr 16, 2026 run; no new data pull for this layout regeneration</td></tr>
+            <tr><td><strong>Amplitude</strong></td><td>Project 130895 — 12 accounts queried, 6-month post-close lookback</td></tr>
+            <tr><td><strong>Meetings</strong></td><td>14 meetings found across 10 accounts</td></tr>
+            <tr><td><strong>Specs</strong></td><td>closed_won_spec.md v0.1.0, master_narrative_flow.md v1.0.0, cadence_variants.md v1.0.0</td></tr>
+            <tr><td><strong>Layout</strong></td><td>v2 — flex layout, gradient executive summary, account-card per deal with theme-colored left border, verdict boxes for post-close health</td></tr>
+            <tr><td><strong>Published URL</strong></td><td id="published-url">(will be filled after publish)</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <p>Q1 2026 Closed Won Analysis — Mixmax Revenue Operations</p>
+    <p>Generated April 17, 2026 &nbsp;|&nbsp; Data sources: Gen 1 Sheet (AE Forecast tab), Amplitude (Project 130895), Mixmax Meeting Copilot</p>
+    <p>Methodology: Amplitude 6-month post-close lookback per account. ICP judged against Mixmax&apos;s outbound-B2B-on-Gmail/SF archetype.</p>
+</div>
+
+</div><!-- /main -->
+</div><!-- /layout -->
+
 </body>
 </html>
