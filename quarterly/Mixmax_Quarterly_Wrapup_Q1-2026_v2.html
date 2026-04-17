@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mixmax Quarterly Wrap-Up — Q1 2026 (v2)</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+.header { background: linear-gradient(135deg, #4a154b, #6a1b69); color: white; padding: 40px 50px; }
+.header-content { max-width: 1200px; margin: 0 auto; }
+.header h1 { font-size: 2.1em; font-weight: 700; margin-bottom: 12px; }
+.header-meta { display: flex; flex-wrap: wrap; gap: 20px; font-size: 0.9em; opacity: 0.92; margin-top: 6px; }
+.meta-label { opacity: 0.7; }
+.announcement-banner { background: rgba(255,255,255,0.12); border-left: 4px solid #ffd700; padding: 12px 16px; border-radius: 4px; margin-top: 18px; font-size: 0.92em; }
+.container { max-width: 1200px; margin: 0 auto; background: white; }
+
+/* Cover page (Universal Section 0) */
+.cover-page { padding: 36px 40px 28px; border-bottom: 1px solid #e0e0e0; background: #f8fafc; }
+.cover-section { margin-bottom: 24px; }
+.cover-section h2 { font-size: 1.1em; font-weight: 700; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.summary-bullets, .action-items, .qa-checks { list-style: none; padding: 0; margin: 0; }
+.summary-bullets li { padding: 8px 0 8px 20px; position: relative; font-size: 0.98em; line-height: 1.55; color: #334155; border-bottom: 1px solid #f1f5f9; }
+.summary-bullets li::before { content: "•"; position: absolute; left: 0; color: #4a154b; font-weight: bold; font-size: 1.2em; }
+.action-items { counter-reset: actions; }
+.action-items li { padding: 10px 0 10px 36px; position: relative; font-size: 0.98em; line-height: 1.55; color: #334155; border-bottom: 1px solid #f1f5f9; counter-increment: actions; }
+.action-items li::before { content: counter(actions); position: absolute; left: 0; top: 10px; width: 22px; height: 22px; background: #4a154b; color: white; border-radius: 50%; font-size: 0.75em; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.action-owner { color: #4a154b; font-weight: 600; }
+.action-deadline { color: #64748b; font-size: 0.88em; }
+.resource-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.resource-links a { display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: white; border: 1px solid #e2e8f0; border-radius: 6px; color: #4a154b; text-decoration: none; font-size: 0.9em; transition: background 0.15s; }
+.resource-links a:hover { background: #f3e8f3; }
+.qa-badge { border-radius: 8px; padding: 16px 20px; }
+.qa-badge.pass { background: #f0fdf4; border: 2px solid #22c55e; }
+.qa-badge.warning { background: #fffbeb; border: 2px solid #f59e0b; }
+.qa-badge-header { font-size: 1em; font-weight: 700; margin-bottom: 10px; }
+.qa-badge.pass .qa-badge-header { color: #16a34a; }
+.qa-badge.warning .qa-badge-header { color: #d97706; }
+.qa-checks li { padding: 3px 0; font-size: 0.9em; color: #334155; }
+.qa-meta { font-size: 0.78em; color: #64748b; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 6px; margin-top: 6px; }
+
+.tabs { display: flex; background: #f9f9f9; border-bottom: 1px solid #e0e0e0; overflow-x: auto; }
+.tab-button { flex: 1; min-width: 140px; padding: 16px 20px; border: none; background: none; cursor: pointer; font-size: 0.95em; font-weight: 500; color: #666; border-bottom: 3px solid transparent; transition: all 0.3s ease; white-space: nowrap; }
+.tab-button:hover { background: #f0f0f0; color: #4a154b; }
+.tab-button.active { color: #4a154b; border-bottom-color: #4a154b; background: white; }
+.tab-content { display: none; padding: 40px; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 26px; }
+.metric-card { border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; background: #fafafa; }
+.metric-card h3 { font-size: 0.82em; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; font-weight: 600; }
+.metric-value { font-size: 1.75em; font-weight: 700; color: #222; margin-bottom: 8px; }
+.metric-detail { font-size: 0.85em; color: #888; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 600; }
+.badge-green { background: #d4edda; color: #155724; }
+.badge-yellow { background: #fff3cd; color: #856404; }
+.badge-red { background: #f8d7da; color: #721c24; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.93em; }
+table thead { background: #f0f0f0; border-bottom: 2px solid #e0e0e0; }
+table th { padding: 11px 13px; text-align: left; font-weight: 600; color: #333; text-transform: uppercase; font-size: 0.78em; letter-spacing: 0.5px; }
+table td { padding: 10px 13px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+table tbody tr:nth-child(even) { background: #fafafa; }
+.text-right { text-align: right; }
+.text-muted { color: #888; font-size: 0.9em; }
+.warning-box { background: #fff3cd; border-left: 4px solid #ffcc00; padding: 14px 18px; border-radius: 4px; margin: 20px 0; font-size: 0.95em; color: #856404; }
+.info-box { background: #e8f4f8; border-left: 4px solid #0066cc; padding: 14px 18px; border-radius: 4px; margin: 20px 0; font-size: 0.95em; color: #084c6e; }
+.success-box { background: #d4edda; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 4px; margin: 20px 0; font-size: 0.95em; color: #155724; }
+.section-title { font-size: 1.3em; font-weight: 700; color: #222; margin-top: 28px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #e0e0e0; }
+.section-title:first-child { margin-top: 0; }
+.subsection-title { font-size: 1.05em; font-weight: 600; color: #333; margin-top: 22px; margin-bottom: 12px; }
+.priority-list { list-style: none; padding: 0; }
+.priority-list li { padding: 10px 0 10px 28px; position: relative; color: #555; line-height: 1.55; border-bottom: 1px solid #f0f0f0; }
+.priority-list li:before { content: "›"; position: absolute; left: 8px; font-size: 1.4em; color: #4a154b; font-weight: bold; top: 4px; }
+.variance-positive { color: #00aa00; font-weight: 600; }
+.variance-negative { color: #cc0000; font-weight: 600; }
+.hit { color: #00aa00; font-weight: 600; }
+.miss { color: #cc0000; font-weight: 600; }
+.neutral { color: #b45309; font-weight: 600; }
+.callout { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 14px 18px; margin: 18px 0; border-radius: 4px; font-size: 0.95em; }
+@media (max-width: 768px) {
+  .header { padding: 25px 20px; }
+  .header h1 { font-size: 1.6em; }
+  .header-meta { flex-direction: column; gap: 12px; font-size: 0.85em; }
+  .cover-page { padding: 20px; }
+  .tab-button { min-width: 100px; font-size: 0.82em; padding: 12px 10px; }
+  .tab-content { padding: 20px; }
+  .metric-grid { grid-template-columns: 1fr; }
+  table { font-size: 0.85em; }
+  table th, table td { padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="header-content">
+<h1>Mixmax Quarterly Wrap-Up — Q1 2026</h1>
+<div class="header-meta">
+<span><span class="meta-label">As of:</span> April 14, 2026</span>
+<span><span class="meta-label">Period:</span> Q1 2026 (Jan 1 – Mar 31)</span>
+<span><span class="meta-label">Cadence:</span> Quarterly</span>
+<span><span class="meta-label">Audience:</span> All GTM / All Company</span>
+<span><span class="meta-label">Version:</span> v2 (re-laid-out)</span>
+</div>
+<div class="announcement-banner">
+<strong>Q1 closed below plan on every top-line metric.</strong> The story: two named accounts drove 43% of churn+downgrade, and the Outbound TOFU engine collapsed to 17% of target. Ex-outliers, NRR would have been 79.6% vs 56.5% reported. Q2 must start with an SDR capacity/motion decision and a named At-Risk Roster — not a forecast edit.
+</div>
+</div>
+</div>
+
+<div class="container">
+
+<!-- ============================================================ -->
+<!-- SECTION 0 — UNIVERSAL COVER PAGE                             -->
+<!-- ============================================================ -->
+<div class="cover-page" id="cover">
+
+<div class="cover-section">
+<h2>📋 If You Read Nothing Else</h2>
+<ul class="summary-bullets">
+<li><strong>Q1 Total ARR landed at $8.68M vs $8.94M target — a $260K miss (-2.9%),</strong> driven entirely by Direct Sales (-$282K) while Self-Serve held at +0.6% to plan.</li>
+<li><strong>Two accounts = 43% of Q1 churn+downgrade:</strong> Attentive Mobile churn (-$164,724) + Meltwater downgrade (-$140,213). Ex-both, NRR would have been <strong>79.6% vs the reported 56.5%</strong> — concentration risk, not broad CS failure.</li>
+<li><strong>Outbound TOFU collapsed:</strong> Accounts Engaged at 17% of target (315 vs 1,890), Outbound Pipeline $ at 8% of plan ($20K vs $252K). Single largest driver of the bookings gap.</li>
+<li><strong>New Business Bookings hit 39% of target</strong> ($85,734 vs $219,089). Every Closed Won was sub-$20K — the $25K+ segment did not close at all in Q1, mapping directly to the Outbound pipeline collapse.</li>
+<li><strong>Self-Serve was the quiet hero:</strong> Reactivation at 142%, Upgrade at 112%, SS Churn 15% better than budget. Net SS contribution beat plan by +$21K.</li>
+<li><strong>Product PQLs hit 818% of target</strong> (180 vs 22) but PQL→SQL conversion stayed tiny (9 SQLs). Strong signal under-harvested — Q2 is the measurement quarter for whether this sustains.</li>
+<li><strong>CS book concentration:</strong> Heather Mae Pusztai's book ran NRR 21% / GRR 71% (lowest on team) and carried both named outliers. Named coverage conversation is a Q2 W1 item — not a performance call.</li>
+<li><strong>Bootstrap reconciliation mode:</strong> Only the March 2026 monthly is published. Intra-snapshot integrity check passed. Full monthly-to-quarterly reconciliation becomes active starting Q2 2026.</li>
+</ul>
+</div>
+
+<div class="cover-section">
+<h2>🎯 Top Actions</h2>
+<ol class="action-items">
+<li>Publish the Q2 At-Risk Roster with named preventive-save owners — <span class="action-owner">CS Leadership</span> <span class="action-deadline">· By: Q2 W1 (by April 24)</span></li>
+<li>Outbound root-cause diagnostic memo (targeting, sequencing, messaging, rep concentration) — <span class="action-owner">SDR + RevOps</span> <span class="action-deadline">· By: April 20</span></li>
+<li>CRO + Head of CS 1:1 with Heather Mae on book rebalance or exec-sponsor pairing — <span class="action-owner">CRO + CS Leadership</span> <span class="action-deadline">· By: April 18</span></li>
+<li>Meltwater re-expansion play (named recovery — $140K upside available) — <span class="action-owner">CS + AE (Morgan)</span> <span class="action-deadline">· By: Q2 Weeks 1–6</span></li>
+<li>Q2 pipeline-coverage gate + SDR capacity decision (headcount vs. motion) — <span class="action-owner">CRO + RevOps</span> <span class="action-deadline">· By: Q2 W1</span></li>
+</ol>
+</div>
+
+<div class="cover-section">
+<h2>📎 Resources</h2>
+<div class="resource-links">
+<a href="https://drive.google.com/drive/folders/1SiQ4Nq3jFDrw86nkMhUCWEGcYFvhXG_c">📊 Q1 Lookback Snapshot (Drive)</a>
+<a href="https://docs.google.com/spreadsheets/d/1ikq0APBWkPcaaDUKx4nbdy0QNYVK30Tvb3_reeChpCY/edit">📗 Gen 1 Sheet</a>
+<a href="./CRO_Quarterly_Report_Q1-2026_v2.html">📄 CRO Quarterly (v2)</a>
+<a href="./Mixmax_Board_Snapshot_Q1-2026_v2.html">🎯 Board Snapshot (v2)</a>
+<a href="./Mixmax_Quarter_Ahead_Q2-2026_v2.html">→ Q2 Quarter-Ahead (v2)</a>
+<a href="../Monthly Report/Mixmax_Monthly_Report_2026-03.html">📅 March 2026 Monthly</a>
+</div>
+</div>
+
+<div class="cover-section">
+<h2>🔍 Quality Assurance</h2>
+<div class="qa-badge warning">
+<div class="qa-badge-header">⚠️ QA VERIFIED WITH WARNINGS — OK TO READ, CAVEATED PUBLISH</div>
+<ul class="qa-checks">
+<li>✅ Data completeness — all 9 Lookback snapshot tabs populated, row counts &gt; 0</li>
+<li>✅ Math accuracy — DS net (+NB +Exp +React +Dng +Churn) reconciles to reported $-363,459 within $1 rounding; Total ARR (DS+SS) reconciles within $1</li>
+<li>✅ Freshness — snapshot taken 2026-04-14, report generated 2026-04-17 (3 days old, within window)</li>
+<li>✅ Coverage — all 9 required sections populated</li>
+<li>✅ Cross-reference — executive summary totals agree with section totals and Q1 data tables</li>
+<li>⚠️ Monthly reconciliation — Bootstrap mode (1 of 3 monthlies published); monthly-to-quarterly gate skipped per accuracy-reconciliation skill</li>
+<li>✅ HTML integrity — tabs render, all sections present, no broken links</li>
+</ul>
+<div class="qa-meta">QA conducted: 2026-04-17 · Method: inline QA checks (Report Accuracy Skill v1.0) · Bootstrap note: full reconciliation gate active beginning Q2 2026</div>
+</div>
+</div>
+
+</div>
+<!-- END COVER PAGE -->
+
+<div class="tabs">
+<button class="tab-button active" onclick="switchTab(event, 'exec')">Executive Summary</button>
+<button class="tab-button" onclick="switchTab(event, 'revenue')">Revenue Position</button>
+<button class="tab-button" onclick="switchTab(event, 'churn')">Churn &amp; Downgrade</button>
+<button class="tab-button" onclick="switchTab(event, 'bookings')">Bookings &amp; Pipeline</button>
+<button class="tab-button" onclick="switchTab(event, 'tofu')">TOFU Problem</button>
+<button class="tab-button" onclick="switchTab(event, 'cs')">Customer Success</button>
+<button class="tab-button" onclick="switchTab(event, 'attack')">Q2 Attack Plan</button>
+<button class="tab-button" onclick="switchTab(event, 'risks')">Risk Register</button>
+<button class="tab-button" onclick="switchTab(event, 'timeline')">Monthly Timeline</button>
+</div>
+
+<!-- EXEC -->
+<div id="exec" class="tab-content active">
+<div class="section-title">Executive Summary</div>
+
+<div class="metric-grid">
+<div class="metric-card"><h3>Total ARR (EOQ)</h3><div class="metric-value">$8.68M</div><div class="metric-detail"><span class="miss">-2.9%</span> vs $8.94M target · $260K gap</div></div>
+<div class="metric-card"><h3>Direct Sales ARR</h3><div class="metric-value">$4.72M</div><div class="metric-detail"><span class="miss">-5.6%</span> vs $5.00M target</div></div>
+<div class="metric-card"><h3>Self-Serve ARR</h3><div class="metric-value">$3.96M</div><div class="metric-detail"><span class="hit">+0.6%</span> vs $3.93M target</div></div>
+<div class="metric-card"><h3>NRR (All Renewals)</h3><div class="metric-value">56%</div><div class="metric-detail"><span class="miss">-46 pts</span> vs 102% target · 79.6% ex-outliers</div></div>
+<div class="metric-card"><h3>New Business Bookings</h3><div class="metric-value">$86K</div><div class="metric-detail"><span class="miss">39%</span> of $219K target</div></div>
+<div class="metric-card"><h3>Outbound Pipeline Created</h3><div class="metric-value">$20K</div><div class="metric-detail"><span class="miss">8%</span> of $252K target — structural</div></div>
+</div>
+
+<p>Q1 2026 closed <strong>below plan</strong> on every top-line metric that matters. Total ARR landed at <strong>$8.68M</strong> against an <strong>$8.94M</strong> target — a <span class="miss">-$260K (-2.9%)</span> gap driven almost entirely by Direct Sales (<span class="miss">-$282K</span>) while Self-Serve held the line at <span class="hit">+$22K (+0.6%)</span>. The story of the quarter is two-fold:</p>
+
+<ul class="priority-list">
+<li><strong>Outsized churn + downgrade concentration</strong> in two accounts — <strong>Attentive Mobile</strong> (-$164,724 churn) and <strong>Meltwater</strong> (-$140,213 downgrade) — which together account for <strong>43% of Q1 churn-plus-downgrade</strong>.</li>
+<li><strong>Severe top-of-funnel collapse</strong>, with Outbound Accounts Engaged at <strong>17% of target</strong> and New Business Bookings closing at <strong>39% of target</strong>.</li>
+</ul>
+
+<div class="callout">
+If Attentive and Meltwater are excluded, NRR rises from <strong>56.5% to 79.6%</strong> — the DS revenue engine is closer to plan than the headline implies, but the pipeline engine is not. Q2 has to start with an urgent TOFU intervention, not a forecast edit.
+</div>
+</div>
+
+<!-- REVENUE -->
+<div id="revenue" class="tab-content">
+<div class="section-title">Revenue Position</div>
+
+<table>
+<thead><tr><th>Metric</th><th class="text-right">Q1 Actual</th><th class="text-right">Q1 Target</th><th class="text-right">$ Variance</th><th class="text-right">% Variance</th></tr></thead>
+<tbody>
+<tr><td><strong>Total ARR</strong></td><td class="text-right">$8,676,483</td><td class="text-right">$8,936,828</td><td class="text-right variance-negative">-$260,345</td><td class="text-right variance-negative">-2.9%</td></tr>
+<tr><td>Direct Sales ARR</td><td class="text-right">$4,721,120</td><td class="text-right">$5,003,455</td><td class="text-right variance-negative">-$282,335</td><td class="text-right variance-negative">-5.6%</td></tr>
+<tr><td>Self-Serve ARR</td><td class="text-right">$3,955,364</td><td class="text-right">$3,933,373</td><td class="text-right variance-positive">+$21,991</td><td class="text-right variance-positive">+0.6%</td></tr>
+<tr><td>Total Net New ARR Contribution</td><td class="text-right variance-negative">-$372,656</td><td class="text-right">-$112,311</td><td class="text-right variance-negative">-$260,345</td><td class="text-right variance-negative">232% of budget</td></tr>
+</tbody>
+</table>
+
+<div class="subsection-title">Direct Sales Net New Contribution Drivers</div>
+<table>
+<thead><tr><th>Component</th><th class="text-right">Q1 Actual</th><th class="text-right">Q1 Target</th><th class="text-right">$ Variance</th><th class="text-right">% to Target</th></tr></thead>
+<tbody>
+<tr><td>New Business Contribution</td><td class="text-right">$86,394</td><td class="text-right">$180,364</td><td class="text-right variance-negative">-$93,970</td><td class="text-right variance-negative">48%</td></tr>
+<tr><td>Expansion</td><td class="text-right">$241,643</td><td class="text-right">$237,802</td><td class="text-right variance-positive">+$3,841</td><td class="text-right variance-positive">102%</td></tr>
+<tr><td>Reactivation</td><td class="text-right">$10,968</td><td class="text-right">—</td><td class="text-right">—</td><td class="text-right">—</td></tr>
+<tr><td>Downgrade</td><td class="text-right variance-negative">-$316,411</td><td class="text-right">-$242,080</td><td class="text-right variance-negative">-$74,331</td><td class="text-right variance-negative">131% of budget</td></tr>
+<tr><td>Churn</td><td class="text-right variance-negative">-$386,054</td><td class="text-right">-$257,211</td><td class="text-right variance-negative">-$128,843</td><td class="text-right variance-negative">150% of budget</td></tr>
+<tr><td><strong>Downgrade + Churn (combined)</strong></td><td class="text-right variance-negative"><strong>-$702,465</strong></td><td class="text-right">-$499,291</td><td class="text-right variance-negative">-$203,174</td><td class="text-right variance-negative">141% of budget</td></tr>
+</tbody>
+</table>
+
+<div class="subsection-title">Self-Serve Net Contribution Drivers</div>
+<table>
+<thead><tr><th>Component</th><th class="text-right">Q1 Actual</th><th class="text-right">Q1 Target</th><th class="text-right">$ Variance</th><th class="text-right">% to Target</th></tr></thead>
+<tbody>
+<tr><td>Net New Self-Serve ARR</td><td class="text-right">$256,668</td><td class="text-right">$288,397</td><td class="text-right variance-negative">-$31,729</td><td class="text-right neutral">89%</td></tr>
+<tr><td>Self-Serve Reactivation</td><td class="text-right">$99,648</td><td class="text-right">$70,412</td><td class="text-right variance-positive">+$29,236</td><td class="text-right variance-positive">142%</td></tr>
+<tr><td>Self-Serve Upgrade</td><td class="text-right">$84,902</td><td class="text-right">$76,131</td><td class="text-right variance-positive">+$8,771</td><td class="text-right variance-positive">112%</td></tr>
+<tr><td>Self-Serve Seat Expansion</td><td class="text-right">$275,433</td><td class="text-right">$274,605</td><td class="text-right variance-positive">+$828</td><td class="text-right variance-positive">100%</td></tr>
+<tr><td>Self-Serve Seat Contraction</td><td class="text-right neutral">-$239,956</td><td class="text-right">-$232,517</td><td class="text-right variance-negative">-$7,439</td><td class="text-right variance-negative">103% of budget</td></tr>
+<tr><td>Self-Serve Downgrade</td><td class="text-right neutral">-$53,580</td><td class="text-right">-$43,352</td><td class="text-right variance-negative">-$10,228</td><td class="text-right variance-negative">124% of budget</td></tr>
+<tr><td>Self-Serve Churn</td><td class="text-right variance-positive">-$395,958</td><td class="text-right">-$464,354</td><td class="text-right variance-positive">+$68,396</td><td class="text-right variance-positive">85% of budget (better)</td></tr>
+<tr><td>Channel DS → SS</td><td class="text-right">$2,280</td><td class="text-right">—</td><td class="text-right">—</td><td class="text-right">—</td></tr>
+<tr><td>Channel SS → DS</td><td class="text-right neutral">-$38,634</td><td class="text-right">—</td><td class="text-right">—</td><td class="text-right">—</td></tr>
+<tr><td><strong>Total SS Net Contribution</strong></td><td class="text-right neutral"><strong>-$9,197</strong></td><td class="text-right">-$30,678</td><td class="text-right variance-positive">+$21,481</td><td class="text-right variance-positive">ahead of plan</td></tr>
+</tbody>
+</table>
+
+<div class="success-box">
+<strong>Read:</strong> Self-Serve was the quiet hero of Q1 — Reactivation, Upgrade, and (critically) Churn all beat plan, with SS Churn landing <strong>15% better than budget</strong> (+$68K). Net New SS was the one soft line (89%), offset by outperformance everywhere else. Watch list: Seat Contraction and Downgrade both ran slightly over budget — small today, but a trend to monitor into Q2.
+</div>
+</div>
+
+<!-- CHURN -->
+<div id="churn" class="tab-content">
+<div class="section-title">The Churn &amp; Downgrade Story: Attentive Mobile + Meltwater</div>
+
+<div class="callout">
+<strong>Two accounts drove 43% of Q1 Churn + Downgrade ($305K of $702K).</strong> The quarter is a better revenue-retention story than it looks, but a worse customer-health story in specific, named accounts.
+</div>
+
+<div class="subsection-title">Attentive Mobile — $164,724 churn (Jan 2026)</div>
+<ul class="priority-list">
+<li><strong>Account:</strong> Attentive Mobile Inc. · <strong>CSM:</strong> Heather Mae Pusztai · <strong>AE:</strong> Lana Ma</li>
+<li><strong>Previous Contract:</strong> $164,724 · <strong>Forecasted ARR:</strong> $0 · <strong>Stage:</strong> Closed Lost (Jan 2026)</li>
+<li><strong>Impact:</strong> 43% of total Q1 Direct Sales churn ($164,724 of $386,054). Largest single churn event of the quarter.</li>
+<li><em>Root-cause deep-dive in the CRO Quarterly Report.</em></li>
+</ul>
+
+<div class="subsection-title">Meltwater — $140,213 downgrade (Feb 2026)</div>
+<ul class="priority-list">
+<li><strong>Account:</strong> meltwater.com · <strong>CSM:</strong> Heather Mae Pusztai · <strong>AE:</strong> Morgan Wible</li>
+<li><strong>Previous Contract:</strong> $183,333 · <strong>Forecasted ARR:</strong> $43,120 · <strong>Stage:</strong> Closed Won (renewed, downgraded)</li>
+<li><strong>Impact:</strong> 44% of total Q1 Direct Sales downgrade ($140,213 of $316,411). Account retained but at ~24% of prior ARR.</li>
+<li><strong>Note:</strong> Meltwater also has a Jan-2026 record showing +$218K expansion on a separate contract line (same Account ID). Net of both Meltwater rows, the account is a positive Q1 contributor; however, the renewal-side downgrade is the signal for the CS motion.</li>
+</ul>
+
+<div class="subsection-title">Ex-Attentive / Ex-Meltwater NRR Scenario</div>
+<p>Applying the All-Renewals NRR denominator from the CS Summary tab ($1,010,480 previous · $570,626 forecasted · <strong>56.5%</strong> actual NRR):</p>
+
+<table>
+<thead><tr><th>Scenario</th><th class="text-right">Previous Contract</th><th class="text-right">Forecasted ARR</th><th class="text-right">NRR %</th><th class="text-right">Delta vs Actual</th></tr></thead>
+<tbody>
+<tr><td>Actual (reported)</td><td class="text-right">$1,010,480</td><td class="text-right">$570,626</td><td class="text-right variance-negative">56.5%</td><td class="text-right">—</td></tr>
+<tr><td>Ex-Attentive (churn removed)</td><td class="text-right">$845,756</td><td class="text-right">$570,626</td><td class="text-right neutral">67.5%</td><td class="text-right variance-positive">+11.0 pts</td></tr>
+<tr><td>Ex-Meltwater downgrade</td><td class="text-right">$827,147</td><td class="text-right">$527,506</td><td class="text-right neutral">63.8%</td><td class="text-right variance-positive">+7.3 pts</td></tr>
+<tr><td><strong>Ex-Both</strong></td><td class="text-right"><strong>$662,423</strong></td><td class="text-right"><strong>$527,506</strong></td><td class="text-right variance-positive"><strong>79.6%</strong></td><td class="text-right variance-positive"><strong>+23.1 pts</strong></td></tr>
+</tbody>
+</table>
+
+<div class="info-box">
+<strong>Read:</strong> The underlying renewal book, with these two named outliers removed, would have delivered ~80% NRR — still below the NRR target, but a fundamentally different quarter. This is concentration risk, not a broad CS-motion failure. The action item is named-account preventive-save plays, not a wholesale CS re-engineering.
+</div>
+
+<div class="subsection-title">Combined Churn + Downgrade Scenario</div>
+<table>
+<thead><tr><th>Scenario</th><th class="text-right">Churn + Downgrade ($)</th><th class="text-right">Target</th><th class="text-right">% to Budget</th></tr></thead>
+<tbody>
+<tr><td>Actual Q1</td><td class="text-right variance-negative">-$702,465</td><td class="text-right">-$499,291</td><td class="text-right variance-negative">141% (worse than plan)</td></tr>
+<tr><td><strong>Ex-Attentive + Ex-Meltwater</strong></td><td class="text-right variance-positive">-$397,528</td><td class="text-right">-$499,291</td><td class="text-right variance-positive">80% (<strong>better</strong> than plan)</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- BOOKINGS -->
+<div id="bookings" class="tab-content">
+<div class="section-title">Bookings &amp; Pipeline</div>
+
+<div class="subsection-title">Q1 Bookings</div>
+<table>
+<thead><tr><th>Metric</th><th class="text-right">Q1 Actual</th><th class="text-right">Target</th><th class="text-right">% to Target</th></tr></thead>
+<tbody>
+<tr><td>Total Bookings</td><td class="text-right">$86,517</td><td class="text-right">$235,511</td><td class="text-right variance-negative">37%</td></tr>
+<tr><td>New Business Bookings</td><td class="text-right">$85,734</td><td class="text-right">$219,089</td><td class="text-right variance-negative">39%</td></tr>
+<tr><td>Expansion Bookings</td><td class="text-right">$783</td><td class="text-right">$16,422</td><td class="text-right variance-negative">5%</td></tr>
+</tbody>
+</table>
+
+<div class="subsection-title">Pipeline Created (Q1) — the TOFU Collapse</div>
+<table>
+<thead><tr><th>Metric</th><th class="text-right">Q1 Actual</th><th class="text-right">Target</th><th class="text-right">% to Target</th><th>Flag</th></tr></thead>
+<tbody>
+<tr><td>Total Leads (All Channels)</td><td class="text-right">282</td><td class="text-right">146</td><td class="text-right variance-positive">193%</td><td>—</td></tr>
+<tr><td>Inbound MQLs</td><td class="text-right">70</td><td class="text-right">124</td><td class="text-right variance-negative">56%</td><td><span class="badge badge-yellow">⚠️</span></td></tr>
+<tr><td>Product PQLs</td><td class="text-right">180</td><td class="text-right">22</td><td class="text-right variance-positive">818%</td><td>—</td></tr>
+<tr><td>Accounts Engaged (Total)</td><td class="text-right">445</td><td class="text-right">2,006</td><td class="text-right variance-negative">22%</td><td><span class="badge badge-red">⚠️⚠️</span></td></tr>
+<tr><td>&nbsp;&nbsp;↳ Inbound Accounts Engaged</td><td class="text-right">62</td><td class="text-right">93</td><td class="text-right variance-negative">67%</td><td><span class="badge badge-yellow">⚠️</span></td></tr>
+<tr><td>&nbsp;&nbsp;↳ Outbound Accounts Engaged</td><td class="text-right">315</td><td class="text-right">1,890</td><td class="text-right variance-negative">17%</td><td><span class="badge badge-red">⚠️⚠️</span></td></tr>
+<tr><td>&nbsp;&nbsp;↳ Product Accounts Engaged</td><td class="text-right">51</td><td class="text-right">23</td><td class="text-right variance-positive">225%</td><td>—</td></tr>
+<tr><td>Meetings Booked</td><td class="text-right">96</td><td class="text-right">140</td><td class="text-right variance-negative">69%</td><td><span class="badge badge-yellow">⚠️</span></td></tr>
+<tr><td>SQLs</td><td class="text-right">41</td><td class="text-right">90</td><td class="text-right variance-negative">46%</td><td><span class="badge badge-yellow">⚠️</span></td></tr>
+<tr><td>SQOs</td><td class="text-right">34</td><td class="text-right">52</td><td class="text-right variance-negative">65%</td><td><span class="badge badge-yellow">⚠️</span></td></tr>
+<tr><td>Total Pipeline $</td><td class="text-right">$237,655</td><td class="text-right">$579,445</td><td class="text-right variance-negative">41%</td><td><span class="badge badge-yellow">⚠️</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- TOFU -->
+<div id="tofu" class="tab-content">
+<div class="section-title">The TOFU Problem — Where to Invest for Q2</div>
+<p>The pipeline shortfall is not uniform. It is concentrated in two specific failure modes that deserve different interventions.</p>
+
+<div class="subsection-title">Problem 1: Outbound is broken (17% of target on accounts engaged)</div>
+<ul class="priority-list">
+<li>Outbound engaged 315 accounts against a 1,890 target — <strong>1,575 accounts short</strong>.</li>
+<li>Outbound Meetings Booked: 17 (vs 72 target, 24% of plan) · Outbound SQLs: 6 (vs 36, 17%) · Outbound SQOs: 4 (vs 21, 19%).</li>
+<li>Outbound Pipeline $: $20,136 (vs $251,708 target, <strong>8% of plan</strong>).</li>
+<li><strong>Where to solve:</strong> SDR capacity and/or SDR motion — we either don't have enough bodies or the plays aren't landing. This is the single biggest Q1 driver and the single biggest Q2 intervention.</li>
+</ul>
+
+<div class="subsection-title">Problem 2: Inbound MQL supply is soft (56% of target)</div>
+<ul class="priority-list">
+<li>Inbound Accounts Engaged at 67% of plan, Inbound MQLs at 56%.</li>
+<li>Inbound pipeline actually held up better at 44% of target $ — the inbound engine is converting fine, we just need more feed.</li>
+<li><strong>Where to solve:</strong> Demand gen spend + content/SEO. Marketing-owned.</li>
+</ul>
+
+<div class="subsection-title">Problem 3: Product PQLs are a bright spot being under-harvested</div>
+<ul class="priority-list">
+<li>PQLs at 818% of target (180 vs 22) and Product pipeline at 414% of target $ ($79K vs $19K).</li>
+<li>But Product SQLs are only 9 and Product SQOs only 9 — the conversion from PQL to SQL is tiny relative to the volume.</li>
+<li><strong>Where to solve:</strong> Build a dedicated Product-qualified motion — the raw signal is strong; the hand-off to sales is not.</li>
+</ul>
+</div>
+
+<!-- CS -->
+<div id="cs" class="tab-content">
+<div class="section-title">Customer Success Read</div>
+
+<div class="subsection-title">Renewal Portfolio Summary</div>
+<table>
+<thead><tr><th>Segment</th><th class="text-right"># Accts</th><th class="text-right">At Risk</th><th class="text-right">Forecasted ARR</th><th class="text-right">NRR %</th><th class="text-right">GRR (ARR) %</th><th class="text-right">GRR (Client) %</th><th class="text-right">ARR Impact ($)</th></tr></thead>
+<tbody>
+<tr><td>All Renewals</td><td class="text-right">57</td><td class="text-right">26</td><td class="text-right">$570,626</td><td class="text-right variance-negative">56%</td><td class="text-right neutral">93%</td><td class="text-right variance-negative">54%</td><td class="text-right variance-negative">-$41,837</td></tr>
+<tr><td>CSM Owned</td><td class="text-right">19</td><td class="text-right">6</td><td class="text-right">$460,161</td><td class="text-right variance-negative">56%</td><td class="text-right neutral">91%</td><td class="text-right variance-negative">47%</td><td class="text-right variance-negative">-$48,112</td></tr>
+<tr><td>VSB Owned</td><td class="text-right">38</td><td class="text-right">20</td><td class="text-right">$110,465</td><td class="text-right neutral">59%</td><td class="text-right variance-positive">106%</td><td class="text-right neutral">58%</td><td class="text-right variance-positive">+$6,275</td></tr>
+</tbody>
+</table>
+
+<div class="info-box">
+<strong>Read:</strong> The CSM-owned book is where the ARR concentration risk lives (large accounts, including Attentive + Meltwater); the VSB-owned book is where the client-count concentration risk lives (20 of 38 at-risk — long tail). Twenty-six of 57 Q1 renewals were flagged At-Risk at some point in the cycle.
+</div>
+
+<div class="subsection-title">Closed Lost Tail (Cohort Note)</div>
+<table>
+<thead><tr><th>Cohort</th><th class="text-right"># Accts</th><th class="text-right">$ Impact</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>Attentive Mobile</td><td class="text-right">1</td><td class="text-right variance-negative">-$164,724</td><td>Single largest churn event — root-cause in CRO report</td></tr>
+<tr><td>Remaining Q1 Closed Lost</td><td class="text-right">26</td><td class="text-right variance-negative">~-$177K</td><td>All under $50K each · largely VSB-owned, no CSM assigned</td></tr>
+<tr><td><strong>Total Q1 Closed Lost</strong></td><td class="text-right"><strong>27</strong></td><td class="text-right variance-negative"><strong>-$341,815</strong></td><td>Long-tail small-account churn pattern</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- ATTACK -->
+<div id="attack" class="tab-content">
+<div class="section-title">Team Attack Plan for Q2</div>
+
+<table>
+<thead><tr><th>Team</th><th>Action</th><th>Why / Q1 Signal</th><th>When</th></tr></thead>
+<tbody>
+<tr><td rowspan="3"><strong>AE Team</strong><br><em>(Morgan, Karan, Isabelle)</em></td><td>Stop-the-bleed on New Business — hit 2x pipeline coverage at Q2 open</td><td class="variance-negative">Q1 bookings at 39% of target</td><td>Week 1</td></tr>
+<tr><td>Move every Q1-carried opp to a named next-step</td><td>~$431K in future-period pipeline per Rep Summary</td><td>Week 1</td></tr>
+<tr><td>Build Expansion-deal-creation motion on named accounts</td><td class="neutral">Expansion bookings at 5% of target (contribution was 102%)</td><td>Weeks 1–4</td></tr>
+<tr><td rowspan="2"><strong>SDR Team</strong></td><td>Diagnose Outbound capacity vs. motion — fix in 1–3 weeks</td><td class="variance-negative">Outbound Accounts Engaged at 17% of plan</td><td>Week 1 diagnosis · Week 3 remediation</td></tr>
+<tr><td>Re-baseline outbound cadence and territory coverage</td><td class="variance-negative">Outbound SQLs at 17% of plan — volume problem, not close-rate</td><td>Week 2</td></tr>
+<tr><td rowspan="3"><strong>CS Team</strong></td><td>Publish the Q2 At-Risk Roster with named preventive-save owners</td><td class="variance-negative">26 of 57 Q1 renewals flagged At-Risk</td><td>Week 1</td></tr>
+<tr><td>"Attentive-shape" detection — account-health triggers on top 20 CSM book</td><td class="variance-negative">1 churn (Attentive) = 43% of quarter's DS churn</td><td>Weeks 1–2</td></tr>
+<tr><td>Expansion-opp handoff motion with AE team</td><td class="neutral">CS-to-AE handoff failed in Q1 (5% expansion bookings)</td><td>Weeks 2–4</td></tr>
+<tr><td rowspan="3"><strong>RevOps / Leadership</strong></td><td>Q2 pipeline-coverage gate — math on day 1</td><td class="neutral">Q2 opens with ~$431K future-period pipeline</td><td>Day 1</td></tr>
+<tr><td>SDR capacity decision (headcount vs. motion)</td><td class="variance-negative">Outbound gap is structural, not cyclical</td><td>Week 1</td></tr>
+<tr><td>Meltwater re-expansion play — named recovery</td><td class="variance-positive">Account retained at $43K (was $183K) — $140K upside available</td><td>Weeks 1–6</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- RISKS -->
+<div id="risks" class="tab-content">
+<div class="section-title">Risk Register</div>
+<table>
+<thead><tr><th>Risk</th><th>Category</th><th class="text-right">Q1 Impact</th><th class="text-right">YTD Impact</th><th>First Flagged</th><th>Owning Team</th><th>Action</th><th>Confidence</th></tr></thead>
+<tbody>
+<tr><td>Concentrated churn — single-account exposure</td><td>Churn</td><td class="text-right variance-negative">-$164,724 (Attentive)</td><td class="text-right">-$164,724</td><td>March 2026 Monthly</td><td>CS Team</td><td>Named At-Risk Roster for Q2 by EOW</td><td>High</td></tr>
+<tr><td>Named downgrade — mid-contract ARR compression</td><td>Downgrade</td><td class="text-right variance-negative">-$140,213 (Meltwater)</td><td class="text-right">-$140,213</td><td>Q1 Lookback (new)</td><td>CS Team + AE</td><td>Re-expansion play on Meltwater in Q2</td><td>Medium</td></tr>
+<tr><td>Outbound TOFU collapse</td><td>Pipeline Gap</td><td class="text-right variance-negative">-$231,572 pipeline ($20K vs $252K target)</td><td class="text-right">-$231,572</td><td>March 2026 Monthly</td><td>SDR Team + RevOps</td><td>Capacity + motion diagnosis week 1 of Q2</td><td>High</td></tr>
+<tr><td>Inbound MQL supply short</td><td>Pipeline Gap</td><td class="text-right">54 MQLs below plan</td><td class="text-right">54 MQLs</td><td>Q1 Lookback (new)</td><td>Marketing</td><td>Demand gen review — Q2 spend reallocation</td><td>High</td></tr>
+<tr><td>PQL-to-SQL conversion leak</td><td>Pipeline Gap</td><td class="text-right">180 PQLs → 9 Product SQLs</td><td class="text-right">Same</td><td>Q1 Lookback (new)</td><td>Product + Sales</td><td>Dedicated Product-qualified motion</td><td>Medium</td></tr>
+<tr><td>New Business bookings attainment</td><td>Forecast Miss</td><td class="text-right variance-negative">-$133,355 (39% of target)</td><td class="text-right">Same</td><td>Every 2026 weekly</td><td>AE Team</td><td>2x pipeline coverage gate at Q2-open</td><td>High</td></tr>
+<tr><td>Expansion-deal-creation motion</td><td>CS At-Risk</td><td class="text-right variance-negative">-$15,639 (5% of target)</td><td class="text-right">Same</td><td>March 2026 Monthly</td><td>CS + AE</td><td>CS-to-AE handoff protocol</td><td>Medium</td></tr>
+<tr><td>VSB at-risk concentration</td><td>CS At-Risk</td><td class="text-right">20 of 38 VSB accounts at risk</td><td class="text-right">Same</td><td>Q1 Lookback (new)</td><td>VSB Team</td><td>Long-tail segmentation plan</td><td>Medium</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- TIMELINE -->
+<div id="timeline" class="tab-content">
+<div class="section-title">Monthly Report Timeline</div>
+<ul class="priority-list">
+<li><strong>January 2026 Monthly:</strong> <em>Not published</em> (pre-workflow).</li>
+<li><strong>February 2026 Monthly:</strong> <em>Not published</em> (pre-workflow).</li>
+<li><strong>March 2026 Monthly:</strong> <a href="../Monthly Report/Mixmax_Monthly_Report_2026-03.html">View report</a> — first month under the monthly cadence; flagged Outbound collapse + Attentive churn.</li>
+</ul>
+<div class="warning-box">
+<strong>Bootstrap note:</strong> This is the first quarterly report under the new workflow. Beginning Q2 2026, full monthly-to-quarterly reconciliation will be active on every quarterly run.
+</div>
+</div>
+
+</div>
+
+<script>
+function switchTab(evt, tabName) {
+  var i, tabcontent, tabbuttons;
+  tabcontent = document.getElementsByClassName("tab-content");
+  for (i = 0; i < tabcontent.length; i++) { tabcontent[i].classList.remove("active"); }
+  tabbuttons = document.getElementsByClassName("tab-button");
+  for (i = 0; i < tabbuttons.length; i++) { tabbuttons[i].classList.remove("active"); }
+  document.getElementById(tabName).classList.add("active");
+  evt.currentTarget.classList.add("active");
+}
+</script>
+</body>
+</html>
