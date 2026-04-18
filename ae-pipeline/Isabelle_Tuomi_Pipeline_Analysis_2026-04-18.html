@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isabelle Tuomi — AE Pipeline Analysis — April 2026</title>
+<style>
+  :root {
+    --mx-blue:#2563eb; --mx-blue-dark:#1e3a8a; --mx-blue-light:#dbeafe;
+    --green:#16a34a; --green-bg:#dcfce7;
+    --yellow:#ca8a04; --yellow-bg:#fef9c3;
+    --red:#dc2626; --red-bg:#fee2e2;
+    --gray:#6b7280; --gray-bg:#f3f4f6;
+    --border:#e5e7eb; --ink:#111827; --sub:#4b5563;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         margin: 0; padding: 0; background: #f9fafb; color: var(--ink); line-height: 1.55; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
+  header.top { position: sticky; top: 0; background: #fff; border-bottom: 2px solid var(--mx-blue);
+               z-index: 10; padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; }
+  header.top .brand { font-weight: 700; color: var(--mx-blue); font-size: 18px; }
+  header.top .nav a { margin-left: 18px; color: var(--sub); text-decoration: none; font-size: 14px; }
+  header.top .nav a:hover { color: var(--mx-blue); }
+  h1 { font-size: 34px; margin: 0 0 6px 0; color: var(--mx-blue-dark); }
+  h2 { font-size: 26px; margin: 48px 0 12px 0; color: var(--mx-blue-dark);
+       border-bottom: 2px solid var(--mx-blue-light); padding-bottom: 6px; }
+  h3 { font-size: 20px; margin: 28px 0 10px 0; color: var(--ink); }
+  h4 { font-size: 15px; margin: 18px 0 8px 0; color: var(--sub); text-transform: uppercase; letter-spacing: .5px; }
+  .subtitle { color: var(--sub); font-size: 15px; margin-bottom: 16px; }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+  .kpi { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  .kpi .label { font-size: 11px; color: var(--sub); text-transform: uppercase; letter-spacing: .6px; }
+  .kpi .value { font-size: 22px; font-weight: 700; color: var(--mx-blue-dark); margin-top: 4px; }
+  .kpi .sub { font-size: 12px; color: var(--sub); margin-top: 2px; }
+
+  .viz-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+  .viz-box { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .viz-box h3 { margin-top: 0; }
+
+  .card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 22px;
+          margin: 20px 0; box-shadow: 0 1px 2px rgba(0,0,0,.03); }
+  .card.must-win { border-left: 5px solid var(--green); }
+  .card.should-win { border-left: 5px solid var(--yellow); }
+  .card.long-shot { border-left: 5px solid var(--gray); }
+  .card.reclassify { border-left: 5px solid var(--red); background: #fffbeb; }
+
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+  .card-header .title { font-size: 22px; font-weight: 700; color: var(--ink); margin: 0; }
+  .card-header .links a { margin-right: 8px; font-size: 12px; text-decoration: none;
+                          background: var(--mx-blue-light); color: var(--mx-blue-dark);
+                          padding: 3px 8px; border-radius: 4px; }
+  .card-header .links a:hover { background: var(--mx-blue); color: #fff; }
+
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .badge.green { background: var(--green-bg); color: var(--green); }
+  .badge.yellow { background: var(--yellow-bg); color: var(--yellow); }
+  .badge.red { background: var(--red-bg); color: var(--red); }
+  .badge.gray { background: var(--gray-bg); color: var(--gray); }
+  .badge.blue { background: var(--mx-blue-light); color: var(--mx-blue-dark); }
+
+  .meta-bar { background: #f9fafb; border: 1px solid var(--border); border-radius: 6px;
+              padding: 10px 14px; font-size: 13px; color: var(--sub); margin: 12px 0; }
+  .meta-bar span { margin-right: 18px; }
+  .meta-bar strong { color: var(--ink); }
+
+  .acc-overview { background: #fafafa; border: 1px solid var(--border); border-radius: 6px; padding: 16px; margin: 12px 0; }
+  .acc-overview .aogrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; font-size: 13px; }
+  .acc-overview .aogrid .lbl { font-weight: 600; color: var(--sub); }
+  .acc-overview ul { margin: 4px 0 0 18px; padding: 0; }
+  .acc-overview ul li { margin-bottom: 3px; }
+
+  .section { margin: 14px 0; }
+  .section h4 { margin-top: 16px; }
+  .section p, .section ul { font-size: 14px; color: var(--ink); }
+  .section ul { margin: 4px 0 10px 22px; }
+  .section ul li { margin-bottom: 4px; }
+
+  .email-block { background: #f0f7ff; border-left: 3px solid var(--mx-blue); padding: 14px 18px;
+                 border-radius: 0 6px 6px 0; font-size: 13.5px; font-family: Georgia, serif;
+                 white-space: pre-wrap; margin: 10px 0; }
+
+  .tier-donut-legend { display: flex; justify-content: center; gap: 18px; margin-top: 12px; font-size: 13px; }
+  .tier-donut-legend .item { display: flex; align-items: center; gap: 6px; }
+  .tier-donut-legend .dot { width: 12px; height: 12px; border-radius: 50%; }
+
+  .alert-banner { background: #fffbeb; border-left: 5px solid var(--red); padding: 14px 18px;
+                  border-radius: 0 6px 6px 0; margin: 16px 0; }
+  .alert-banner strong { color: var(--red); }
+
+  footer { background: var(--mx-blue-dark); color: #fff; padding: 20px 32px; margin-top: 40px; text-align: center; }
+  footer a { color: #93c5fd; }
+
+  @media print {
+    header.top { position: static; }
+    .card { page-break-inside: avoid; }
+    body { background: #fff; }
+  }
+  @media (max-width: 800px) {
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .viz-row { grid-template-columns: 1fr; }
+    .acc-overview .aogrid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Mixmax · AE Pipeline Analysis</div>
+  <div class="nav">
+    <a href="#summary">Summary</a>
+    <a href="#must-win">Must-Win</a>
+    <a href="#should-win">Should-Win</a>
+    <a href="#long-shot">Long-Shot</a>
+    <a href="#stuck">Stuck</a>
+  </div>
+</header>
+
+<div class="container">
+
+<h1>Isabelle Tuomi — Pipeline Analysis</h1>
+<p class="subtitle">April 2026 close deals · Generated 2026-04-18 · Source: Quarterly Snapshot Q2 2026 (04-17)</p>
+
+<!-- ============= EXEC SUMMARY ============= -->
+<section id="summary">
+<h2>Executive Summary</h2>
+
+<div class="alert-banner">
+  <strong>⚠ Headline:</strong> 15 open deals totaling ~$89.6K closing April 2026. Only $29.6K is real Must-Win pipeline (5 deals), anchored by one Commit ($6.8K Influential) and three Stage-2 demos. 7 Morgan-legacy Stage 0 opps totaling $53K are dead-pipeline forecast pollution — close-lost this week. <strong>Hidden gem: Consero (50 active Mixmax users on a $0 Stage-0 Long-Shot) is misclassified — reclassify as Must-Win Expansion, parallel to Karan's Knot Worldwide finding.</strong>
+</div>
+
+<div class="summary-grid">
+  <div class="kpi"><div class="label">AE</div><div class="value">Isabelle Tuomi</div><div class="sub">April-close deals</div></div>
+  <div class="kpi"><div class="label">Total Open Deals</div><div class="value">15</div><div class="sub">All closing April 2026</div></div>
+  <div class="kpi"><div class="label">Total Pipeline</div><div class="value">$89.6K</div><div class="sub">Gross of tier mix</div></div>
+  <div class="kpi"><div class="label">Weighted Pipeline</div><div class="value">~$17K</div><div class="sub">Stage-probability adj.</div></div>
+  <div class="kpi"><div class="label">Must-Win</div><div class="value">5 · $29.6K</div><div class="sub">Tier 1 focus</div></div>
+  <div class="kpi"><div class="label">Should-Win</div><div class="value">3 · $7K</div><div class="sub">Tier 2</div></div>
+  <div class="kpi"><div class="label">Long-Shot</div><div class="value">7 · $53K</div><div class="sub">All close-lost candidates</div></div>
+  <div class="kpi"><div class="label">Overdue Deals</div><div class="value">10</div><div class="sub">Past close date</div></div>
+</div>
+</section>
+
+<!-- ============= VIZ ============= -->
+<div class="viz-row">
+
+<div class="viz-box">
+  <h3>Pipeline by Tier</h3>
+  <svg viewBox="0 0 420 340" width="100%" height="320">
+    <g transform="translate(210,180)">
+      <!-- Must-Win 29.6/89.6 = 33%, Should-Win 7/89.6 = 7.8%, Long-Shot 53/89.6 = 59.2% -->
+      <!-- circumference at r=110 = 691.15. seg lens: 228.1, 53.9, 409.2 -->
+      <circle r="110" cx="0" cy="0" fill="none" stroke="#e5e7eb" stroke-width="60"/>
+      <circle r="110" cx="0" cy="0" fill="none" stroke="#16a34a" stroke-width="60"
+              stroke-dasharray="228.1 691.15" transform="rotate(-90)"/>
+      <circle r="110" cx="0" cy="0" fill="none" stroke="#ca8a04" stroke-width="60"
+              stroke-dasharray="53.9 691.15" stroke-dashoffset="-228.1" transform="rotate(-90)"/>
+      <circle r="110" cx="0" cy="0" fill="none" stroke="#6b7280" stroke-width="60"
+              stroke-dasharray="409.2 691.15" stroke-dashoffset="-282.0" transform="rotate(-90)"/>
+      <text x="0" y="-6" text-anchor="middle" font-size="26" font-weight="700" fill="#1e3a8a">$89.6K</text>
+      <text x="0" y="18" text-anchor="middle" font-size="13" fill="#6b7280">15 deals</text>
+    </g>
+  </svg>
+  <div class="tier-donut-legend">
+    <div class="item"><span class="dot" style="background:#16a34a"></span>Must-Win $29.6K</div>
+    <div class="item"><span class="dot" style="background:#ca8a04"></span>Should-Win $7K</div>
+    <div class="item"><span class="dot" style="background:#6b7280"></span>Long-Shot $53K</div>
+  </div>
+</div>
+
+<div class="viz-box">
+  <h3>Deal Count by Stage</h3>
+  <svg viewBox="0 0 420 340" width="100%" height="320">
+    <!-- Stages: S0=11, S2=3, S5=1 -->
+    <line x1="60" y1="40" x2="60" y2="290" stroke="#6b7280" stroke-width="1"/>
+    <line x1="60" y1="290" x2="400" y2="290" stroke="#6b7280" stroke-width="1"/>
+
+    <!-- Max=11, scale = 250/11 ≈ 22.7 per deal -->
+    <rect x="90" y="40" width="60" height="250" fill="#2563eb" opacity=".85"/>
+    <text x="120" y="32" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">11</text>
+    <text x="120" y="310" text-anchor="middle" font-size="12" fill="#4b5563">Stage 0</text>
+    <text x="120" y="325" text-anchor="middle" font-size="11" fill="#6b7280">Qual</text>
+
+    <rect x="190" y="222" width="60" height="68" fill="#2563eb" opacity=".85"/>
+    <text x="220" y="214" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">3</text>
+    <text x="220" y="310" text-anchor="middle" font-size="12" fill="#4b5563">Stage 2</text>
+    <text x="220" y="325" text-anchor="middle" font-size="11" fill="#6b7280">Demo</text>
+
+    <rect x="290" y="267" width="60" height="23" fill="#2563eb" opacity=".85"/>
+    <text x="320" y="259" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">1</text>
+    <text x="320" y="310" text-anchor="middle" font-size="12" fill="#4b5563">Stage 5</text>
+    <text x="320" y="325" text-anchor="middle" font-size="11" fill="#6b7280">Legal</text>
+
+    <text x="55" y="44" text-anchor="end" font-size="10" fill="#6b7280">11</text>
+    <text x="55" y="294" text-anchor="end" font-size="10" fill="#6b7280">0</text>
+  </svg>
+</div>
+
+</div>
+
+<!-- ============= MUST-WIN ============= -->
+<section id="must-win">
+<h2>🎯 Must-Win Deals (5 · $29.6K)</h2>
+<p class="subtitle">Tier 1: Highest-impact deals on Isabelle's board. Deep-dive + 4-block call prep per deal.</p>
+
+<!-- DEAL 1: INFLUENTIAL -->
+<div class="card must-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">1. Influential — $6,840</h3>
+      <div class="badges">
+        <span class="badge green">MUST-WIN</span>
+        <span class="badge green">Commit</span>
+        <span class="badge blue">Stage 5 (Legal)</span>
+        <span class="badge green">SCS 60 (highest)</span>
+        <span class="badge green">Aero: High / High</span>
+        <span class="badge yellow">DSC 60+</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/0011R00002KqsIF/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000UGZBp/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Isabelle</span>
+    <span><strong>Close:</strong> 4/30</span>
+    <span><strong>Source:</strong> Expansion (+15 licenses)</span>
+    <span><strong>SCS:</strong> 60 (Alignment 20, DM 20, Urgency 20)</span>
+    <span><strong>Age:</strong> 133d</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> Influential</div>
+      <div><span class="lbl">Industry:</span> Influencer Marketing / AdTech</div>
+      <div><span class="lbl">Paying?</span> Yes — existing customer</div>
+      <div><span class="lbl">Employees:</span> ~555, Las Vegas HQ</div>
+      <div><span class="lbl">Total Users:</span> ~22 seats today (scope +15)</div>
+      <div><span class="lbl">Active Users (30d):</span> 22 (stable)</div>
+      <div><span class="lbl">Power Users:</span> Yes (stable daily adoption)</div>
+      <div><span class="lbl">Paid Users:</span> 22</div>
+      <div><span class="lbl">Main Products Used:</span> Compose, Sequences, Calendar</div>
+      <div><span class="lbl">Not Used:</span> Copilot (next expansion vector)</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>DSC 60+ flag — deal has been in Legal review longer than healthy.</li>
+      <li>Redline cycle with counsel could slip into May.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>Highest SCS in Isabelle's book (60). Aero High/High. Real adoption (22 DAU).</li>
+      <li>Fortune 500 client list means enterprise-complex sales cycles — great case study material post-close.</li>
+      <li>Copilot is the natural next expansion conversation at renewal.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: SIGN BY 4/30.</strong> This is Isabelle's cleanest close. Execute a <strong>redline push + signature motion</strong>: weekly joint-CSM check-ins, proactively surface any legal blockers, loop our deal-desk + their counsel on a clearing call. Clear the DSC 60+ flag by quarter end.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"Are there any outstanding redlines from your legal or procurement team that I can pre-empt this week?"</li>
+      <li>"Who is the final signer — CRO, CFO, or General Counsel? What's their turnaround on e-sig?"</li>
+      <li>"Are the +15 licenses earmarked for a specific team (new SDR class, account management, CS)?"</li>
+      <li>"Anything in your procurement calendar — budget freeze, end-of-quarter true-up — that changes the 4/30 target?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"Legal is backed up"</em> → "Happy to loop our deal-desk and your counsel on a 15-min call. That's cut our average close by 6 days."</li>
+      <li><em>"Price increase at renewal next year"</em> → "+15 licenses locks today's per-seat rate for those seats for the contract term."</li>
+      <li><em>"Procurement wants to re-bid"</em> → "22 reps already in Mixmax every day. Rip-and-replace at this scale is a 6-month rollback, not a re-bid."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>22 users daily means the +15 expansion is matching product coverage to team size — this is a ceremony, not a new sale.</li>
+      <li>SCS 60 is Isabelle's highest — use this close as the template for subsequent Stage-5 motion.</li>
+      <li>Fortune 500 client list + influencer-marketing = enterprise-complex sales cycles = Sequences + Rules earn their keep.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Peer 500-700 emp influencer/creator agency Mixmax expansion (confirm via Octave).</li>
+      <li>Las Vegas / LA media-services vertical customer case (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> Influential +15 — let's clear the last mile by 4/30
+
+Hi [Economic Buyer],
+
+The +15 license expansion is in legal review. Two quick asks to wrap it cleanly by 4/30:
+
+1. Any outstanding redline language I should pre-empt? Our deal-desk can jump on a 15-min call with your counsel.
+2. Confirm the e-sig path — is this a CFO or GC signature?
+
+22 of your reps are in Mixmax every day. The +15 just matches product coverage to team size. Let me know if Thu or Fri works for a 15-min close call.
+
+Isabelle</div>
+  </div>
+</div>
+
+<!-- DEAL 2: ZSPACE -->
+<div class="card must-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">2. zSpace — $10,000 (Copilot Expansion)</h3>
+      <div class="badges">
+        <span class="badge green">MUST-WIN</span>
+        <span class="badge yellow">Pipeline</span>
+        <span class="badge blue">Stage 2 (Demo)</span>
+        <span class="badge green">Aero: Med / High</span>
+        <span class="badge green">30 DAU</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/0013600000iGWwc/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000MZ5RZ/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Isabelle</span>
+    <span><strong>Close:</strong> 4/30</span>
+    <span><strong>Source:</strong> Expansion (Copilot)</span>
+    <span><strong>SCS:</strong> 30 (DM 20, Urgency 10)</span>
+    <span><strong>Age:</strong> 281d</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> zSpace</div>
+      <div><span class="lbl">Industry:</span> EdTech (AR/VR learning hardware)</div>
+      <div><span class="lbl">Paying?</span> Yes — existing customer</div>
+      <div><span class="lbl">Employees:</span> ~124; public (IPO Aug 2025, $30M PIPE)</div>
+      <div><span class="lbl">Total Users:</span> 30-31 seats</div>
+      <div><span class="lbl">Active Users (30d):</span> 30-31 (stable)</div>
+      <div><span class="lbl">Power Users:</span> Full sales team</div>
+      <div><span class="lbl">Paid Users:</span> 30-31</div>
+      <div><span class="lbl">Main Products Used:</span> Compose, Sequences, Calendar</div>
+      <div><span class="lbl">Not Used:</span> Copilot (the expansion target)</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>Post-IPO board scrutiny on new spend — wrong framing pushes to Q3.</li>
+      <li>SCS 30 = DM engaged but not yet aligned on ROI math.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>Full sales-team Mixmax adoption (30 DAU in 124-emp org) = Copilot is pure layer-on-top.</li>
+      <li>94% of top-100 US school districts use zSpace hardware — long ENT sales cycles = Copilot's best fit.</li>
+      <li>Post-IPO public-company optics: measurable productivity stories sell to the board.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: ROI WORKING SESSION THIS WEEK.</strong> Partner with CSM + Copilot product lead. Deliver a <strong>board-ready 1-pager</strong> (not a rep-level demo) anchoring on 30 DAU × 15 min/day × 240 days = ~1,800 reclaimed hours. Target signature by 4/30, fall-back 5/15.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"Post-IPO, how is the board framing sales-productivity metrics — email output per rep, pipeline velocity, reply rates?"</li>
+      <li>"Your 30 active Mixmax users — are they all on the sales team, or does CS/BD use it too?"</li>
+      <li>"Where are reps still writing emails from scratch that Copilot could first-draft?"</li>
+      <li>"Is AI productivity tooling centralized under IT, or does sales leadership own the budget?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"Post-IPO budget discipline"</em> → "30 reps × 15 min/day × 240 days = 1,800 reclaimed hours — $180K+ of selling-time value. $10K is a 94% first-year ROI."</li>
+      <li><em>"Need to evaluate other AI tools"</em> → "Copilot sits inside Mixmax — zero new workflow. 14-day pilot, you decide."</li>
+      <li><em>"Board wants to cut, not add"</em> → "Copilot reclaims rep hours — cost-down narrative, not cost-up."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>30 DAU in a 124-emp org = full sales-team adoption. Copilot is the next productivity layer, not a new tool.</li>
+      <li>94% penetration into top-100 US school districts = complex ENT sales cycles = Copilot's best surface area.</li>
+      <li>Post-IPO board wants measurable productivity stories. 1,800 reclaimed hours is a boardroom number.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Peer edtech ENT Copilot rollout (confirm via Octave).</li>
+      <li>Public-company post-IPO Mixmax expansion case (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> zSpace × Copilot — post-IPO productivity math
+
+Hi [VP Sales / Revenue],
+
+Congrats on the August IPO — a $30M PIPE and 94% top-100 district penetration is a strong launch story.
+
+Two data points as you think about post-IPO productivity optics:
+1. 30 of your reps are in Mixmax every day.
+2. Of those 30, zero are using Copilot today.
+
+Conservative math: 15 min/day × 30 reps × 240 days = ~1,800 hours reclaimed. That's $180K+ in selling-time at typical comp — a 94% ROI on a $10K Copilot add.
+
+30-min ROI working session next week with your CSM and our Copilot product lead? [link]
+
+Isabelle</div>
+  </div>
+</div>
+
+<!-- DEAL 3: SOPHIA INSTITUTE -->
+<div class="card must-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">3. Sophia Institute Press — $7,500 (ENT Upgrade)</h3>
+      <div class="badges">
+        <span class="badge green">MUST-WIN</span>
+        <span class="badge yellow">Pipeline</span>
+        <span class="badge blue">Stage 2 (Demo)</span>
+        <span class="badge green">SCS 40</span>
+        <span class="badge yellow">Aero: High / Low</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/0013600001eyY7i/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000Ry3WX/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Isabelle</span>
+    <span><strong>Close:</strong> 4/30</span>
+    <span><strong>Source:</strong> Product</span>
+    <span><strong>SCS:</strong> 40 (Last Act 10, DM 20, Urgency 10)</span>
+    <span><strong>Age:</strong> 175d</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> Sophia Institute Press</div>
+      <div><span class="lbl">Industry:</span> Catholic non-profit publisher (books / curriculum)</div>
+      <div><span class="lbl">Paying?</span> Yes — existing customer</div>
+      <div><span class="lbl">Employees:</span> ~61</div>
+      <div><span class="lbl">Total Users:</span> ~7 seats</div>
+      <div><span class="lbl">Active Users (30d):</span> 7 (stable)</div>
+      <div><span class="lbl">Power Users:</span> Revenue/ops core team</div>
+      <div><span class="lbl">Paid Users:</span> 7</div>
+      <div><span class="lbl">Main Products Used:</span> Compose, basic Sequences</div>
+      <div><span class="lbl">Not Used:</span> Rules, ENT-tier features (the upgrade target)</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>Non-profit budget discipline — ENT upgrade price must flex to fit.</li>
+      <li>Product Fit Low (small seat count) — expansion ceiling is real.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>7/61 DAU = ~50% of revenue/ops team. Adoption is proven.</li>
+      <li>Non-profit publisher = donor/subscriber outreach at volume = Sequences is the killer feature.</li>
+      <li>SCS 40 is Isabelle's healthiest mid-funnel deal.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: PROPOSAL BY 4/28, CLOSE BY 4/30.</strong> Execute an <strong>ENT Upgrade + non-profit flex-pricing</strong> motion. Scope around Sequences + Rules for donor/subscriber outreach. Offer a non-profit-priced package tier that preserves per-seat economics.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"How much of your email volume today is donor/subscriber/retention vs. cold net-new?"</li>
+      <li>"Are Sequences being used at the 7-person level, or just basic Compose?"</li>
+      <li>"Does the ENT upgrade need to include a seat cap lift, or is it feature-gated (Rules/Sequences limits)?"</li>
+      <li>"What's the non-profit budget cycle — fiscal year close or calendar?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"Non-profit budget tight"</em> → "Non-profit flex pricing available. ENT upgrade at a tier that preserves your current seat cost."</li>
+      <li><em>"Our current tier is fine"</em> → "The ENT Rules feature lets you automate donor-renewal outreach — 3-5 hrs/week saved at 7 users."</li>
+      <li><em>"We can't justify the step-up"</em> → "Run it as a 60-day pilot at the ENT tier, revert if Rules isn't touched."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>7/61 DAU = the Mixmax-active team is the revenue-producing half. ENT upgrade matches their need.</li>
+      <li>Non-profit publisher = donor/subscriber outreach = Sequences + Rules flagship use cases.</li>
+      <li>Catholic / faith-based vertical has peer customers with ENT Rules rollouts (confirm).</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Peer non-profit publisher Mixmax ENT (confirm).</li>
+      <li>Catholic / faith-based non-profit case (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> Sophia Institute — ENT upgrade w/ non-profit flex
+
+Hi [DM],
+
+Wanted to close the loop on the ENT upgrade conversation. Two thoughts:
+
+1. Your 7 most active Mixmax users are your revenue-producing team — ENT Rules + Sequences fit their donor and subscriber outreach pattern.
+2. Non-profit flex pricing keeps the upgrade fiscally reasonable. I can scope a tier that doesn't change your per-seat economics materially.
+
+15 min Thu or Fri to finalize scope? I can have a proposal ready by 4/28 for a 4/30 close. [link]
+
+Isabelle</div>
+  </div>
+</div>
+
+<!-- DEAL 4: CONSERO (RECLASSIFIED) -->
+<div class="card reclassify">
+  <div class="card-header">
+    <div>
+      <h3 class="title">4. Consero — $0 → scope $15-30K 🚨 RECLASSIFY AS MUST-WIN EXPANSION</h3>
+      <div class="badges">
+        <span class="badge red">RECLASSIFY</span>
+        <span class="badge green">MUST-WIN EXPANSION</span>
+        <span class="badge blue">Stage 0 → reset to Stage 1</span>
+        <span class="badge green">50 DAU hidden</span>
+        <span class="badge green">Aero: Low / High</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/0013600001UXySb/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000KG9dN/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Isabelle</span>
+    <span><strong>Close:</strong> 4/09 → re-date 5/31</span>
+    <span><strong>Source:</strong> Expansion (CSQL)</span>
+    <span><strong>SCS:</strong> 20 (DM 20 only)</span>
+    <span><strong>Age:</strong> 344d</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> Consero (+ acquired Clarion)</div>
+      <div><span class="lbl">Industry:</span> Executive events services</div>
+      <div><span class="lbl">Paying?</span> Yes — existing customer (contract under-scoped to adoption)</div>
+      <div><span class="lbl">Employees:</span> ~97, Bethesda MD</div>
+      <div><span class="lbl">Total Users:</span> ~50+ seats (contract-vs-reality mismatch)</div>
+      <div><span class="lbl">Active Users (30d):</span> <strong>50</strong> (↑ from 45 in March)</div>
+      <div><span class="lbl">Power Users:</span> Multiple — needs CSM-led identification</div>
+      <div><span class="lbl">Paid Users:</span> TBD — contract true-up required</div>
+      <div><span class="lbl">Main Products Used:</span> Compose, Sequences, Calendar (heavy)</div>
+      <div><span class="lbl">Not Used:</span> Copilot (the next expansion layer)</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li><strong>Inaction is the biggest risk.</strong> This deal is on Isabelle's Long-Shot close-lost path. If not reclassified by 4/30, it closes out silently.</li>
+      <li>Aero Acct Fit Low is misleading — Product Fit High + 50 DAU confirms real adoption.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>50 DAU at a 97-emp org = ~50% penetration on the revenue/ops team. Hidden Must-Win parallel to Karan's Knot Worldwide ($0 / 300 DAU).</li>
+      <li>Clarion acquisition = natural opportunity to unify the revenue tech stack (seat-fill + Copilot).</li>
+      <li>Copilot ROI math: 50 reps × 15 min/day × 240 days = ~3,000 hrs/year reclaimed.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: RECLASSIFY THIS WEEK.</strong> Partner with CSM to pull the Amplitude user list, identify power users, reverse-engineer the economic buyer (likely COO or VP Ops given events-services vertical), scope $15-30K expansion (seat true-up + Copilot). Re-date opp to 5/31, move Stage 0 → 1, move Forecast Omitted → Pipeline.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"50 of your teammates are using Mixmax daily — who originally championed rollout, and who owns tool ownership today?"</li>
+      <li>"The Clarion acquisition — is that team on Mixmax yet, or still on Outlook/Gmail standalone?"</li>
+      <li>"Which revenue team has the longest email cycles (events sales? partnerships? sponsorships?) — that's the Copilot target."</li>
+      <li>"Who's the economic buyer for sales/rev tooling — COO, VP Ops, VP Sales?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"We're already using it — no new budget"</em> → "Expansion isn't new budget; it's aligning the contract to the 50 DAU reality. Copilot layers on after."</li>
+      <li><em>"The Clarion team has their own tools"</em> → "Happy to run a 30-day evaluation into that team separately. Let's get the core up first."</li>
+      <li><em>"Renegotiate at renewal, not now"</em> → "Renewal is when leverage flips to procurement. Closing expansion now locks today's rate."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>50 DAU is proof — this is a commercial alignment exercise, not a sale.</li>
+      <li>Post-Clarion acquisition = natural tech-stack consolidation opportunity.</li>
+      <li>Copilot ROI: 50 reps × 15 min/day × 240 days = ~3,000 hrs/year reclaimed.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Peer executive services / events vertical Mixmax expansion (confirm).</li>
+      <li>Post-acquisition tech-stack consolidation customer story (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> Consero — 50 reps in Mixmax, let's make it official
+
+Hi [COO / VP Ops],
+
+Quick data point you may not have seen: 50 of your teammates use Mixmax every business day. That's roughly half of Consero on our product already, and 100% of them are below the Copilot line.
+
+Two things to align on:
+1. The current contract is underwater relative to adoption — let's true it up to the 50-user reality.
+2. Copilot layers on top. 50 × 15 min/day = ~3,000 reclaimed rep-hours/year. Low single-digit thousands of dollars, six-figure payoff.
+
+Your CSM and I want to run a 30-min working session with you + the Clarion ops lead. Thu or Fri next week? [link]
+
+Isabelle (with [CSM])</div>
+  </div>
+</div>
+
+<!-- DEAL 5: EXPRESSABLE (AT RISK) -->
+<div class="card must-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">5. Expressable — $5,271.60 ⚠️ AT RISK (0 DAU, Stage 2 six months)</h3>
+      <div class="badges">
+        <span class="badge green">MUST-WIN</span>
+        <span class="badge yellow">Pipeline</span>
+        <span class="badge blue">Stage 2 (Demo)</span>
+        <span class="badge red">0 DAU · no trial</span>
+        <span class="badge gray">Aero: Low / Low</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/001VS00000VE3KM/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000R9sfx/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Isabelle</span>
+    <span><strong>Close:</strong> 4/30</span>
+    <span><strong>Source:</strong> Inbound</span>
+    <span><strong>SCS:</strong> 30 (DM 20, Urgency 10)</span>
+    <span><strong>Age:</strong> 190d (Stage 2 for six months)</span>
+    <span><strong>Next step:</strong> "10/9 Demo with Caitlyn, Kimberly, Patrick" (stale 6mo)</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> Expressable</div>
+      <div><span class="lbl">Industry:</span> Online speech / OT therapy (telehealth)</div>
+      <div><span class="lbl">Paying?</span> No — net-new prospect</div>
+      <div><span class="lbl">Employees:</span> ~186, Austin TX; Series B $26M HarbourVest Jun 2024</div>
+      <div><span class="lbl">Total Users:</span> 0</div>
+      <div><span class="lbl">Active Users (30d):</span> 0</div>
+      <div><span class="lbl">Power Users:</span> None</div>
+      <div><span class="lbl">Paid Users:</span> N/A</div>
+      <div><span class="lbl">Main Products Used:</span> None</div>
+      <div><span class="lbl">Not Used:</span> All</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>Stage 2 for 190 days with ZERO trial start — every prior similar deal in Isabelle's history has churned inside 90 days of close.</li>
+      <li>Aero Low/Low is a real signal — this may be a B2C-heavy org with thin Mixmax use case.</li>
+      <li>Forcing a close at $5K without product exposure = future churn statistic.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>3-person demo (Caitlyn, Kimberly, Patrick) logged 10/9 — named champions exist.</li>
+      <li>Series B stretch-goals for rep productivity land well in a 14-day trial format.</li>
+      <li>Telehealth / provider sales is inside-sales heavy → Sequences fit.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: TRIAL-FIRST REBOOT OR MUTUAL CLOSE.</strong> Revive the Caitlyn/Kimberly/Patrick thread with a <strong>14-day 3-seat trial</strong> offer. If trial adoption &gt;50%, close at $5K. If no trial start within 14 days, mark close-lost — do NOT push the deal.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"What's changed since the 10/9 demo — did the hiring plan or team composition shift?"</li>
+      <li>"Is the 3-user scope still accurate, or has the sales team grown since Series B?"</li>
+      <li>"Who's the DM — is it Caitlyn directly, or does Patrick (VP/Director) own signoff?"</li>
+      <li>"What tool are they using in the meantime — Gmail standalone, HubSpot email, something else?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"We got busy"</em> → "Totally fair. Want to rescope with a 14-day 3-seat trial? If the team doesn't use it, we mutually close."</li>
+      <li><em>"Still evaluating"</em> → "Evaluation in a spreadsheet is guesswork. 14-day in-product trial decides it."</li>
+      <li><em>"Budget went elsewhere"</em> → "Understood. Let's close this out cleanly now and restart in Q3."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>Six months at Stage 2 with zero trial = the deal is either dead or never had urgency. Forcing clarity protects quota.</li>
+      <li>Telehealth / provider sales is inside-sales heavy → Sequences fit.</li>
+      <li>Series B post-$26M raise = productivity narrative resonates with the board.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Peer Series B telehealth / health-tech Mixmax case (confirm).</li>
+      <li>Austin / SaaS Series B scale-up case (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> Expressable — trial-first or mutual close?
+
+Hi Caitlyn,
+
+Our 10/9 demo with you, Kimberly, and Patrick was productive — but 6 months in, I don't see your team in Mixmax yet. That tells me either the need shifted or the timing didn't work.
+
+Two paths to resolve by 4/30:
+1. **Trial-first**: 14-day 3-seat Mixmax trial, zero commitment. If the team uses it, we sign at $5,271.60. If not, we mutually close.
+2. **Mutual close**: Mark the opp closed now, clean slate for a Q3 revisit.
+
+Which feels right? Happy to set up the trial in under 10 min. [link]
+
+Isabelle</div>
+  </div>
+</div>
+
+</section>
+
+<!-- ============= SHOULD-WIN ============= -->
+<section id="should-win">
+<h2>⚡ Should-Win Deals (3 · $7K)</h2>
+<p class="subtitle">Tier 2: Plausible path to close this month or early May. Clear motion required — re-engage, scope, or kill.</p>
+
+<!-- DEAL 6: DIGITAL VOICES -->
+<div class="card should-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">6. Digital Voices — $0 scope ($8-15K expansion)</h3>
+      <div class="badges">
+        <span class="badge yellow">SHOULD-WIN</span>
+        <span class="badge gray">Omitted</span>
+        <span class="badge blue">Stage 0 (CSQL)</span>
+        <span class="badge green">12 DAU</span>
+        <span class="badge yellow">Aero: High / Low</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/0011R000031TAP8/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000UH6u9/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Isabelle</span>
+    <span><strong>Close:</strong> 4/09 → slip to May likely</span>
+    <span><strong>Source:</strong> Expansion (CSQL)</span>
+    <span><strong>SCS:</strong> 0</span>
+    <span><strong>Age:</strong> 133d</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> Digital Voices</div>
+      <div><span class="lbl">Industry:</span> Influencer / podcast agency</div>
+      <div><span class="lbl">Paying?</span> Yes — existing customer</div>
+      <div><span class="lbl">Employees:</span> ~60 (est.)</div>
+      <div><span class="lbl">Total Users:</span> 12 seats</div>
+      <div><span class="lbl">Active Users (30d):</span> 12 (stable)</div>
+      <div><span class="lbl">Power Users:</span> Yes</div>
+      <div><span class="lbl">Paid Users:</span> 12</div>
+      <div><span class="lbl">Main Products Used:</span> Compose, Sequences</div>
+      <div><span class="lbl">Not Used:</span> Rules, Copilot</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>SCS 0 — deal not yet kicked off; CSM-paced.</li>
+      <li>Small deal, low-urgency. Likely slips to May.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>Existing paying customer with real daily adoption (12 DAU).</li>
+      <li>Renewal timing creates a natural expansion conversation.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: CSM-ALIGNED RENEWAL-TIMED EXPANSION.</strong> Partner with CSM on renewal timing. Scope +5-10 seats. Proposal by 5/15 for a 5/31 close if 4/30 is unworkable.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"12 of your team are in Mixmax every day — what's the total revenue-facing headcount, and who's not on yet?"</li>
+      <li>"When's the renewal — April/May/June — and is there appetite to move on it now vs. at renewal?"</li>
+      <li>"What's the podcast-client outreach volume like — is it Sequences-heavy or still manual?"</li>
+      <li>"Any competing tools (Outreach, Apollo) in the stack you'd like to consolidate?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"Happy to wait till renewal"</em> → "Waiting locks today's rate in. Expanding now means the +5 seats come in under current pricing."</li>
+      <li><em>"Not sure team size justifies more seats"</em> → "Let's look at the Amplitude usage data together — we'll see exactly who's active and who'd benefit."</li>
+      <li><em>"Tight agency margins"</em> → "Phased rollout — 3 seats now, 3 later — works too."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>12 DAU is proof — expansion is ceremony.</li>
+      <li>Agency-vertical peer customers routinely expand 50-100% in year 2 (confirm).</li>
+      <li>Renewal-timed expansion is standard motion; CSM will co-sell.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Peer podcast / influencer agency customer (confirm via Octave).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> Digital Voices × Mixmax — renewal-timed seat expansion
+
+Hi [DM],
+
+12 of your team are in Mixmax every day — great adoption signal from a 60-person agency.
+
+As we approach renewal, wanted to scope a +5 to +10 seat expansion so you lock today's pricing. Your CSM and I can run a 30-min working session, pull the usage data live, and land a proposal you can sign in week one of May.
+
+Open to a quick Tue/Wed next week? [link]
+
+Isabelle</div>
+  </div>
+</div>
+
+<!-- DEAL 7: BDT & MSD -->
+<div class="card should-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">7. BDT &amp; MSD Partners — $0 scope (fragile)</h3>
+      <div class="badges">
+        <span class="badge yellow">SHOULD-WIN</span>
+        <span class="badge gray">Omitted</span>
+        <span class="badge blue">Stage 0</span>
+        <span class="badge red">1 DAU</span>
+        <span class="badge yellow">Aero: High / Low</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/001VS00000ROAYB/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000NRbPg/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Isabelle</span>
+    <span><strong>Close:</strong> 4/09 → extend or kill</span>
+    <span><strong>Source:</strong> Expansion</span>
+    <span><strong>SCS:</strong> 0</span>
+    <span><strong>Age:</strong> 258d</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> BDT &amp; MSD Partners</div>
+      <div><span class="lbl">Industry:</span> Merchant banking / PE &amp; M&amp;A advisory</div>
+      <div><span class="lbl">Paying?</span> Yes (1 seat)</div>
+      <div><span class="lbl">Employees:</span> Large — advisory firm</div>
+      <div><span class="lbl">Total Users:</span> 1 seat</div>
+      <div><span class="lbl">Active Users (30d):</span> ~1</div>
+      <div><span class="lbl">Power Users:</span> None</div>
+      <div><span class="lbl">Paid Users:</span> 1</div>
+      <div><span class="lbl">Main Products Used:</span> Minimal</div>
+      <div><span class="lbl">Not Used:</span> Nearly all</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>1 DAU + Stage 0 + 258-day age = classic ghost-deal with optional upside.</li>
+      <li>PE/advisory vertical = relationship sales, not email automation. Structural fit-limit.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>If an inside-sales or BD function emerges, case-study value for peer PE firms is high.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: QUALIFY OR KILL.</strong> Send one tight re-engagement email. 10-day window. If no pulse, close-lost.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"Is there an inside sales or BD function that would use Mixmax daily, or is email primarily partner-to-partner?"</li>
+      <li>"What does the existing 1-user use case look like — and is it working?"</li>
+      <li>"Is there a compliance or infosec reason Mixmax hasn't expanded past 1 user?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"PE/advisory is relationship sales, not email automation"</em> → "Understood. Mixmax is Gmail + light Sequences; fits the 'follow up at scale' motion even in relationship selling."</li>
+      <li><em>"Infosec is the blocker"</em> → "Happy to loop our security team for an infosec review — no commercial conversation needed until that clears."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>PE/advisory firms rarely scale Mixmax past handful of seats. Optional-upside deal.</li>
+      <li>If BDT expands, peer PE firm case-study value is material.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>PE / M&amp;A advisory Mixmax customer (confirm — thin vertical).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> BDT &amp; MSD × Mixmax — still a fit or time to close?
+
+Hi [DM],
+
+Checking in on the expansion conversation that's been quiet a while. Straight talk:
+
+1. One user on your team is active today — is there an inside sales or BD function that would grow from there?
+2. If not, I'll close the opp cleanly and we can revisit if/when a use case emerges.
+
+15 min this week either way? [link]
+
+Isabelle</div>
+  </div>
+</div>
+
+<!-- DEAL 8: CLUTCH -->
+<div class="card should-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">8. Clutch — $7,000 (Fresh Outbound)</h3>
+      <div class="badges">
+        <span class="badge yellow">SHOULD-WIN</span>
+        <span class="badge gray">Omitted</span>
+        <span class="badge blue">Stage 0</span>
+        <span class="badge gray">Aero: Low / Low</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/0011R00002SiA1g/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000WPVsb/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Isabelle</span>
+    <span><strong>Close:</strong> 4/30</span>
+    <span><strong>Source:</strong> Outbound</span>
+    <span><strong>SCS:</strong> 0</span>
+    <span><strong>Age:</strong> 80d (newest)</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> Clutch</div>
+      <div><span class="lbl">Industry:</span> Consumer SaaS / fintech (confirm)</div>
+      <div><span class="lbl">Paying?</span> No — net-new prospect</div>
+      <div><span class="lbl">Employees:</span> TBD</div>
+      <div><span class="lbl">Total Users:</span> 0</div>
+      <div><span class="lbl">Active Users (30d):</span> 0</div>
+      <div><span class="lbl">Power Users:</span> None</div>
+      <div><span class="lbl">Paid Users:</span> N/A</div>
+      <div><span class="lbl">Main Products Used:</span> None</div>
+      <div><span class="lbl">Not Used:</span> All</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>Low/Low Aero tempers expectations.</li>
+      <li>No product exposure — outreach is fully education-led.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>Fresh outbound = clean slate, 80-day-old opp.</li>
+      <li>GTM team scope per opp name = Sequences-heavy fit.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: LAUNCH 3-EMAIL SEQUENCE.</strong> Isabelle owns the outbound motion. Target VP Sales / Head of GTM. 2-week discovery window; if no traction by 4/30, let it roll to May without forcing.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"What does the GTM team structure look like — SDRs, AEs, partnerships?"</li>
+      <li>"What tool is the team using for outbound today — Gmail? Outreach? Apollo?"</li>
+      <li>"What's the reporting cadence — weekly pipeline review? Monthly?"</li>
+      <li>"Is there a pilot-friendly team to start on Mixmax before committing to the full GTM?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"We already use [tool]"</em> → "Mixmax is Gmail-native — most of our wins come from tool-consolidation conversations, not rip-replaces."</li>
+      <li><em>"Not a priority"</em> → "Understood. If I sent a 1-pager on the fit and usage patterns, would that route to someone?"</li>
+      <li><em>"Too small a team for dedicated tooling"</em> → "Mixmax starts at 3 seats. Low-floor pilot."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>Clutch.io = mobile subscription / fintech (confirm). GTM teams in fintech are Sequences-heavy.</li>
+      <li>First touch = education-led, not demo-led.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Peer fintech / consumer SaaS GTM Mixmax customer (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> Clutch GTM + Mixmax — 3-seat pilot?
+
+Hi [VP Sales / Head of GTM],
+
+Reaching out because Mixmax is the tool most GTM teams at your stage quietly standardize on — Gmail-native, Sequences + Rules, 1-day adoption.
+
+Three quick questions:
+1. How's the GTM team structured today — SDR + AE + partnerships?
+2. What's the current email/sequencing stack?
+3. Any team open to a 14-day 3-seat pilot this month?
+
+15 min Thu or Fri to compare notes? [link]
+
+Isabelle</div>
+  </div>
+</div>
+
+</section>
+
+<!-- ============= LONG-SHOT ============= -->
+<section id="long-shot">
+<h2>🪦 Long-Shot Deals (7 · $53K — all close-lost candidates)</h2>
+<p class="subtitle">Tier 3: Morgan-era Stage 0 cleanup. All zero product usage in 60 days. Motion: one last-attempt email, close-lost within 5-7 days if silent. Clearing $53K of ghost pipeline is a material hygiene win.</p>
+
+<!-- TAXBACK CALLOUT -->
+<div class="card long-shot">
+  <div class="card-header">
+    <div>
+      <h3 class="title">9. Taxback International — $20,000 ⚠️ Largest forecast ghost</h3>
+      <div class="badges">
+        <span class="badge gray">LONG-SHOT</span>
+        <span class="badge red">$20K ghost pipeline</span>
+        <span class="badge blue">Stage 0</span>
+        <span class="badge gray">Aero: Low / Low</span>
+        <span class="badge red">535d stale</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/001VS00000Gpei9/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000CqVfD/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Isabelle</span>
+    <span><strong>Close:</strong> 4/09 (overdue 9d)</span>
+    <span><strong>Source:</strong> Inbound</span>
+    <span><strong>SCS:</strong> 0</span>
+    <span><strong>Age:</strong> 535d</span>
+  </div>
+
+  <div class="section">
+    <p><strong>Orchestrator Verdict:</strong> The single biggest pipeline-hygiene item in Isabelle's book. Tax compliance SaaS is an edge ICP; 535 days of silence + 0 DAU is a clear signal. One honest "is this still alive?" email, then close-lost in 7 days regardless. <strong>Clearing $20K of forecast pollution is worth more than keeping the number on paper.</strong></p>
+
+    <h4>Outreach — Last-Attempt Email</h4>
+    <div class="email-block"><strong>Subject:</strong> Taxback × Mixmax — closing the opportunity
+
+Hi [DM],
+
+Transparent note: the Mixmax opportunity you and I set up is 535 days old with no progression. That's a mutual signal it's not the right time — and a $20K pipeline placeholder helps no one.
+
+I'm going to close the opportunity cleanly this week. If Mixmax becomes relevant again, re-open at any point. No hard feelings.
+
+Isabelle</div>
+  </div>
+</div>
+
+<!-- DEALS 10-15: Close-Lost cluster -->
+<div class="card long-shot">
+  <div class="card-header">
+    <div>
+      <h3 class="title">10-15. Morgan-Legacy Stage 0 Cluster — RECOMMEND CLOSE-LOST</h3>
+      <div class="badges">
+        <span class="badge gray">6 deals · $33K total</span>
+        <span class="badge red">All overdue 9d</span>
+        <span class="badge gray">0 DAU · 0 meetings · SCS 0-20</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <p>These six deals share the same pattern: Morgan-assigned Stage 0 opportunities reassigned during April 2026 cleanup, with zero product usage, zero meetings indexed, and predominantly Low/Low Aero. <strong>Recommended action: close-lost immediately</strong> to clean Isabelle's pipeline hygiene. Optional last-attempt emails only for the Medium-Aero accounts (AbleNet, NTT Data); skip the rest.</p>
+
+    <table style="width:100%; border-collapse: collapse; margin-top: 12px; font-size: 13px;">
+      <thead>
+        <tr style="background: #f3f4f6;">
+          <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Account</th>
+          <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">$</th>
+          <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Industry / Size</th>
+          <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Verdict</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid var(--border);">Agrosuper</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">$8K</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Chilean food producer — fuzzy ICP</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Close-lost after one polite exit email (High Acct Fit, but 602d stale).</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid var(--border);">LaunchTech Communications</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">$5K</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">PR / communications agency</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Close-lost directly. Low/Low Aero, 538d stale.</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid var(--border);">Jetpubs</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">$5K</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Aviation publication services — edge ICP</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Close-lost directly.</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid var(--border);">CityTutor DC</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">$5K</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Non-profit tutoring</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Close-lost — structural Salesforce sync mismatch per their admin.</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid var(--border);">AbleNet Inc.</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">$5K</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Assistive tech manufacturer</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Close-lost unless nudge-email revives (Medium Acct Fit).</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid var(--border);">NTT Data</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">$5K</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">195K-emp global IT services</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Close-lost at $5K scope. If a real champion surfaces, reset as a proper ENT account plan — not this Morgan Stage-0 opp.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</section>
+
+<!-- ============= STUCK DEALS ============= -->
+<section id="stuck">
+<h2>🚨 Stuck Deals Summary</h2>
+<p class="subtitle">Any deal &gt;14 days in stage, past close date, or with no meetings in 30+ days.</p>
+
+<div class="card">
+  <table style="width:100%; border-collapse: collapse; font-size: 13px;">
+    <thead>
+      <tr style="background: #f3f4f6;">
+        <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Deal</th>
+        <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Tier</th>
+        <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">$</th>
+        <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Stuck Signal</th>
+        <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Unstick Play</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">Influential</td><td style="padding: 8px; border: 1px solid var(--border);">Must-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$6.8K</td><td style="padding: 8px; border: 1px solid var(--border);">DSC 60+ on Stage 5 Legal</td><td style="padding: 8px; border: 1px solid var(--border);">Redline-push email + deal-desk-to-counsel call</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">zSpace</td><td style="padding: 8px; border: 1px solid var(--border);">Must-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$10K</td><td style="padding: 8px; border: 1px solid var(--border);">Stage 2 for 281d, SCS 30, no close event</td><td style="padding: 8px; border: 1px solid var(--border);">Copilot ROI working session with CSM + product lead</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">Sophia Institute</td><td style="padding: 8px; border: 1px solid var(--border);">Must-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$7.5K</td><td style="padding: 8px; border: 1px solid var(--border);">Stage 2 for 175d, non-profit budget drag</td><td style="padding: 8px; border: 1px solid var(--border);">ENT Upgrade proposal + non-profit flex pricing</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">Expressable</td><td style="padding: 8px; border: 1px solid var(--border);">Must-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$5.3K</td><td style="padding: 8px; border: 1px solid var(--border);">Stage 2 for 190d, 0 trial, 0 DAU</td><td style="padding: 8px; border: 1px solid var(--border);">Trial-first-or-mutual-close email to Caitlyn</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">Consero (reclassify)</td><td style="padding: 8px; border: 1px solid var(--border);">Reclassify</td><td style="padding: 8px; border: 1px solid var(--border);">$0→$15-30K</td><td style="padding: 8px; border: 1px solid var(--border);">Misclassified Long-Shot; 50 DAU hidden expansion</td><td style="padding: 8px; border: 1px solid var(--border);">CSM-partnered reverse-engineer-the-buyer + scope expansion</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">Digital Voices</td><td style="padding: 8px; border: 1px solid var(--border);">Should-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$0</td><td style="padding: 8px; border: 1px solid var(--border);">Stage 0 CSQL, 9d overdue</td><td style="padding: 8px; border: 1px solid var(--border);">CSM-aligned renewal-timed expansion, 5/31 close</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">BDT &amp; MSD</td><td style="padding: 8px; border: 1px solid var(--border);">Should-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$0</td><td style="padding: 8px; border: 1px solid var(--border);">258d stale, 1 DAU fragile</td><td style="padding: 8px; border: 1px solid var(--border);">Qualify-or-kill email, 10d window</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">Taxback International</td><td style="padding: 8px; border: 1px solid var(--border);">Long-Shot</td><td style="padding: 8px; border: 1px solid var(--border);">$20K</td><td style="padding: 8px; border: 1px solid var(--border);">535d stale, 0 activity</td><td style="padding: 8px; border: 1px solid var(--border);">Honest last-attempt email + close-lost in 7d</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">6x Morgan Legacy</td><td style="padding: 8px; border: 1px solid var(--border);">Long-Shot</td><td style="padding: 8px; border: 1px solid var(--border);">$33K</td><td style="padding: 8px; border: 1px solid var(--border);">All overdue, 0 DAU, weak ICP</td><td style="padding: 8px; border: 1px solid var(--border);">Close-lost to clean pipeline</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ============= TOP-LINE RECOMMENDATIONS ============= -->
+<section id="recommendations">
+<h2>📋 Top-Line Recommendations — This Week</h2>
+
+<div class="card">
+  <h3>Immediate actions (next 48 hours)</h3>
+  <ol>
+    <li><strong>Consero ($0 → $15-30K reclassify)</strong> — partner with CSM, pull Amplitude user list, reverse-engineer economic buyer. Re-date opp to 5/31, move to Stage 1. <em>Highest-leverage move on Isabelle's board — parallels Karan's Knot Worldwide finding.</em></li>
+    <li><strong>Influential ($6.8K Commit)</strong> — redline-push email + deal-desk-to-counsel clearing call. Sign by 4/30.</li>
+    <li><strong>Expressable ($5.3K)</strong> — trial-first-or-mutual-close email to Caitlyn. Do not push without product exposure.</li>
+    <li><strong>Taxback International ($20K ghost)</strong> — honest last-attempt email, close-lost in 7d. Clearing forecast pollution.</li>
+    <li><strong>Close-lost 5 Morgan-legacy deals</strong> — LaunchTech, Jetpubs, CityTutor, Agrosuper, NTT Data at $5K. Clean pipeline hygiene.</li>
+  </ol>
+
+  <h3>This week (by Friday 4/24)</h3>
+  <ol>
+    <li><strong>zSpace ($10K Copilot)</strong> — Copilot ROI working session with CSM + Copilot product lead. Board-ready 1-pager.</li>
+    <li><strong>Sophia Institute ($7.5K ENT Upgrade)</strong> — ENT proposal with non-profit flex pricing, deliver by 4/28.</li>
+    <li><strong>Digital Voices</strong> — CSM alignment on renewal timing; scope +5-10 seats.</li>
+    <li><strong>BDT &amp; MSD</strong> — qualify-or-kill email.</li>
+    <li><strong>Clutch</strong> — 3-email outbound sequence launch.</li>
+    <li><strong>AbleNet</strong> — optional nudge-email (Medium Acct Fit).</li>
+  </ol>
+
+  <h3>Strategic view</h3>
+  <p>Isabelle's April board is heavily polluted — $53K (59%) of paper pipeline is Morgan-era close-lost candidates. Only $29.6K is real Must-Win pipeline, and of that, only <strong>$6.8K (Influential) is truly credible April close</strong>. <strong>Real April-close expectation is $7-15K on paper deals, plus the strategic upside from Consero reclassification</strong> — if scoped to $15-30K by 5/31, Consero becomes the single largest lift on Isabelle's quota line this quarter. Priority ranking for Isabelle's time: <strong>(1) Consero reclassify, (2) Influential signature, (3) Expressable trial-or-kill, (4) zSpace Copilot ROI, (5) pipeline hygiene sweep.</strong></p>
+</div>
+</section>
+
+</div>
+
+<footer>
+  <div>Mixmax Revenue Reporting · AE Pipeline Analysis v0.3.0</div>
+  <div style="margin-top: 6px; font-size: 13px;">Generated 2026-04-18 · Source: Quarterly Snapshot Q2 2026 (04-17) · AE: Isabelle Tuomi</div>
+</footer>
+
+</body>
+</html>
