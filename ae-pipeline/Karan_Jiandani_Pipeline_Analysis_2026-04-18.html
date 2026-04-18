@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karan Jiandani — AE Pipeline Analysis — April 2026</title>
+<style>
+  :root {
+    --mx-blue:#2563eb; --mx-blue-dark:#1e3a8a; --mx-blue-light:#dbeafe;
+    --green:#16a34a; --green-bg:#dcfce7;
+    --yellow:#ca8a04; --yellow-bg:#fef9c3;
+    --red:#dc2626; --red-bg:#fee2e2;
+    --gray:#6b7280; --gray-bg:#f3f4f6;
+    --border:#e5e7eb; --ink:#111827; --sub:#4b5563;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         margin: 0; padding: 0; background: #f9fafb; color: var(--ink); line-height: 1.55; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
+  header.top { position: sticky; top: 0; background: #fff; border-bottom: 2px solid var(--mx-blue);
+               z-index: 10; padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; }
+  header.top .brand { font-weight: 700; color: var(--mx-blue); font-size: 18px; }
+  header.top .nav a { margin-left: 18px; color: var(--sub); text-decoration: none; font-size: 14px; }
+  header.top .nav a:hover { color: var(--mx-blue); }
+  h1 { font-size: 34px; margin: 0 0 6px 0; color: var(--mx-blue-dark); }
+  h2 { font-size: 26px; margin: 48px 0 12px 0; color: var(--mx-blue-dark);
+       border-bottom: 2px solid var(--mx-blue-light); padding-bottom: 6px; }
+  h3 { font-size: 20px; margin: 28px 0 10px 0; color: var(--ink); }
+  h4 { font-size: 15px; margin: 18px 0 8px 0; color: var(--sub); text-transform: uppercase; letter-spacing: .5px; }
+  .subtitle { color: var(--sub); font-size: 15px; margin-bottom: 16px; }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+  .kpi { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  .kpi .label { font-size: 11px; color: var(--sub); text-transform: uppercase; letter-spacing: .6px; }
+  .kpi .value { font-size: 22px; font-weight: 700; color: var(--mx-blue-dark); margin-top: 4px; }
+  .kpi .sub { font-size: 12px; color: var(--sub); margin-top: 2px; }
+
+  .viz-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+  .viz-box { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .viz-box h3 { margin-top: 0; }
+
+  .card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 22px;
+          margin: 20px 0; box-shadow: 0 1px 2px rgba(0,0,0,.03); }
+  .card.must-win { border-left: 5px solid var(--green); }
+  .card.should-win { border-left: 5px solid var(--yellow); }
+  .card.long-shot { border-left: 5px solid var(--gray); }
+  .card.reclassify { border-left: 5px solid var(--red); background: #fffbeb; }
+
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+  .card-header .title { font-size: 22px; font-weight: 700; color: var(--ink); margin: 0; }
+  .card-header .links a { margin-right: 8px; font-size: 12px; text-decoration: none;
+                          background: var(--mx-blue-light); color: var(--mx-blue-dark);
+                          padding: 3px 8px; border-radius: 4px; }
+  .card-header .links a:hover { background: var(--mx-blue); color: #fff; }
+
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .badge.green { background: var(--green-bg); color: var(--green); }
+  .badge.yellow { background: var(--yellow-bg); color: var(--yellow); }
+  .badge.red { background: var(--red-bg); color: var(--red); }
+  .badge.gray { background: var(--gray-bg); color: var(--gray); }
+  .badge.blue { background: var(--mx-blue-light); color: var(--mx-blue-dark); }
+
+  .meta-bar { background: #f9fafb; border: 1px solid var(--border); border-radius: 6px;
+              padding: 10px 14px; font-size: 13px; color: var(--sub); margin: 12px 0; }
+  .meta-bar span { margin-right: 18px; }
+  .meta-bar strong { color: var(--ink); }
+
+  .acc-overview { background: #fafafa; border: 1px solid var(--border); border-radius: 6px; padding: 16px; margin: 12px 0; }
+  .acc-overview .aogrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; font-size: 13px; }
+  .acc-overview .aogrid .lbl { font-weight: 600; color: var(--sub); }
+  .acc-overview ul { margin: 4px 0 0 18px; padding: 0; }
+  .acc-overview ul li { margin-bottom: 3px; }
+
+  .section { margin: 14px 0; }
+  .section h4 { margin-top: 16px; }
+  .section p, .section ul { font-size: 14px; color: var(--ink); }
+  .section ul { margin: 4px 0 10px 22px; }
+  .section ul li { margin-bottom: 4px; }
+
+  .email-block { background: #f0f7ff; border-left: 3px solid var(--mx-blue); padding: 14px 18px;
+                 border-radius: 0 6px 6px 0; font-size: 13.5px; font-family: Georgia, serif;
+                 white-space: pre-wrap; margin: 10px 0; }
+
+  .tier-donut-legend { display: flex; justify-content: center; gap: 18px; margin-top: 12px; font-size: 13px; }
+  .tier-donut-legend .item { display: flex; align-items: center; gap: 6px; }
+  .tier-donut-legend .dot { width: 12px; height: 12px; border-radius: 50%; }
+
+  .alert-banner { background: #fffbeb; border-left: 5px solid var(--red); padding: 14px 18px;
+                  border-radius: 0 6px 6px 0; margin: 16px 0; }
+  .alert-banner strong { color: var(--red); }
+
+  footer { background: var(--mx-blue-dark); color: #fff; padding: 20px 32px; margin-top: 40px; text-align: center; }
+  footer a { color: #93c5fd; }
+
+  @media print {
+    header.top { position: static; }
+    .card { page-break-inside: avoid; }
+    body { background: #fff; }
+  }
+  @media (max-width: 800px) {
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .viz-row { grid-template-columns: 1fr; }
+    .acc-overview .aogrid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Mixmax · AE Pipeline Analysis</div>
+  <div class="nav">
+    <a href="#summary">Summary</a>
+    <a href="#must-win">Must-Win</a>
+    <a href="#should-win">Should-Win</a>
+    <a href="#long-shot">Long-Shot</a>
+    <a href="#stuck">Stuck</a>
+  </div>
+</header>
+
+<div class="container">
+
+<h1>Karan Jiandani — Pipeline Analysis</h1>
+<p class="subtitle">April 2026 close deals · Generated 2026-04-18 · Source: Quarterly Snapshot Q2 2026 (04-17)</p>
+
+<!-- ============= EXEC SUMMARY ============= -->
+<section id="summary">
+<h2>Executive Summary</h2>
+
+<div class="alert-banner">
+  <strong>⚠ Headline:</strong> 15 open deals totaling ~$101.2K closing April 2026. 5 Must-Win ($70.2K) anchored by a stalled $45K Vector Media transfer. 4 Morgan-legacy Stage 0 opps are dead-pipeline and should close-lost this week. <strong>Hidden gem: The Knot Worldwide (300 active Mixmax users) is misclassified as Long-Shot — real expansion Must-Win.</strong>
+</div>
+
+<div class="summary-grid">
+  <div class="kpi"><div class="label">AE</div><div class="value">Karan Jiandani</div><div class="sub">April-close deals</div></div>
+  <div class="kpi"><div class="label">Total Open Deals</div><div class="value">15</div><div class="sub">All closing April 2026</div></div>
+  <div class="kpi"><div class="label">Total Pipeline</div><div class="value">$101.2K</div><div class="sub">Gross of tier mix</div></div>
+  <div class="kpi"><div class="label">Weighted Pipeline</div><div class="value">~$38K</div><div class="sub">Stage-probability adj.</div></div>
+  <div class="kpi"><div class="label">Must-Win</div><div class="value">5 · $70.2K</div><div class="sub">Tier 1 focus</div></div>
+  <div class="kpi"><div class="label">Should-Win</div><div class="value">4 · $31K</div><div class="sub">Tier 2</div></div>
+  <div class="kpi"><div class="label">Long-Shot</div><div class="value">6 · ~$0</div><div class="sub">4 close-lost, 2 expansion</div></div>
+  <div class="kpi"><div class="label">Overdue Deals</div><div class="value">10</div><div class="sub">Past close date</div></div>
+</div>
+</section>
+
+<!-- ============= VIZ ============= -->
+<div class="viz-row">
+
+<div class="viz-box">
+  <h3>Pipeline by Tier</h3>
+  <svg viewBox="0 0 420 340" width="100%" height="320">
+    <g transform="translate(210,180)">
+      <!-- Donut: Must-Win 70.2/101.2 = 69.4%, Should-Win 31/101.2 = 30.6%, Long-Shot ~0% -->
+      <!-- Using arcs: circumference at r=110 = 691.15. seg lens: 479.82, 211.33 -->
+      <circle r="110" cx="0" cy="0" fill="none" stroke="#e5e7eb" stroke-width="60"/>
+      <circle r="110" cx="0" cy="0" fill="none" stroke="#16a34a" stroke-width="60"
+              stroke-dasharray="479.82 691.15" transform="rotate(-90)"/>
+      <circle r="110" cx="0" cy="0" fill="none" stroke="#ca8a04" stroke-width="60"
+              stroke-dasharray="211.33 691.15" stroke-dashoffset="-479.82" transform="rotate(-90)"/>
+      <text x="0" y="-6" text-anchor="middle" font-size="26" font-weight="700" fill="#1e3a8a">$101.2K</text>
+      <text x="0" y="18" text-anchor="middle" font-size="13" fill="#6b7280">15 deals</text>
+    </g>
+  </svg>
+  <div class="tier-donut-legend">
+    <div class="item"><span class="dot" style="background:#16a34a"></span>Must-Win $70.2K</div>
+    <div class="item"><span class="dot" style="background:#ca8a04"></span>Should-Win $31K</div>
+    <div class="item"><span class="dot" style="background:#6b7280"></span>Long-Shot ~$0</div>
+  </div>
+</div>
+
+<div class="viz-box">
+  <h3>Deal Count by Stage</h3>
+  <svg viewBox="0 0 420 340" width="100%" height="320">
+    <!-- bar chart of stages: S0=8, S1=1, S2=3, S3=3 -->
+    <!-- plot area x:60-400, y:40-290 -->
+    <line x1="60" y1="40" x2="60" y2="290" stroke="#6b7280" stroke-width="1"/>
+    <line x1="60" y1="290" x2="400" y2="290" stroke="#6b7280" stroke-width="1"/>
+
+    <!-- Bars: max 8, scale height 250/8 = 31.25 per deal -->
+    <rect x="90" y="40" width="60" height="250" fill="#2563eb" opacity=".85"/>
+    <text x="120" y="32" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">8</text>
+    <text x="120" y="310" text-anchor="middle" font-size="12" fill="#4b5563">Stage 0</text>
+    <text x="120" y="325" text-anchor="middle" font-size="11" fill="#6b7280">Qual</text>
+
+    <rect x="170" y="258" width="60" height="31" fill="#2563eb" opacity=".85"/>
+    <text x="200" y="250" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">1</text>
+    <text x="200" y="310" text-anchor="middle" font-size="12" fill="#4b5563">Stage 1</text>
+    <text x="200" y="325" text-anchor="middle" font-size="11" fill="#6b7280">Disc</text>
+
+    <rect x="250" y="196" width="60" height="94" fill="#2563eb" opacity=".85"/>
+    <text x="280" y="188" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">3</text>
+    <text x="280" y="310" text-anchor="middle" font-size="12" fill="#4b5563">Stage 2</text>
+    <text x="280" y="325" text-anchor="middle" font-size="11" fill="#6b7280">Demo</text>
+
+    <rect x="330" y="196" width="60" height="94" fill="#2563eb" opacity=".85"/>
+    <text x="360" y="188" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">3</text>
+    <text x="360" y="310" text-anchor="middle" font-size="12" fill="#4b5563">Stage 3</text>
+    <text x="360" y="325" text-anchor="middle" font-size="11" fill="#6b7280">Trial/Val</text>
+
+    <text x="55" y="44" text-anchor="end" font-size="10" fill="#6b7280">8</text>
+    <text x="55" y="294" text-anchor="end" font-size="10" fill="#6b7280">0</text>
+  </svg>
+</div>
+
+</div>
+
+<!-- ============= MUST-WIN ============= -->
+<section id="must-win">
+<h2>🎯 Must-Win Deals (5 · $70.2K)</h2>
+<p class="subtitle">Tier 1: Highest-impact deals on Karan's board. Deep-dive + 4-block call prep per deal.</p>
+
+<!-- DEAL 1: VECTOR MEDIA -->
+<div class="card must-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">1. Vector Media — $45K</h3>
+      <div class="badges">
+        <span class="badge green">MUST-WIN</span>
+        <span class="badge green">$45K</span>
+        <span class="badge blue">Stage 2</span>
+        <span class="badge red">Stuck 4+ mo</span>
+        <span class="badge yellow">Aero: High / Low</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/0011R00002n7ght/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000RFQ17/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Karan</span>
+    <span><strong>Close:</strong> 4/30</span>
+    <span><strong>Source:</strong> Inbound</span>
+    <span><strong>SCS:</strong> 0</span>
+    <span><strong>Age:</strong> 188d</span>
+    <span><strong>Next step:</strong> Stale (10/13 demo from Morgan)</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> Vector Media</div>
+      <div><span class="lbl">Industry:</span> Advertising Services (outdoor/transit)</div>
+      <div><span class="lbl">Paying?</span> No — net-new prospect</div>
+      <div><span class="lbl">Employees:</span> ~195, NYC</div>
+      <div><span class="lbl">Total Users:</span> 0</div>
+      <div><span class="lbl">Active Users (30d):</span> 0</div>
+      <div><span class="lbl">Power Users:</span> None</div>
+      <div><span class="lbl">Paid Users:</span> N/A</div>
+      <div><span class="lbl">Main Products Used:</span> None</div>
+      <div><span class="lbl">Not Used:</span> Sequences, Rules, Copilot, Enhance, Calendar</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>$45K deal with ZERO product exposure. 12/4 demo was 4+ months ago.</li>
+      <li>Deal transferred Morgan → Karan with no follow-up logged.</li>
+      <li>Stage 2 with no trial = fake-forecast red flag.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>7 demo attendees = strong early buyer interest (Rivera, Christian, Maydwell, Reilly, Fogel, Gonzalez, DOC).</li>
+      <li>Advertising sales teams = classic Mixmax Sequences + Rules use case.</li>
+      <li>"Fresh AE eyes" reset is a credible re-entry motion.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: CLOSE THIS WEEK (or demote).</strong> Largest $ on Karan's board with 4-month silence and 0 product usage. Execute a warm-reset motion within 48h: fresh-AE intro to Edwin + Abe referencing demo attendees by name. If no reply by 4/22, demote to Stage 1 and restart discovery — 4/30 close is not credible without a conversation this week.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"When we last spoke in December, the focus was [X]. Is that still the priority, or has it shifted?"</li>
+      <li>"Who on your team has been using any similar tools in the meantime — what's working and what's not?"</li>
+      <li>"What would need to be true in Q2 for Mixmax to be a top-3 investment?"</li>
+      <li>"Is the 7-person buying group from the demo still the right room?"</li>
+      <li>"What's your BDR team's current cold-email volume per rep per day, and where does that break down?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"We went a different direction"</em> → "Understood. What did you pick, and is it solving the problem — or is there still a gap?"</li>
+      <li><em>"Not a priority right now"</em> → "Fair. What moved ahead of it? I want to make sure we're timed right for when it moves back up."</li>
+      <li><em>"Budget is frozen"</em> → "When does budget unfreeze? I'd like a 15-min sync booked for that week."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>Advertising sales teams live in cold outbound — Mixmax Sequences + Rules cut reply-time by 40%+ for peer outdoor/transit co's.</li>
+      <li>Copilot AI-drafting reduces per-rep email time from 30 min to 8 min.</li>
+      <li>7 attendees at 12/4 demo = strong early buy-in — re-activate, don't restart.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Peer outdoor/transit media co. using Mixmax Sequences to drive agency-side outreach (confirm latest via Octave).</li>
+      <li>Advertising services vertical: 30%+ lift in meetings-booked per rep after Sequences + Rules rollout.</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> Picking up where Morgan left off — VM × Mixmax
+
+Hi Edwin (and Abe),
+
+I inherited the Vector Media conversation from Morgan and wanted to re-introduce myself before jumping to specifics. When we met 12/4, you, Abe, and the team walked through how your BDR motion runs today — and the gap around cold-outbound efficiency felt real.
+
+Four months later, I'm curious what's changed: did the problem move up, down, or sideways? And is the 7-person buying group from the demo still the right room?
+
+I've got 15 minutes Tue or Thu this week to recap what's new in Mixmax (Copilot, Rules v2) and pressure-test whether there's a fit for Q2 — or whether we should reset timing. Grab a slot: [link].
+
+Karan</div>
+  </div>
+</div>
+
+<!-- DEAL 2: ZEMBL -->
+<div class="card must-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">2. Zembl — $11.6K</h3>
+      <div class="badges">
+        <span class="badge green">MUST-WIN</span>
+        <span class="badge yellow">$11.6K</span>
+        <span class="badge blue">Stage 3 (Validation)</span>
+        <span class="badge red">Zombie 371d</span>
+        <span class="badge gray">Aero: Low / Low</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/001VS00000NlQzW/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000JFIbB/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Karan</span>
+    <span><strong>Close:</strong> 4/30</span>
+    <span><strong>SCS:</strong> 20</span>
+    <span><strong>Forecast:</strong> Best Case</span>
+    <span><strong>Age:</strong> 371d</span>
+    <span><strong>Next step:</strong> "." (blank)</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> Zembl</div>
+      <div><span class="lbl">Industry:</span> Utilities / Energy procurement</div>
+      <div><span class="lbl">Paying?</span> No</div>
+      <div><span class="lbl">Employees:</span> ~136, Sydney AU</div>
+      <div><span class="lbl">Total Users:</span> 0</div>
+      <div><span class="lbl">Active Users (30d):</span> 0</div>
+      <div><span class="lbl">Power Users:</span> None</div>
+      <div><span class="lbl">Paid Users:</span> N/A</div>
+      <div><span class="lbl">Main Products Used:</span> None</div>
+      <div><span class="lbl">Not Used:</span> All</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>12-month-old Stage 3 opp with 0 meetings logged.</li>
+      <li>Next-step = "." (blank placeholder).</li>
+      <li>Weak Aero (Low/Low). Best Case forecast is not credible.</li>
+      <li>ANZ timezone friction.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>If a proposal was actually shared, $11K validation stage deal is meaningful.</li>
+      <li>Forcing a decision (close or kill) cleans Karan's pipeline hygiene either way.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: FORCE DECISION THIS WEEK.</strong> This is almost certainly a zombie deal. One clean "still alive?" email with a fork (keep going vs. step back). If silent 5 days, close-lost and reclaim forecast credibility.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"Is the evaluation still active, or has it deprioritized?"</li>
+      <li>"Who's the economic decision-maker today — same person as a year ago?"</li>
+      <li>"What would need to happen in the next 10 days to move to signature?"</li>
+      <li>"Is the $11.6K still the scoped number, or has that shifted with headcount?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>Silence</em> → Assume dead, mark closed-lost in 5 days.</li>
+      <li><em>"Still evaluating"</em> → "A year is a long evaluation. What specifically is still outstanding — and what's a realistic decision date?"</li>
+      <li><em>"Budget paused"</em> → "Understood — let me pause too and check back in July once FY refreshes."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>APAC utilities/energy brokerage teams scaling outreach to SME — Mixmax reduces SDR ramp by 30%.</li>
+      <li>Best Case forecast requires a live conversation in the next 10 days — otherwise it's not credible.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>ANZ-based B2B services firm using Mixmax for outbound (confirm via Octave).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> Zembl × Mixmax — still on the table?
+
+Hi [DM],
+
+Reviewing open opportunities for Q2 close and wanted to check in directly: is the Mixmax evaluation still active on your side, or has it slipped in priority?
+
+I'd rather pause cleanly than keep chasing if timing isn't right. Happy to pick back up in July once the new FY lands.
+
+If it IS still live, I have 15 min this week to walk through final pricing and a mutual close plan.
+
+Karan</div>
+  </div>
+</div>
+
+<!-- DEAL 3: SUMMIT FIRE -->
+<div class="card must-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">3. Summit Fire &amp; Security — $7K</h3>
+      <div class="badges">
+        <span class="badge green">MUST-WIN</span>
+        <span class="badge gray">$7K</span>
+        <span class="badge blue">Stage 2</span>
+        <span class="badge red">Trial never started</span>
+        <span class="badge yellow">Aero: Med / Low</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/001VS00000V110D/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000R6kmz/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Karan</span>
+    <span><strong>Close:</strong> 4/30</span>
+    <span><strong>SCS:</strong> 10</span>
+    <span><strong>Age:</strong> 191d</span>
+    <span><strong>Next step:</strong> "10/10 Team Trial Kickoff" (stale 6mo)</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> Summit Fire &amp; Security</div>
+      <div><span class="lbl">Industry:</span> Fire Protection / Life Safety services</div>
+      <div><span class="lbl">Paying?</span> No</div>
+      <div><span class="lbl">Employees:</span> ~1,488</div>
+      <div><span class="lbl">Total Users:</span> 0</div>
+      <div><span class="lbl">Active Users (30d):</span> 0</div>
+      <div><span class="lbl">Power Users:</span> None</div>
+      <div><span class="lbl">Paid Users:</span> N/A</div>
+      <div><span class="lbl">Main Products Used:</span> None</div>
+      <div><span class="lbl">Not Used:</span> All</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>10/10/2025 trial kickoff never happened — 6 months of silence.</li>
+      <li>0 meetings logged in Mixmax. Medium Aero fit at best.</li>
+      <li>Stage 2 with no trial = unlikely to close 4/30.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>1,488-emp field-services co — if re-engaged, a 20-50 seat pilot is viable.</li>
+      <li>Field ops + commercial sales both benefit from Sequences.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: TRIAL-REVIVAL THIS WEEK.</strong> Acknowledge the lapsed trial, offer a fresh 14-day kickoff with a named 5-rep team. If no reply in 7 days, close-lost.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"The October trial kickoff never launched — what got in the way?"</li>
+      <li>"Is there a named team today that would most benefit (field ops vs. inside sales vs. channel)?"</li>
+      <li>"What would need to be true for a 14-day trial to succeed?"</li>
+      <li>"Who's the commercial signer — same person as October?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"We tried and it wasn't a fit"</em> → "Did anyone actually run a rep through the trial? The kickoff never happened and we learned nothing. 5-rep, 14-day pilot?"</li>
+      <li><em>"No budget"</em> → "$7K is a rounding error for a 1,488-emp org. If it's not budget, is it prioritization?"</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>Fire Protection/Life Safety co's run both inspection routes AND commercial sales — both benefit from Sequences.</li>
+      <li>14-day compressed pilot de-risks the commit — we give seats, you give feedback.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>B2B services / field-ops vertical on Mixmax (confirm via Octave).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> Your Summit trial that never launched
+
+Hi [DM],
+
+Your Mixmax trial was scheduled to kick off 10/10 — but we have no record of it actually starting. Six months later I'm back in the thread asking directly: was the project shelved, or did it just fall off the radar?
+
+If there's still interest, I'll set up a fresh 14-day pilot for a named 5-rep team this month — field ops or commercial sales, your call. If not, I'll clean it from our side.
+
+Grab a 15-min slot: [link].
+
+Karan</div>
+  </div>
+</div>
+
+<!-- DEAL 4: ORTHOFX -->
+<div class="card must-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">4. OrthoFX — $4.6K</h3>
+      <div class="badges">
+        <span class="badge green">MUST-WIN</span>
+        <span class="badge gray">$4.6K</span>
+        <span class="badge blue">Stage 3 (Trial)</span>
+        <span class="badge green">Highest SCS 30</span>
+        <span class="badge yellow">Aero: Low / Low</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/0011R000032UK1g/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000XFD3a/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Karan</span>
+    <span><strong>Close:</strong> 4/30</span>
+    <span><strong>SCS:</strong> 30 (Last Activity 20 + Urgency 10)</span>
+    <span><strong>Forecast:</strong> Best Case</span>
+    <span><strong>Age:</strong> 57d (newest)</span>
+    <span><strong>Next step:</strong> (missing)</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> OrthoFX</div>
+      <div><span class="lbl">Industry:</span> Healthcare / Clear aligners (tele-dentistry)</div>
+      <div><span class="lbl">Paying?</span> Trial (active)</div>
+      <div><span class="lbl">Employees:</span> ~133</div>
+      <div><span class="lbl">Total Users:</span> ~5 (small trial team)</div>
+      <div><span class="lbl">Active Users (30d):</span> 3 → 4 (slight ramp)</div>
+      <div><span class="lbl">Power Users:</span> 0 (trial ramping)</div>
+      <div><span class="lbl">Paid Users:</span> 0 (pre-conversion)</div>
+      <div><span class="lbl">Main Products Used:</span> Compose, basic Sequences</div>
+      <div><span class="lbl">Not Used:</span> Copilot, Rules, Enhance, Calendar advanced</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>No next-step defined — gap to close.</li>
+      <li>0 meetings logged despite Stage 3 Trial.</li>
+      <li>Small surface area (3-4 users).</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>Karan's highest-SCS deal (30) + newest (57d) + live trial = best close probability on board.</li>
+      <li>Healthcare vertical rarely on Mixmax today — strategic logo.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: COMMERCIAL-CLOSE THIS WEEK.</strong> Outcome-focused email with a 2-option CTA (pricing call OR skip-to-procurement). Lock annual + start date for 5/1.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"What are the reps telling you after 2 weeks of trial — any 'aha' moments?"</li>
+      <li>"Who signs on pricing — you, Finance, or a committee?"</li>
+      <li>"What would disqualify us at this stage?"</li>
+      <li>"Is the 5-user trial the final scope, or does Phase 2 include more seats?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"Still evaluating"</em> → "Great — specifically what's open? Proof or reference call in 48h."</li>
+      <li><em>"Need a discount"</em> → "Happy to talk price once we've agreed on scope. Seat count for launch?"</li>
+      <li><em>"Worried about integration"</em> → "Mixmax ships Salesforce + Gmail integrations OOTB. 20-min integration-specific call?"</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>Healthcare/tele-dentistry teams need outbound patient + B2B-practice outreach. Mixmax wins on Salesforce integration.</li>
+      <li>SCS 30 + live trial = the deal is real. Commercial gate is pricing + start date, not product fit.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Healthcare / direct-to-consumer telehealth vertical on Mixmax (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> OrthoFX trial — 2-week check-in
+
+Hi [DM],
+
+You're two weeks into the Mixmax trial — curious what the reps are saying. Any "aha" moments? Any friction?
+
+Two quick next steps to keep us on track for a 5/1 launch:
+1. 20-min pricing call Thu or Fri — lock annual rate + seat count
+2. Or skip-straight-to-procurement if pricing is already pre-approved
+
+Which works? [link]
+
+Karan</div>
+  </div>
+</div>
+
+<!-- DEAL 5: SUNDAY -->
+<div class="card must-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">5. Sunday — $2K EXPANSION</h3>
+      <div class="badges">
+        <span class="badge green">MUST-WIN</span>
+        <span class="badge gray">$2K</span>
+        <span class="badge blue">Stage 2</span>
+        <span class="badge blue">Expansion</span>
+        <span class="badge green">134 active users</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/0011R00002fU1J6/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000Vk7cY/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Karan</span>
+    <span><strong>Close:</strong> 4/30</span>
+    <span><strong>SCS:</strong> 30</span>
+    <span><strong>Age:</strong> 99d</span>
+    <span><strong>DM:</strong> Robin Iss, Head of Revenue</span>
+    <span><strong>Last mtg:</strong> 2/17/2026</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> Sunday</div>
+      <div><span class="lbl">Industry:</span> Restaurant payments (QR pay-at-table)</div>
+      <div><span class="lbl">Paying?</span> YES — Professional plan</div>
+      <div><span class="lbl">Employees:</span> ~308, Paris + Atlanta</div>
+      <div><span class="lbl">Total Users:</span> ~140+</div>
+      <div><span class="lbl">Active Users (30d):</span> 133 → 134 (stable ↗)</div>
+      <div><span class="lbl">Power Users:</span> ~20-30 est.</div>
+      <div><span class="lbl">Paid Users:</span> ~134</div>
+      <div><span class="lbl">Main Products Used:</span> Sequences, Compose, Templates, Calendar</div>
+      <div><span class="lbl">Not Used:</span> Rules, Enhance at scale, Copilot, SSO, advanced reporting</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>Pricing-sensitive (wants Professional % discount carried to ENT).</li>
+      <li>Product gap: mobile calling not available.</li>
+      <li>Small $ ($2K) — may just be SCS bump, not true ENT upgrade.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>Strong PMF (134 daily users). DM identified (Robin Iss).</li>
+      <li>Tool consolidation angle = upsell into Rules + Copilot.</li>
+      <li>Existing customer, low-friction expansion motion.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: CLOSE COMMERCIAL THIS WEEK.</strong> Send proposal mirroring Professional % discount, mobile-calling workaround (beta app or Aircall integration), 6-month ENT trial with quarterly true-up. Robin Iss is engaged — just needs pricing clarity.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"Since February, has the mobile-calling gap been a dealbreaker or a nice-to-have?"</li>
+      <li>"What does ENT unlock that Professional doesn't today — ranked by priority?"</li>
+      <li>"Is the discount ask from Procurement or from you directly?"</li>
+      <li>"Can we do a 6-month ENT with quarterly true-up if the upgrade lands well?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"Need the same % discount"</em> → "Matching that structure — here's the proposal. Procurement timing?"</li>
+      <li><em>"Mobile calling is a blocker"</em> → "Mobile app is in beta now, GA Q3. Interim: Aircall integration."</li>
+      <li><em>"Why Mixmax vs competitor X"</em> → "Because 134 of your reps are already in Mixmax daily. Switching = disruption tax."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>134 daily active users = Mixmax IS the rep workflow. ENT layers Rules + Enhance + Copilot on top.</li>
+      <li>Mobile-calling gap bridged via beta or Aircall.</li>
+      <li>Tool-consolidation: ENT subsumes 1-2 competing line items.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Restaurant-payments peer (Toast, Square adjacents) on Mixmax ENT (confirm).</li>
+      <li>European SaaS scale-up that moved Professional → ENT for Copilot (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> Sunday → ENT — proposal + mobile workaround
+
+Hi Robin,
+
+Following up on our 2/17 conversation. Three things:
+
+1. Proposal — ENT pricing matched to your Professional % discount structure. Attaching [link].
+2. Mobile calling gap — mobile app is in beta now (GA Q3). In the meantime, we can stand up Aircall integration in &lt;1 week so your field team isn't blocked.
+3. 6-month trial of ENT features — Rules + Enhance + Copilot — with a quarterly true-up. De-risks the commit, proves the ROI before annual.
+
+Can we get on 20 min Tue or Wed to close the loop on pricing?
+
+Karan</div>
+  </div>
+</div>
+
+</section>
+
+<!-- ============= SHOULD-WIN ============= -->
+<section id="should-win">
+<h2>🟡 Should-Win Deals (4 · $31K)</h2>
+<p class="subtitle">Tier 2: Meaningful deals with credible paths. Deep-dive + 4-block call prep per deal.</p>
+
+<!-- DEAL 6: ADVANTIVE -->
+<div class="card should-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">6. Advantive — $20K</h3>
+      <div class="badges">
+        <span class="badge yellow">SHOULD-WIN</span>
+        <span class="badge yellow">$20K</span>
+        <span class="badge blue">Stage 0</span>
+        <span class="badge red">Overdue 9d</span>
+        <span class="badge green">Aero: High / Low</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/001VS000003exMH/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000RyBXL/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Karan (reassigned from Morgan)</span>
+    <span><strong>Close:</strong> 4/9 OVERDUE</span>
+    <span><strong>Source:</strong> Outbound</span>
+    <span><strong>SCS:</strong> 0</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> Advantive</div>
+      <div><span class="lbl">Industry:</span> Manufacturing ERP/MES/SPC</div>
+      <div><span class="lbl">Paying?</span> No — net-new prospect</div>
+      <div><span class="lbl">Employees:</span> ~708, Tampa FL</div>
+      <div><span class="lbl">Funding:</span> PE-backed (Insight Partners + OA Private Capital, 2023)</div>
+      <div><span class="lbl">Total Users:</span> 0</div>
+      <div><span class="lbl">Active Users (30d):</span> 0</div>
+      <div><span class="lbl">Power Users:</span> None</div>
+      <div><span class="lbl">Paid Users:</span> N/A</div>
+      <div><span class="lbl">Main Products Used:</span> None</div>
+      <div><span class="lbl">Not Used:</span> All</div>
+      <div><span class="lbl">Octave playbook match:</span> HIGH (Growth-Focused SMB + Mid-Market SaaS)</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>9 days overdue, Stage 0, no activity.</li>
+      <li>Morgan stale reassignment — no prior rapport.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>708-emp ERP/MES vendor, PE-backed, 7K+ customers = real scaling sales motion.</li>
+      <li>High Aero Fit + High Octave playbook.</li>
+      <li>PE-backed = mandate for rep productivity investments.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: FRESH-PROSPECT REBOOT.</strong> Treat as net-new outbound. 3-email + 1-LinkedIn sequence to VP Sales or CRO. Reference PE backing + scaling motion. Discovery call by 4/30.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"Post-Insight Partners investment, how is the sales org scaling — hiring plan, pipeline goals?"</li>
+      <li>"What does a top-quartile AE look like at Advantive today — rep productivity metrics?"</li>
+      <li>"How is your team prospecting into complex manufacturing buyers — 1:1 manual or sequenced?"</li>
+      <li>"What tools sit in your sales stack today (Salesforce? Outreach? Apollo?)"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"Already have Outreach/Salesloft"</em> → "Most of our biggest wins are Outreach rip-and-replaces. Mixmax lives in Gmail — reps actually use it."</li>
+      <li><em>"Too small for us"</em> → "708 emp + PE mandate to scale = you need rep efficiency. 10-seat pilot."</li>
+      <li><em>"Need budget cycle"</em> → "Understood — let's shape the business case now so you're ready when budget opens."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>PE-backed scaling stories: 3 Insight portfolio companies standardized on Mixmax.</li>
+      <li>ERP/manufacturing ICP — long sales cycles benefit most from Sequences + Rules automation.</li>
+      <li>Gmail-native = reps adopt in 1 day, not 1 month.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Peer PE-backed B2B SaaS scaling $30M → $100M ARR on Mixmax (confirm).</li>
+      <li>Manufacturing ERP vendor case (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> Advantive + Insight-backed sales scaling
+
+Hi [VP Sales],
+
+Congrats on the Insight + OA funding — scaling a 708-person ERP vendor into the next growth phase is exactly the motion where we do our best work.
+
+Three peer Insight portfolio companies standardized on Mixmax in the last 18 months to drive rep productivity on outbound-into-manufacturing. The pattern is always the same: Gmail-native, 1-day adoption, 30%+ lift in reply rates.
+
+15 min next week to compare notes on your pipeline goals and see if it's a fit? [link]
+
+Karan</div>
+  </div>
+</div>
+
+<!-- DEAL 7: SCG -->
+<div class="card should-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">7. Success Communications Group — $6K</h3>
+      <div class="badges">
+        <span class="badge yellow">SHOULD-WIN</span>
+        <span class="badge gray">$6K</span>
+        <span class="badge blue">Stage 1 Discovery</span>
+        <span class="badge red">Overdue 3d</span>
+        <span class="badge gray">Aero: No Score</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/001VS00000b2UuL/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000WTGIJ/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Karan</span>
+    <span><strong>Close:</strong> 4/15 OVERDUE 3d</span>
+    <span><strong>Source:</strong> Inbound</span>
+    <span><strong>SCS:</strong> 10 (Urgency 10)</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> Success Communications Group</div>
+      <div><span class="lbl">Industry:</span> Advertising Services</div>
+      <div><span class="lbl">Paying?</span> No</div>
+      <div><span class="lbl">Employees:</span> ~15 (micro-small), Parsippany NJ</div>
+      <div><span class="lbl">Total Users:</span> 0</div>
+      <div><span class="lbl">Active Users (30d):</span> 0</div>
+      <div><span class="lbl">Power Users:</span> None</div>
+      <div><span class="lbl">Paid Users:</span> N/A</div>
+      <div><span class="lbl">Main Products Used:</span> None</div>
+      <div><span class="lbl">Not Used:</span> All</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>15-emp micro-agency — $6K at budget ceiling.</li>
+      <li>3 days overdue, Stage 1 probably stalled at first call.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>Inbound lead = real intent.</li>
+      <li>Small team can adopt quickly once budget clears.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: RE-ENGAGE-OR-KILL.</strong> Tight "what changed?" email — if responsive, fast-track to compressed demo + close in 7 days. If silent 5 days, close-lost.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"When you reached out originally, what was the triggering problem?"</li>
+      <li>"Is the 15-person team all client-facing, or is there an SDR sub-team?"</li>
+      <li>"What's your monthly outbound volume today, and where does it break?"</li>
+      <li>"Are you the DM, or does a partner/owner sign?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"Budget tight"</em> → "$6K is ~$30/rep/month. What's your current email tool spend?"</li>
+      <li><em>"Using our CRM's email"</em> → "Salesforce/HubSpot email is basic. Mixmax layers Sequences + Rules on top."</li>
+      <li><em>"Will we actually use it?"</em> → "10 reps, 30-day trial — if usage &lt;70% after 2 weeks, we pull the plug."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>Small ad agencies win on speed + personalization — Mixmax makes 10 reps perform like 20.</li>
+      <li>Inbound-first sales motion at a 15-person agency is a sweet spot.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>10-20 emp agency case (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> SCG × Mixmax — what's the real gap?
+
+Hi [DM],
+
+You reached out to Mixmax a few weeks back — I want to get us back on track before the thread goes cold. Can you tell me directly:
+1. What was the original problem you wanted solved?
+2. Is $6K still the right scope?
+3. Who else needs to weigh in on the decision?
+
+15-min call Thu or Fri to either move forward or mutually close? [link]
+
+Karan</div>
+  </div>
+</div>
+
+<!-- DEAL 8: FLYAKEED -->
+<div class="card should-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">8. FlyAkeed — $5K</h3>
+      <div class="badges">
+        <span class="badge yellow">SHOULD-WIN</span>
+        <span class="badge gray">$5K</span>
+        <span class="badge blue">Stage 0</span>
+        <span class="badge red">Overdue 9d</span>
+        <span class="badge green">Aero: High / Low</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/001VS00000H9sPE/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000D3yub/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Karan (reassigned)</span>
+    <span><strong>Close:</strong> 4/9 OVERDUE</span>
+    <span><strong>Source:</strong> Inbound</span>
+    <span><strong>SCS:</strong> 0</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> FlyAkeed</div>
+      <div><span class="lbl">Industry:</span> Travel Arrangements / Corporate Travel SaaS</div>
+      <div><span class="lbl">Paying?</span> No</div>
+      <div><span class="lbl">Employees:</span> ~210, Riyadh Saudi Arabia</div>
+      <div><span class="lbl">Funding:</span> $15.2M Series A (Elm + Sanabil, Sept 2023)</div>
+      <div><span class="lbl">Total Users:</span> 0</div>
+      <div><span class="lbl">Active Users (30d):</span> 0</div>
+      <div><span class="lbl">Power Users:</span> None</div>
+      <div><span class="lbl">Paid Users:</span> N/A</div>
+      <div><span class="lbl">Main Products Used:</span> None</div>
+      <div><span class="lbl">Not Used:</span> All</div>
+      <div><span class="lbl">Octave playbook match:</span> HIGH (Series A Revenue Scaling)</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>Morgan stale, 9 days overdue.</li>
+      <li>KSA timezone friction.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>Series A $15M corp travel SaaS = classic Mixmax ICP scaling sales ops.</li>
+      <li>High Aero Fit + High Octave playbook.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: FRESH OUTREACH.</strong> Target Head of Sales/RevOps. Async-friendly with 4 KSA-compatible slots. 10-day window, then close-lost if silent.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"Post-Series A, what's the sales org target for 2026 — rep count, bookings?"</li>
+      <li>"How does your B2B sales motion work into corporate travel buyers?"</li>
+      <li>"Is RevOps/Sales Ops a named function today, or embedded in sales leadership?"</li>
+      <li>"What tools are in your GTM stack (SF? Outreach? Gong?)"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"We use local tools"</em> → "Mixmax integrates Gmail + Salesforce and works globally. Many KSA/GCC scale-ups use it for English-language B2B sales."</li>
+      <li><em>"Budget prioritized elsewhere"</em> → "Series A mandate is to show rep productivity — $5K pilot, measurable output in 30 days."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>Series A scaling playbook: rep productivity is 2nd highest-ROI investment.</li>
+      <li>Complex B2B cycles = Sequences + Rules = 30%+ pipeline lift.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Peer Series A corporate SaaS (confirm).</li>
+      <li>GCC/MENA B2B scale-up (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> FlyAkeed × Mixmax — Series A rep productivity
+
+Hi [Head of Sales],
+
+Caught the Elm + Sanabil Series A announcement — scaling corporate travel SaaS into the GCC is a great motion.
+
+Peer Series A scale-ups tell us the same story: rep productivity becomes the #2 priority after GTM hires. Mixmax sits in Gmail, integrates Salesforce, and typically shows 30%+ reply-rate lift in 30 days.
+
+15 min async-friendly chat next week? I have slots Sun, Mon, Tue between 10am-2pm KSA: [link]
+
+Karan</div>
+  </div>
+</div>
+
+<!-- DEAL 9: MAGICLINKS -->
+<div class="card should-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">9. MagicLinks — $0 EXPANSION</h3>
+      <div class="badges">
+        <span class="badge yellow">SHOULD-WIN</span>
+        <span class="badge gray">$0</span>
+        <span class="badge blue">Stage 0</span>
+        <span class="badge blue">Expansion</span>
+        <span class="badge green">11 active users</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="https://mixmax.lightning.force.com/lightning/r/Account/0011R00002SM3Re/view" target="_blank">SF Account</a>
+      <a href="https://mixmax.lightning.force.com/lightning/r/Opportunity/006VS00000XXW1K/view" target="_blank">SF Opp</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Karan (reassigned)</span>
+    <span><strong>Close:</strong> 4/9 OVERDUE</span>
+    <span><strong>Source:</strong> Inbound</span>
+    <span><strong>SCS:</strong> 0</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> MagicLinks</div>
+      <div><span class="lbl">Industry:</span> Social Commerce / Influencer marketing</div>
+      <div><span class="lbl">Paying?</span> YES — existing customer</div>
+      <div><span class="lbl">Employees:</span> ~53, LA CA (Certified B Corp)</div>
+      <div><span class="lbl">Total Users:</span> ~15 est.</div>
+      <div><span class="lbl">Active Users (30d):</span> 12 → 11 (stable)</div>
+      <div><span class="lbl">Power Users:</span> 2-3 est.</div>
+      <div><span class="lbl">Paid Users:</span> 11</div>
+      <div><span class="lbl">Main Products Used:</span> Sequences, Compose, Calendar</div>
+      <div><span class="lbl">Not Used:</span> Enterprise tier, Copilot, Rules at scale</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>$0 amount — no pricing defined.</li>
+      <li>Morgan stale. Expansion DM not identified.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>Real existing customer. 11 active users in 53-emp org = room for 20-30 more seats.</li>
+      <li>B-Corp brand story + social commerce niche = strategic logo.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: CSM-PARTNERED SEAT-FILL.</strong> Pull Amplitude user list to see who's NOT in the 11. Send "seat fill" email to VP Sales referencing existing adoption. 2-week close window.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"How is the 11-person Mixmax team performing vs. the non-Mixmax reps?"</li>
+      <li>"What's the total revenue-facing headcount (SDRs + AEs + CSMs)?"</li>
+      <li>"Are there team-specific workflows Mixmax doesn't cover today?"</li>
+      <li>"Who's the VP Sales or Head of Revenue — are they in the 11?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"Don't need more seats"</em> → "11 users × $X = current $. Other 20 reps lose 30 min/day on manual email. ROI math."</li>
+      <li><em>"No new budget"</em> → "Expansion isn't new budget — it's reallocation from manual-email drag."</li>
+      <li><em>"B-Corp budget conscious"</em> → "Flexible packaging for B-Corps. Phased rollout."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>11 active users = proof it works. Expansion is just matching product coverage to team size.</li>
+      <li>B-Corp / social commerce niche — Mixmax has other B-Corp customers (confirm).</li>
+      <li>Tool consolidation angle if they use competitor alongside.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Social commerce / influencer marketing peer (confirm).</li>
+      <li>B-Corp customer expansion story (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> MagicLinks — 11 reps in Mixmax, let's expand
+
+Hi [VP Sales],
+
+Quick data point: 11 of your reps are actively in Mixmax every day. They're getting Sequences, Compose, and Calendar on top of Gmail.
+
+The other ~20 on the revenue team are doing it manually. That's ~30 min/day per rep in email-drag = ~10 hours/week of lost selling time across the org.
+
+I'd like to scope what a full-team rollout looks like — pricing, rollout timeline, and a ROI case we can show Finance. Your CSM and I can run the 30-min working session jointly.
+
+Tue or Wed next week? [link]
+
+Karan</div>
+  </div>
+</div>
+
+</section>
+
+<!-- ============= LONG-SHOT ============= -->
+<section id="long-shot">
+<h2>⚪ Long-Shot Deals (6 deals)</h2>
+<p class="subtitle">Tier 3: 4 recommended close-lost + 2 hidden expansion plays (misclassified).</p>
+
+<!-- DEAL 10: THE KNOT -->
+<div class="card reclassify">
+  <div class="card-header">
+    <div>
+      <h3 class="title">10. The Knot Worldwide — $0 EXPANSION (Copilot) 🚨</h3>
+      <div class="badges">
+        <span class="badge red">RECLASSIFY → MUST-WIN EXPANSION</span>
+        <span class="badge blue">Stage 0</span>
+        <span class="badge green">300 active users</span>
+        <span class="badge green">Aero: High / High</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="#" target="_blank">SF Account (TBD)</a>
+      <a href="#" target="_blank">SF Opp (TBD)</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Karan</span>
+    <span><strong>Close:</strong> 4/15 OVERDUE 3d</span>
+    <span><strong>Source:</strong> Product-led expansion</span>
+    <span><strong>SCS:</strong> 0</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> The Knot Worldwide</div>
+      <div><span class="lbl">Industry:</span> Wedding / Events Marketplace</div>
+      <div><span class="lbl">Paying?</span> YES — top-10 ENT customer</div>
+      <div><span class="lbl">Employees:</span> ~1,500+</div>
+      <div><span class="lbl">Total Users:</span> ~350+ (paid seats)</div>
+      <div><span class="lbl">Active Users (30d):</span> 319 → 300 (slight ↘)</div>
+      <div><span class="lbl">Power Users:</span> ~50-80 est.</div>
+      <div><span class="lbl">Paid Users:</span> ~300+</div>
+      <div><span class="lbl">Main Products Used:</span> Sequences, Compose, Rules, Calendar, Templates, Enhance</div>
+      <div><span class="lbl">Not Used:</span> Copilot (the expansion opp)</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>Misclassified as Long-Shot. $0 opp masks real expansion upside.</li>
+      <li>Needs economic-buyer engagement, not fresh AE discovery.</li>
+      <li>319 → 300 users = slight MoM decline worth investigating.</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>🚨 <strong>HIDDEN MUST-WIN EXPANSION.</strong> 300 daily users = full adoption.</li>
+      <li>Copilot ROI: ~15 min/day × 300 reps = ~75 rep-hours/day = ~$2M/year in selling-time value.</li>
+      <li>One of Mixmax's top-10 ENT deployments — reference customer potential.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: RECLASSIFY + EXEC-LED COPILOT ROI MEETING.</strong> Partner with CSM + Account Owner. Schedule economic-buyer meeting (CRO or VP Marketing) grounded in real 300-user data. Do NOT run fresh AE discovery — they already know Mixmax.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"Your team runs 300+ people in Mixmax daily — what's working best today?"</li>
+      <li>"Where are reps still manually writing emails that Copilot could draft?"</li>
+      <li>"Is Copilot being evaluated elsewhere in the org (other AI tools)?"</li>
+      <li>"Who's the economic buyer for AI-assisted productivity tools?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"AI budget is with IT"</em> → "Let's loop IT in. Copilot ROI is measurable in email-time-saved per rep."</li>
+      <li><em>"Not a priority"</em> → "300 reps × 15 min/day of Copilot time-savings = [big number]. Pressure-test?"</li>
+      <li><em>"Too early for AI"</em> → "Your team is sending [volume] emails today. Copilot just makes the good ones better."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li><strong>Show the 300-user data directly</strong>. This account is already the model customer.</li>
+      <li>Copilot ROI: ~15 min/day/rep × 300 reps × 240 days = ~18,000 hours/year.</li>
+      <li>ENT-tier customers see compound productivity lift at 6-month mark.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Peer ENT customer with Copilot rollout (confirm).</li>
+      <li>Marketplace/events vertical Copilot story (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> Knot × Copilot — let's do the ROI math
+
+Hi [CRO/VP Marketing],
+
+Two data points your CSM and I want to share:
+1. Your team has 300 active Mixmax users every day — one of our top-10 ENT deployments.
+2. Of those 300, zero are using Copilot yet.
+
+Copilot drafts first-pass emails for reps. Conservative math: 15 min/day × 300 reps = ~75 rep-hours/day reclaimed. That's ~$2M/year in selling-time value at typical rep comp.
+
+I'd like to run a 30-min ROI working session with your team and our Copilot product lead. Thu or Fri? [link]
+
+Karan (with [CSM])</div>
+  </div>
+</div>
+
+<!-- DEAL 11: SRA -->
+<div class="card should-win">
+  <div class="card-header">
+    <div>
+      <h3 class="title">11. Students Rising Above — Copilot Expansion</h3>
+      <div class="badges">
+        <span class="badge yellow">UPGRADE → SHOULD-WIN</span>
+        <span class="badge blue">Stage 0</span>
+        <span class="badge green">19 active users</span>
+        <span class="badge green">Aero: Med / High</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="#" target="_blank">SF Account (TBD)</a>
+      <a href="#" target="_blank">SF Opp (TBD)</a>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span><strong>Owner:</strong> Karan</span>
+    <span><strong>Close:</strong> April 2026</span>
+    <span><strong>Source:</strong> Expansion (Copilot add-on)</span>
+    <span><strong>SCS:</strong> 0</span>
+  </div>
+
+  <div class="acc-overview">
+    <h4 style="margin-top:0;">Account Overview</h4>
+    <div class="aogrid">
+      <div><span class="lbl">Account:</span> Students Rising Above</div>
+      <div><span class="lbl">Industry:</span> Non-profit / Education Access</div>
+      <div><span class="lbl">Paying?</span> YES — small existing customer</div>
+      <div><span class="lbl">Employees:</span> ~25, Bay Area</div>
+      <div><span class="lbl">Total Users:</span> ~25 (org size)</div>
+      <div><span class="lbl">Active Users (30d):</span> 18 → 19 (~76% adoption)</div>
+      <div><span class="lbl">Power Users:</span> ~5 est.</div>
+      <div><span class="lbl">Paid Users:</span> 19</div>
+      <div><span class="lbl">Main Products Used:</span> Sequences, Compose, Calendar</div>
+      <div><span class="lbl">Not Used:</span> Copilot, Enterprise features</div>
+    </div>
+    <h4>Risk</h4>
+    <ul>
+      <li>Non-profit budget ceiling.</li>
+      <li>Small surface area (~19 users in 25-emp org = near-full adoption).</li>
+    </ul>
+    <h4>Opportunities</h4>
+    <ul>
+      <li>~76% adoption already — they're using and love it.</li>
+      <li>Copilot pilot (5 seats) = small $ but high-probability close.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>Orchestrator Verdict</h4>
+    <p><strong>URGENCY: COPILOT MINI-PILOT.</strong> 5-seat pilot at discounted non-profit rate, 30-day eval, land annual expansion by 5/31.</p>
+
+    <h4>Call Prep — Discovery Questions</h4>
+    <ul>
+      <li>"What's the team's top pain in current Mixmax workflow?"</li>
+      <li>"Are you writing a lot of donor/grant outreach emails manually?"</li>
+      <li>"Is Copilot something IT would evaluate, or is it your call?"</li>
+      <li>"What's the budget cycle for expansion — quarterly or annual?"</li>
+    </ul>
+
+    <h4>Call Prep — Objection Handling</h4>
+    <ul>
+      <li><em>"Budget tight"</em> → "Non-profit discount available. 5-seat pilot at [reduced rate] for 30 days."</li>
+      <li><em>"Is AI appropriate for our donors?"</em> → "Copilot drafts, you edit. You control every send."</li>
+    </ul>
+
+    <h4>Call Prep — Talking Points</h4>
+    <ul>
+      <li>19/25 adoption already — you love the product. Copilot is the next layer.</li>
+      <li>Non-profit discount available.</li>
+      <li>Donor outreach is a perfect Copilot use case — warm, personalized, at scale.</li>
+    </ul>
+
+    <h4>Call Prep — Relevant Case Studies</h4>
+    <ul>
+      <li>Non-profit Mixmax customer (confirm).</li>
+    </ul>
+
+    <h4>Outreach — Next-Touch Email</h4>
+    <div class="email-block"><strong>Subject:</strong> SRA × Mixmax Copilot (non-profit pilot)
+
+Hi [DM],
+
+Your team is in Mixmax every day — 19 of 25 folks active. That's incredible adoption.
+
+I want to offer a 5-seat Copilot pilot at our non-profit rate for 30 days. Copilot drafts first-pass donor/grant emails — you edit and send. Typical rep saves 15+ min/day.
+
+Worth a 15-min conversation? [link]
+
+Karan</div>
+  </div>
+</div>
+
+<!-- DEALS 12-15: Close-Lost cluster -->
+<div class="card long-shot">
+  <div class="card-header">
+    <div>
+      <h3 class="title">12-15. Morgan-Legacy Stage 0 Cluster — RECOMMEND CLOSE-LOST</h3>
+      <div class="badges">
+        <span class="badge gray">4 deals</span>
+        <span class="badge red">All overdue 9d</span>
+        <span class="badge gray">0 users · 0 meetings · SCS 0</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <p>These four deals share the same pattern: Morgan-assigned Stage 0 opportunities reassigned during April 2026 cleanup, with zero activity, zero product exposure, zero meetings, and weak ICP fit. <strong>Recommended action: close-lost immediately</strong> to clean Karan's pipeline hygiene. One final "last attempt" email each (NeoSOFT, Planet Depos) if time permits; skip JP Tokyo and CASME entirely.</p>
+
+    <table style="width:100%; border-collapse: collapse; margin-top: 12px; font-size: 13px;">
+      <thead>
+        <tr style="background: #f3f4f6;">
+          <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Account</th>
+          <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Industry</th>
+          <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Size</th>
+          <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Verdict</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid var(--border);">NeoSOFT Technologies</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">IT Services/Consulting (Mumbai)</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">~3,000+ emp</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Not ICP. Close-lost after one final email.</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid var(--border);">JP Tokyo</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Unclear (JP-based)</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Unknown</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">JP timezone, no English motion. Close-lost directly.</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid var(--border);">Planet Depos</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Legal Services / Court Reporting (DC)</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">~100+ emp</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Edge-ICP. Close-lost after one final email.</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid var(--border);">CASME</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Procurement Advisory</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Small org</td>
+          <td style="padding: 8px; border: 1px solid var(--border);">Not ICP. Close-lost directly.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</section>
+
+<!-- ============= STUCK DEALS ============= -->
+<section id="stuck">
+<h2>🚨 Stuck Deals Summary</h2>
+<p class="subtitle">Any deal >14 days in stage, past close date, or with no meetings in 30+ days.</p>
+
+<div class="card">
+  <table style="width:100%; border-collapse: collapse; font-size: 13px;">
+    <thead>
+      <tr style="background: #f3f4f6;">
+        <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Deal</th>
+        <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Tier</th>
+        <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">$</th>
+        <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Stuck Signal</th>
+        <th style="text-align:left; padding: 8px; border: 1px solid var(--border);">Unstick Play</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">Vector Media</td><td style="padding: 8px; border: 1px solid var(--border);">Must-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$45K</td><td style="padding: 8px; border: 1px solid var(--border);">Stage 2, 4mo silence, transferred from Morgan</td><td style="padding: 8px; border: 1px solid var(--border);">Warm-reset email to Edwin/Abe within 48h</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">Zembl</td><td style="padding: 8px; border: 1px solid var(--border);">Must-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$11.6K</td><td style="padding: 8px; border: 1px solid var(--border);">371d old, Stage 3, 0 meetings, next-step = "."</td><td style="padding: 8px; border: 1px solid var(--border);">Force-decision email; close-lost in 5d if silent</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">Summit Fire &amp; Security</td><td style="padding: 8px; border: 1px solid var(--border);">Must-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$7K</td><td style="padding: 8px; border: 1px solid var(--border);">Trial kickoff 10/10 never happened</td><td style="padding: 8px; border: 1px solid var(--border);">Trial-revival email offering fresh 14-day pilot</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">OrthoFX</td><td style="padding: 8px; border: 1px solid var(--border);">Must-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$4.6K</td><td style="padding: 8px; border: 1px solid var(--border);">Missing next-step, 0 meetings logged</td><td style="padding: 8px; border: 1px solid var(--border);">2-option commercial-close email (pricing or procurement)</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">Advantive</td><td style="padding: 8px; border: 1px solid var(--border);">Should-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$20K</td><td style="padding: 8px; border: 1px solid var(--border);">9d overdue, Morgan stale, 0 activity</td><td style="padding: 8px; border: 1px solid var(--border);">Fresh-prospect reboot 3-email + 1-LinkedIn sequence</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">Success Comm Group</td><td style="padding: 8px; border: 1px solid var(--border);">Should-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$6K</td><td style="padding: 8px; border: 1px solid var(--border);">3d overdue, Stage 1 stall</td><td style="padding: 8px; border: 1px solid var(--border);">Re-engage-or-kill email (7d window)</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">FlyAkeed</td><td style="padding: 8px; border: 1px solid var(--border);">Should-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$5K</td><td style="padding: 8px; border: 1px solid var(--border);">9d overdue, Morgan stale</td><td style="padding: 8px; border: 1px solid var(--border);">Fresh outreach w/ KSA-friendly slots</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">MagicLinks</td><td style="padding: 8px; border: 1px solid var(--border);">Should-Win</td><td style="padding: 8px; border: 1px solid var(--border);">$0</td><td style="padding: 8px; border: 1px solid var(--border);">Amount undefined, Morgan stale</td><td style="padding: 8px; border: 1px solid var(--border);">CSM-partnered seat-fill working session</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">The Knot (reclassify)</td><td style="padding: 8px; border: 1px solid var(--border);">Reclassify</td><td style="padding: 8px; border: 1px solid var(--border);">$0</td><td style="padding: 8px; border: 1px solid var(--border);">Misclassified Long-Shot, real 300-user expansion</td><td style="padding: 8px; border: 1px solid var(--border);">Exec-led Copilot ROI meeting w/ CSM</td></tr>
+      <tr><td style="padding: 8px; border: 1px solid var(--border);">4x Morgan Legacy</td><td style="padding: 8px; border: 1px solid var(--border);">Long-Shot</td><td style="padding: 8px; border: 1px solid var(--border);">~$0</td><td style="padding: 8px; border: 1px solid var(--border);">All overdue, 0 activity, not ICP</td><td style="padding: 8px; border: 1px solid var(--border);">Close-lost to clean pipeline</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ============= TOP-LINE RECOMMENDATIONS ============= -->
+<section id="recommendations">
+<h2>📋 Top-Line Recommendations — This Week</h2>
+
+<div class="card">
+  <h3>Immediate actions (next 48 hours)</h3>
+  <ol>
+    <li><strong>Vector Media ($45K)</strong> — send warm-reset email to Edwin + Abe. Largest-$ on board, cannot slip.</li>
+    <li><strong>The Knot Worldwide</strong> — reclassify opportunity + partner with CSM + Account Owner. Schedule Copilot ROI meeting. This is the highest-leverage move on Karan's board.</li>
+    <li><strong>OrthoFX ($4.6K)</strong> — commercial-close email with 2-option CTA. Highest SCS, newest deal, best probability.</li>
+    <li><strong>Sunday ($2K)</strong> — send pricing proposal + mobile workaround to Robin Iss.</li>
+    <li><strong>Close-lost 4 Morgan-legacy deals</strong> — NeoSOFT, JP Tokyo, Planet Depos, CASME. Clean hygiene.</li>
+  </ol>
+
+  <h3>This week (by Friday 4/25)</h3>
+  <ol>
+    <li><strong>Zembl</strong> — force-decision email. Commit to close-lost by 4/23 if silent.</li>
+    <li><strong>Summit Fire</strong> — trial-revival email. 7-day clock.</li>
+    <li><strong>Advantive ($20K)</strong> — fresh-prospect 3-email sequence.</li>
+    <li><strong>FlyAkeed</strong> — KSA-timezone outreach.</li>
+    <li><strong>Students Rising Above</strong> — Copilot mini-pilot offer.</li>
+    <li><strong>MagicLinks</strong> — CSM-partnered working session.</li>
+    <li><strong>SCG</strong> — re-engage-or-kill email.</li>
+  </ol>
+
+  <h3>Strategic view</h3>
+  <p>Karan's April board is 67% concentrated in one deal (Vector Media). Because that deal is stalled, <strong>real April-close probability is closer to $15-25K, not $100K</strong> on paper. The hidden opportunity is The Knot Copilot expansion, which — if worked correctly this quarter — could offset a disappointing April and set up Q3. Priority ranking for Karan's time should be: <strong>(1) Vector Media reset, (2) The Knot reclassify, (3) OrthoFX close, (4) Sunday close, (5) pipeline hygiene on Morgan legacy.</strong></p>
+</div>
+</section>
+
+</div>
+
+<footer>
+  <div>Mixmax Revenue Reporting · AE Pipeline Analysis v0.3.0</div>
+  <div style="margin-top: 6px; font-size: 13px;">Generated 2026-04-18 · Source: Quarterly Snapshot Q2 2026 (04-17) · AE: Karan Jiandani</div>
+</footer>
+
+</body>
+</html>
